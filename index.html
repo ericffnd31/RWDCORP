@@ -1094,7 +1094,7 @@ async function testApiConnection(){
 
 // ── INIT ─────────────────────────────────────
 function init(){
-  const isUnconfigured = !API_URL || API_URL === "https://script.google.com/macros/s/AKfycby-E0VdSvLyBGFQKlNqm-i9B2iXblGU5Xy4cqvPiUiGFNLzLKuCNLgiFz2HlcXTa-8neQ/exec";
+  const isUnconfigured = !API_URL;
   if(isUnconfigured){
     document.getElementById('apiWarning').classList.add('show');
     document.getElementById('loginOverlay').style.display='none';
