@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Ruangwd Corp — Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-base:#060d1a;--bg-surface:#0c1524;--bg-card:#101e30;--bg-hover:#162540;
+  --border:#1a2d45;--border-hi:#1e3655;
+  --accent:#00e5b4;--accent-dim:rgba(0,229,180,0.12);
+  --blue:#4fa3ff;--blue-dim:rgba(79,163,255,0.12);
+  --amber:#f59e0b;--amber-dim:rgba(245,158,11,0.12);
+  --red:#f06464;--red-dim:rgba(240,100,100,0.12);
+  --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.12);
+  --text-1:#e8f0fe;--text-2:#8ba3bf;--text-3:#4a637d;
+  --logo-grad:linear-gradient(135deg,#00e5b4 0%,#00b4f5 100%);
+  --sidebar-bg-image:none;
+  --font:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;
+  --r-sm:8px;--r-md:12px;--r-lg:16px;
+}
+body[data-theme="ocean"]{--bg-base:#031b2e;--bg-surface:#062a44;--bg-card:#0a3a5c;--bg-hover:#0f4972;--border:#155578;--border-hi:#1b6690;--accent:#22d3ee;--accent-dim:rgba(34,211,238,0.14);--blue:#38bdf8;--blue-dim:rgba(56,189,248,0.14);--amber:#fbbf24;--amber-dim:rgba(251,191,36,0.14);--red:#fb7185;--red-dim:rgba(251,113,133,0.14);--text-1:#e0f7ff;--text-2:#7fb8d4;--text-3:#3f7a9c;--logo-grad:linear-gradient(135deg,#22d3ee 0%,#0ea5e9 100%);--sidebar-bg-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(34,211,238,.18),transparent)}
+body[data-theme="galaxy"]{--bg-base:#0a0517;--bg-surface:#150b29;--bg-card:#201040;--bg-hover:#2b1654;--border:#3a1f68;--border-hi:#4a2a80;--accent:#c084fc;--accent-dim:rgba(192,132,252,0.16);--blue:#818cf8;--blue-dim:rgba(129,140,248,0.16);--amber:#fbbf24;--amber-dim:rgba(251,191,36,0.14);--red:#fb7185;--red-dim:rgba(251,113,133,0.14);--text-1:#f3e8ff;--text-2:#a78bd6;--text-3:#6b4f96;--logo-grad:linear-gradient(135deg,#c084fc 0%,#818cf8 100%);--sidebar-bg-image:radial-gradient(circle at 20% 20%,rgba(192,132,252,.15),transparent 50%),radial-gradient(circle at 80% 60%,rgba(129,140,248,.12),transparent 50%)}
+body[data-theme="space"]{--bg-base:#000;--bg-surface:#0a0a0f;--bg-card:#13131c;--bg-hover:#1c1c28;--border:#27272f;--border-hi:#33333d;--accent:#60a5fa;--accent-dim:rgba(96,165,250,0.14);--blue:#93c5fd;--blue-dim:rgba(147,197,253,0.14);--amber:#fde047;--amber-dim:rgba(253,224,71,0.14);--red:#f87171;--red-dim:rgba(248,113,113,0.14);--text-1:#f1f5f9;--text-2:#94a3b8;--text-3:#52525b;--logo-grad:linear-gradient(135deg,#60a5fa 0%,#c4b5fd 100%);--sidebar-bg-image:radial-gradient(1px 1px at 10% 15%,#fff,transparent),radial-gradient(1px 1px at 70% 8%,#fff,transparent),radial-gradient(1px 1px at 40% 35%,#fff,transparent),radial-gradient(1px 1px at 85% 45%,#fff,transparent)}
+body[data-theme="fantasy"]{--bg-base:#160d1f;--bg-surface:#231331;--bg-card:#321a47;--bg-hover:#40225c;--border:#522b73;--border-hi:#653690;--accent:#f0abfc;--accent-dim:rgba(240,171,252,0.16);--blue:#7dd3fc;--blue-dim:rgba(125,211,252,0.16);--amber:#fcd34d;--amber-dim:rgba(252,211,77,0.16);--red:#fb7185;--red-dim:rgba(251,113,133,0.16);--text-1:#fbeeff;--text-2:#b990d4;--text-3:#7a5896;--logo-grad:linear-gradient(135deg,#f0abfc 0%,#7dd3fc 100%);--sidebar-bg-image:radial-gradient(ellipse 60% 40% at 30% 0%,rgba(240,171,252,.16),transparent),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(125,211,252,.12),transparent)}
+body[data-theme="forest"]{--bg-base:#081410;--bg-surface:#0e1f18;--bg-card:#142b21;--bg-hover:#1b382b;--border:#234a38;--border-hi:#2b5a44;--accent:#4ade80;--accent-dim:rgba(74,222,128,0.14);--blue:#38bdf8;--blue-dim:rgba(56,189,248,0.14);--amber:#facc15;--amber-dim:rgba(250,204,21,0.14);--red:#f87171;--red-dim:rgba(248,113,113,0.14);--text-1:#ecfdf3;--text-2:#86b89c;--text-3:#4d7a66;--logo-grad:linear-gradient(135deg,#4ade80 0%,#22d3ee 100%);--sidebar-bg-image:radial-gradient(ellipse 70% 50% at 50% -10%,rgba(74,222,128,.14),transparent)}
+body[data-theme="sunset"]{--bg-base:#1a0e0a;--bg-surface:#2a1610;--bg-card:#3a1f16;--bg-hover:#4a2a1e;--border:#5c3322;--border-hi:#703f2a;--accent:#fb923c;--accent-dim:rgba(251,146,60,0.16);--blue:#f472b6;--blue-dim:rgba(244,114,182,0.16);--amber:#fde047;--amber-dim:rgba(253,224,71,0.16);--red:#ef4444;--red-dim:rgba(239,68,68,0.16);--text-1:#fff3ea;--text-2:#d1a085;--text-3:#8a6450;--logo-grad:linear-gradient(135deg,#fb923c 0%,#f472b6 100%);--sidebar-bg-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(251,146,60,.18),transparent)}
+html,body{height:100%;background:var(--bg-base);color:var(--text-1);font-family:var(--font);font-size:13px;line-height:1.5;transition:background .3s,color .3s}
+/* ── LAYOUT ── */
+.app{display:flex;height:100vh;overflow:hidden}
+/* ── SIDEBAR ── */
+.sidebar{width:200px;flex-shrink:0;background:var(--bg-surface);background-image:var(--sidebar-bg-image);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:0;position:relative;transition:background .3s}
+.sb-top{padding:20px 16px 0}
+.sb-logo{display:flex;align-items:center;gap:9px;margin-bottom:4px}
+.sb-logomark{width:28px;height:28px;border-radius:8px;background:var(--logo-grad);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--bg-base);flex-shrink:0;overflow:hidden}
+.sb-brand{font-size:13px;font-weight:600;color:var(--text-1)}
+.sb-tagline{font-size:10px;color:var(--text-3);margin:2px 0 18px 37px}
+.sb-section{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);padding:0 16px;margin:14px 0 6px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 16px;font-size:12px;color:var(--text-2);cursor:pointer;border-left:2px solid transparent;transition:all .15s}
+.nav-item i{font-size:15px}
+.nav-item:hover{background:var(--bg-hover);color:var(--text-1)}
+.nav-item.active{background:var(--accent-dim);color:var(--accent);border-left-color:var(--accent)}
+.sb-bottom{margin-top:auto;padding:14px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sb-avatar{width:30px;height:30px;border-radius:50%;background:var(--logo-grad);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--bg-base);flex-shrink:0;cursor:pointer}
+.sb-user-name{font-size:12px;font-weight:500;color:var(--text-1)}
+.sb-user-role{font-size:10px;color:var(--text-3);word-break:break-all}
+.sb-bottom-info{flex:1;min-width:0;cursor:pointer}
+.sb-settings-btn{width:28px;height:28px;border-radius:7px;flex-shrink:0;background:transparent;border:1px solid var(--border);color:var(--text-3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:14px}
+.sb-settings-btn:hover{color:var(--accent);border-color:var(--accent)}
+/* ── MAIN ── */
+.main{flex:1;min-width:0;overflow-y:auto;background:var(--bg-base)}
+.main::-webkit-scrollbar{width:5px}
+.main::-webkit-scrollbar-thumb{background:var(--border-hi);border-radius:4px}
+/* ── TOPBAR ── */
+.topbar{position:sticky;top:0;z-index:10;background:rgba(6,13,26,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.topbar-title{font-size:16px;font-weight:600;color:var(--text-1)}
+.topbar-sub{font-size:11px;color:var(--text-3);margin-top:2px}
+.date-chip{font-size:11px;padding:6px 12px;border-radius:20px;border:1px solid var(--border-hi);color:var(--blue);background:var(--blue-dim);white-space:nowrap;flex-shrink:0}
+.content{padding:16px 20px 32px}
+/* ── STAT CARDS ── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:14px 16px;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;transition:border-color .2s}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.stat-card.c-blue::before{background:var(--blue)}
+.stat-card.c-green::before{background:var(--accent)}
+.stat-card.c-amber::before{background:var(--amber)}
+.stat-card.c-red::before{background:var(--red)}
+.stat-label{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:5px}
+.stat-value{font-size:26px;font-weight:700;line-height:1;font-family:var(--mono)}
+.stat-value.c-blue{color:var(--blue)}.stat-value.c-green{color:var(--accent)}.stat-value.c-amber{color:var(--amber)}.stat-value.c-red{color:var(--red)}
+.stat-sub{font-size:10px;color:var(--text-3)}
+/* ── GRID & CARDS ── */
+.mid-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:16px}
+.card-title{font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:7px;margin-bottom:14px}
+.card-title i{font-size:14px;color:var(--text-3)}
+/* ── DONUT & BARS ── */
+.donut-row{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.donut-wrap{position:relative;width:76px;height:76px;flex-shrink:0}
+.donut-svg{width:76px;height:76px;transform:rotate(-90deg)}
+.donut-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.donut-pct{font-size:14px;font-weight:700;color:var(--accent);font-family:var(--mono)}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-2);margin-bottom:6px}
+.legend-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:11px}
+.bar-day{width:24px;color:var(--text-3);flex-shrink:0}
+.bar-track{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width .5s}
+.bar-val{width:16px;text-align:right;color:var(--text-2);flex-shrink:0}
+/* ── CLOCK ── */
+.big-clock{font-size:30px;font-weight:600;color:var(--blue);font-family:var(--mono);margin:2px 0 14px}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:11px;color:var(--text-2)}
+.info-row:last-of-type{border-bottom:none}
+.info-row .label-r{color:var(--text-3)}
+/* ── BADGES ── */
+.badge{font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.badge-amber{background:var(--amber-dim);color:var(--amber)}
+.badge-green{background:var(--accent-dim);color:var(--accent)}
+.badge-blue{background:var(--blue-dim);color:var(--blue)}
+.badge-red{background:var(--red-dim);color:var(--red)}
+.badge-gray{background:rgba(255,255,255,.06);color:var(--text-2)}
+.badge-late-detail{display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:500;padding:2px 7px;border-radius:20px;margin-left:4px;white-space:nowrap}
+.badge-late-sop{background:var(--amber-dim);color:var(--amber)}
+.badge-late-fatal{background:var(--red-dim);color:var(--red)}
+.duration-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px}
+.duration-pill.normal{background:rgba(255,255,255,.05);color:var(--text-2)}
+.duration-pill.warn10{background:var(--amber-dim);color:var(--amber)}
+.duration-pill.warn12{background:var(--red-dim);color:var(--red)}
+/* ── BUTTONS ── */
+.btn-manual{width:100%;margin-top:12px;background:var(--accent-dim);border:1px solid rgba(0,229,180,.25);color:var(--accent);padding:10px;border-radius:var(--r-sm);font-size:12px;font-family:var(--font);cursor:pointer;transition:background .15s}
+.btn-manual:hover{background:rgba(0,229,180,.18)}
+.btn-dark{background:var(--bg-surface);border:1px solid var(--border-hi);color:var(--text-1);border-radius:var(--r-sm);padding:8px 14px;font-size:12px;font-family:var(--font);cursor:pointer;transition:border-color .15s,color .15s}
+.btn-dark:hover{border-color:var(--accent);color:var(--accent)}
+.btn-dark:disabled{opacity:.35;cursor:not-allowed}
+.btn-dark.btn-in{border-color:rgba(0,229,180,.3);color:var(--accent)}
+.btn-dark.btn-out{border-color:rgba(79,163,255,.3);color:var(--blue)}
+/* ── FORM ELEMENTS ── */
+.form-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+select,input[type="text"],input[type="number"],input[type="time"]{background:var(--bg-surface);border:1px solid var(--border-hi);color:var(--text-1);border-radius:var(--r-sm);padding:8px 10px;font-size:12px;font-family:var(--font);outline:none;transition:border-color .15s}
+select:focus,input:focus{border-color:var(--accent)}
+/* ── MANUAL ABSEN PANEL ── */
+.manual-panel{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:16px;margin-bottom:14px}
+.active-staff-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.staff-avatar{width:36px;height:36px;border-radius:50%;background:var(--blue-dim);border:1px solid var(--border-hi);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--blue);flex-shrink:0}
+.gps-box{font-size:11px;color:var(--text-3);background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;margin-bottom:10px;line-height:1.7}
+.absen-action-row{display:flex;gap:8px}
+.absen-msg{font-size:11px;margin-top:8px;min-height:16px}
+/* ── TABLE ── */
+.table-card{margin-bottom:14px}
+.table-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.filter-group{display:flex;gap:4px}
+.filter-btn{font-size:10px;font-weight:500;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text-3);cursor:pointer;transition:all .15s;font-family:var(--font)}
+.filter-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:580px}
+th{text-align:left;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);padding:10px 12px;border-bottom:1px solid var(--border)}
+td{padding:11px 12px;border-bottom:1px solid rgba(26,45,69,.6)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg-hover)}
+.td-staff{font-weight:500;color:var(--text-1)}
+.td-divisi{color:var(--text-3)}
+.icon-btn{width:26px;height:26px;border-radius:6px;background:transparent;border:1px solid var(--border);color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all .15s}
+.icon-btn:hover{border-color:var(--blue);color:var(--blue)}
+/* ── BANK ── */
+.bank-row-v2{border:1px solid var(--border);border-radius:var(--r-md);padding:12px;transition:border-color .15s}
+.bank-row-v2:hover{border-color:var(--border-hi)}
+.bank-row-v2-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bank-icon{width:32px;height:32px;border-radius:8px;background:var(--blue-dim);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--blue);flex-shrink:0}
+.bank-row-v2-info{flex:1;min-width:0}
+.bank-row-v2-name{font-size:13px;font-weight:500;color:var(--text-1)}
+.bank-row-v2-rek{font-size:10.5px;color:var(--text-3);font-family:var(--mono);margin-top:1px}
+.bank-saldo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:9px}
+.bank-saldo-box{background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.bank-saldo-label{font-size:9.5px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em}
+.bank-saldo-value{font-size:13px;font-weight:600;font-family:var(--mono);margin-top:2px}
+.bank-saldo-input-row{display:flex;gap:8px;margin-bottom:9px}
+.bank-saldo-input{flex:1;background:var(--bg-surface);border:1px solid var(--border-hi);color:var(--text-1);border-radius:7px;padding:8px 10px;font-size:12px;font-family:var(--mono);outline:none}
+.bank-saldo-input:focus{border-color:var(--accent)}
+.match-result{border-radius:8px;padding:9px 11px;font-size:12px;display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.match-result.klop{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(0,229,180,.25)}
+.match-result.selisih{background:var(--red-dim);color:var(--red);border:1px solid rgba(240,100,100,.25)}
+.match-result i{font-size:16px}
+.match-result .detail{font-size:10.5px;opacity:.85;display:block;margin-top:1px}
+.bank-row-v2-actions{display:flex;gap:8px}
+.log-item{border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:11px}
+.log-bank{font-weight:500;color:var(--text-1)}
+.log-meta{color:var(--text-3);font-size:10px;text-align:right}
+/* ── SHIFT SETTINGS ── */
+.shift-config-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.shift-config-card{border:1px solid var(--border);border-radius:var(--r-md);padding:12px;background:var(--bg-card)}
+.shift-config-name{font-size:12px;font-weight:600;color:var(--text-1);display:flex;align-items:center;gap:6px;margin-bottom:9px}
+.shift-mini-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;gap:6px}
+.shift-mini-label{font-size:10px;color:var(--text-3);flex-shrink:0}
+.shift-time-input{background:var(--bg-surface);border:1px solid var(--border-hi);color:var(--text-1);border-radius:6px;padding:4px 7px;font-size:11px;font-family:var(--mono);outline:none;width:72px;text-align:center}
+.shift-time-input:focus{border-color:var(--accent)}
+.shift-duration-toggle{display:flex;gap:4px}
+.dur-btn{font-size:10px;padding:4px 9px;border-radius:6px;border:1px solid var(--border-hi);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font);transition:all .15s}
+.dur-btn.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.shift-window-preview{font-size:9.5px;color:var(--text-3);line-height:1.6;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.shift-window-preview b{color:var(--text-2)}
+.window-ontime{color:var(--accent)}.window-sop{color:var(--amber)}.window-fatal{color:var(--red)}
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--bg-surface);border:1px solid var(--border-hi);border-radius:var(--r-lg);width:100%;max-width:560px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.modal-box::-webkit-scrollbar{width:5px}
+.modal-box::-webkit-scrollbar-thumb{background:var(--border-hi);border-radius:4px}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg-surface);z-index:1}
+.modal-title{font-size:14px;font-weight:600;color:var(--text-1);display:flex;align-items:center;gap:8px}
+.modal-title i{color:var(--accent);font-size:17px}
+.modal-close{width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--text-3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .15s}
+.modal-close:hover{color:var(--red);border-color:var(--red)}
+.modal-body{padding:18px}
+.modal-section{margin-bottom:22px}
+.modal-section-label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+/* ── THEME GRID ── */
+.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.theme-swatch{border:2px solid var(--border);border-radius:var(--r-md);padding:10px 8px 9px;cursor:pointer;text-align:center;transition:all .15s;background:var(--bg-card);position:relative}
+.theme-swatch:hover{border-color:var(--border-hi);transform:translateY(-1px)}
+.theme-swatch.active{border-color:var(--accent)}
+.theme-swatch.active::after{content:'\ea5e';font-family:'tabler-icons';position:absolute;top:5px;right:6px;color:var(--accent);font-size:13px}
+.theme-preview-strip{height:32px;border-radius:6px;margin-bottom:7px;display:flex;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.theme-preview-strip span{flex:1;height:100%}
+.theme-swatch-label{font-size:10.5px;font-weight:500;color:var(--text-1)}
+.theme-swatch-icon{font-size:10px;color:var(--text-3);margin-top:1px}
+.field-row{margin-bottom:12px}
+.field-label{font-size:11px;color:var(--text-2);margin-bottom:6px;display:block}
+.field-input{width:100%;background:var(--bg-card);border:1px solid var(--border-hi);color:var(--text-1);border-radius:var(--r-sm);padding:9px 11px;font-size:12px;font-family:var(--font);outline:none}
+.field-input:focus{border-color:var(--accent)}
+.btn-save-settings{width:100%;background:var(--accent);color:var(--bg-base);border:none;border-radius:var(--r-sm);padding:11px;font-size:12px;font-weight:600;font-family:var(--font);cursor:pointer;margin-top:4px;transition:opacity .15s}
+.btn-save-settings:hover{opacity:.88}
+/* ── LOGIN SCREEN ── */
+.login-overlay{position:fixed;inset:0;z-index:300;background:var(--bg-base);background-image:var(--sidebar-bg-image);display:flex;align-items:center;justify-content:center;padding:16px}
+.login-box{width:100%;max-width:380px;background:var(--bg-surface);border:1px solid var(--border-hi);border-radius:var(--r-lg);padding:28px 26px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.login-logo-row{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:22px}
+.login-logomark{width:48px;height:48px;border-radius:12px;background:var(--logo-grad);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--bg-base)}
+.login-brand{font-size:16px;font-weight:600;color:var(--text-1)}
+.login-tagline{font-size:11px;color:var(--text-3)}
+.login-tabs{display:flex;gap:6px;margin-bottom:18px;background:var(--bg-card);border-radius:var(--r-sm);padding:3px}
+.login-tab{flex:1;text-align:center;font-size:12px;padding:8px;border-radius:6px;cursor:pointer;color:var(--text-3);transition:all .15s}
+.login-tab.active{background:var(--accent);color:var(--bg-base);font-weight:500}
+.login-field{margin-bottom:13px}
+.login-field label{font-size:11px;color:var(--text-2);display:block;margin-bottom:6px}
+.login-input{width:100%;background:var(--bg-card);border:1px solid var(--border-hi);color:var(--text-1);border-radius:var(--r-sm);padding:10px 12px;font-size:12px;font-family:var(--font);outline:none}
+.login-input:focus{border-color:var(--accent)}
+.login-error{font-size:11px;color:var(--red);background:var(--red-dim);border:1px solid rgba(240,100,100,.25);border-radius:var(--r-sm);padding:8px 10px;margin-bottom:12px;display:none;align-items:center;gap:6px}
+.login-error.show{display:flex}
+.login-submit{width:100%;background:var(--accent);color:var(--bg-base);border:none;border-radius:var(--r-sm);padding:11px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font);margin-top:4px}
+.login-submit:hover{opacity:.9}
+.login-submit:disabled{opacity:.6;cursor:not-allowed}
+.login-switch-hint{text-align:center;font-size:11px;color:var(--text-3);margin-top:14px}
+.login-switch-hint a{color:var(--blue);cursor:pointer;text-decoration:underline}
+/* ── LOADING / SPINNER ── */
+.spinner-overlay{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;display:none}
+.spinner-overlay.show{display:flex}
+.spinner-box{background:var(--bg-card);border:1px solid var(--border-hi);border-radius:var(--r-lg);padding:20px 28px;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--text-2)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin-icon{font-size:20px;color:var(--accent);animation:spin 1s linear infinite}
+/* ── TOAST ── */
+.toast-saved{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg-card);border:1px solid var(--accent);color:var(--accent);padding:10px 18px;border-radius:30px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:7px;z-index:200;opacity:0;pointer-events:none;transition:all .25s;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.toast-saved.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast-error{border-color:var(--red);color:var(--red)}
+/* ── API CONFIG BOX ── */
+.api-config-banner{background:var(--amber-dim);border:1px solid rgba(245,158,11,.3);border-radius:var(--r-sm);padding:10px 12px;font-size:11px;color:var(--amber);margin-bottom:14px;display:none;align-items:center;gap:8px}
+.api-config-banner.show{display:flex}
+/* ── VIEW ── */
+.view{display:none}.view.active{display:block}
+</style>
+</head>
+<body data-theme="default">
+
+<!-- ══ SPINNER ══ -->
+<div class="spinner-overlay" id="spinnerOverlay">
+  <div class="spinner-box"><i class="ti ti-loader-2 spin-icon"></i><span id="spinnerText">Memuat data...</span></div>
+</div>
+
+<!-- ══ LOGIN ══ -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-logo-row">
+      <div class="login-logomark">RW</div>
+      <div class="login-brand">Ruangwd Corp</div>
+      <div class="login-tagline">Login staff untuk absensi & serah terima bank</div>
+    </div>
+    <div class="login-tabs">
+      <div class="login-tab active" id="tabLogin" onclick="switchLoginTab('login')">Login</div>
+      <div class="login-tab" id="tabRegister" onclick="switchLoginTab('register')">Daftar Akun Baru</div>
+    </div>
+    <!-- LOGIN FORM -->
+    <div id="loginFormBox">
+      <div class="login-error" id="loginError"><i class="ti ti-alert-triangle"></i><span id="loginErrorText"></span></div>
+      <div class="login-field"><label>Email</label><input type="email" class="login-input" id="loginEmail" placeholder="nama@gmail.com"/></div>
+      <div class="login-field"><label>Password</label><input type="password" class="login-input" id="loginPassword" placeholder="Password akun staff"/></div>
+      <button class="login-submit" id="btnLogin" onclick="doLogin()"><i class="ti ti-login-2"></i>&nbsp;Masuk</button>
+      <p class="login-switch-hint">Belum punya akun? <a onclick="switchLoginTab('register')">Daftar di sini</a></p>
+    </div>
+    <!-- REGISTER FORM -->
+    <div id="registerFormBox" style="display:none;">
+      <div class="login-error" id="registerError"><i class="ti ti-alert-triangle"></i><span id="registerErrorText"></span></div>
+      <div class="login-field"><label>Pilih nama Anda</label><select class="login-input" id="registerStaffSelect"></select></div>
+      <div class="login-field"><label>Email (Gmail)</label><input type="email" class="login-input" id="registerEmail" placeholder="nama@gmail.com"/></div>
+      <div class="login-field"><label>Buat Password</label><input type="password" class="login-input" id="registerPassword" placeholder="Minimal 6 karakter"/></div>
+      <div class="login-field"><label>Ulangi Password</label><input type="password" class="login-input" id="registerPassword2" placeholder="Ketik ulang password"/></div>
+      <button class="login-submit" id="btnRegister" onclick="doRegister()"><i class="ti ti-user-plus"></i>&nbsp;Daftar & Masuk</button>
+      <p class="login-switch-hint">Sudah punya akun? <a onclick="switchLoginTab('login')">Login di sini</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div class="app">
+  <aside class="sidebar">
+    <div class="sb-top">
+      <div class="sb-logo"><div class="sb-logomark">RW</div><span class="sb-brand">Ruangwd Corp</span></div>
+      <div class="sb-tagline">Management System v1.0</div>
+      <p class="sb-section">Main</p>
+      <div class="nav-item active" id="nav-absensi" onclick="switchView('absensi')"><i class="ti ti-clipboard-check"></i>Absensi Staff</div>
+      <div class="nav-item" id="nav-bank" onclick="switchView('bank')"><i class="ti ti-building-bank"></i>Serah Terima Bank</div>
+      <p class="sb-section">Pengaturan</p>
+      <div class="nav-item" onclick="openShiftSettings()"><i class="ti ti-clock-hour-4"></i>Atur Jam Shift</div>
+      <div class="nav-item" onclick="openThemeModal()"><i class="ti ti-palette"></i>Ganti Tema</div>
+    </div>
+    <div class="sb-bottom">
+      <div class="sb-avatar" id="sbAvatar">AD</div>
+      <div class="sb-bottom-info">
+        <div class="sb-user-name" id="sbUserName">—</div>
+        <div class="sb-user-role" id="sbUserRole">—</div>
+      </div>
+      <button class="sb-settings-btn" onclick="doLogout()" title="Keluar"><i class="ti ti-logout"></i></button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <!-- VIEW ABSENSI -->
+    <div id="view-absensi" class="view active">
+      <div class="topbar">
+        <div><div class="topbar-title">Dashboard Absensi Staff</div><div class="topbar-sub">Pantau kehadiran tim secara real-time</div></div>
+        <div class="date-chip" id="dateBadge"></div>
+      </div>
+      <div class="content">
+        <div class="api-config-banner" id="apiWarning"><i class="ti ti-alert-circle"></i>URL backend belum dikonfigurasi oleh admin. Hubungi admin sistem.</div>
+        <div class="stats-grid">
+          <div class="stat-card c-blue"><div class="stat-label"><i class="ti ti-users"></i>Total Staff</div><div class="stat-value c-blue" id="statTotal">0</div><div class="stat-sub">Aktif terdaftar</div></div>
+          <div class="stat-card c-green"><div class="stat-label"><i class="ti ti-calendar-check"></i>Hadir Hari Ini</div><div class="stat-value c-green" id="statHadir">0</div><div class="stat-sub" id="statPct">0% kehadiran</div></div>
+          <div class="stat-card c-amber"><div class="stat-label"><i class="ti ti-clock-exclamation"></i>Terlambat</div><div class="stat-value c-amber" id="statLate">0</div><div class="stat-sub">> 08:30 WIB</div></div>
+          <div class="stat-card c-red"><div class="stat-label"><i class="ti ti-user-x"></i>Tidak Hadir</div><div class="stat-value c-red" id="statAbsent">0</div><div class="stat-sub">Alpha / izin</div></div>
+        </div>
+        <div class="mid-grid">
+          <div class="card">
+            <div class="card-title"><i class="ti ti-chart-donut"></i>Kehadiran Minggu Ini</div>
+            <div class="donut-row">
+              <div class="donut-wrap">
+                <svg class="donut-svg" viewBox="0 0 76 76"><circle cx="38" cy="38" r="30" fill="none" stroke="#1a2d45" stroke-width="8"/><circle id="donutHadir" cx="38" cy="38" r="30" fill="none" stroke="#00e5b4" stroke-width="8" stroke-dasharray="0 188.5" stroke-linecap="round"/></svg>
+                <div class="donut-inner"><span class="donut-pct" id="donutPct">0%</span></div>
+              </div>
+              <div id="donutLegend"></div>
+            </div>
+            <div id="weeklyBars"></div>
+          </div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-clock"></i>Jam Masuk Hari Ini</div>
+            <div class="big-clock" id="bigClock">--:--:--</div>
+            <div class="info-row"><span class="label-r">Shift Aktif</span><span class="badge badge-blue" id="infoShiftActive">Pagi</span></div>
+            <div class="info-row"><span class="label-r">Jam Kerja</span><span id="infoJamKerja">07:45 – 17:45 WIB</span></div>
+            <div class="info-row"><span class="label-r">Batas On Time</span><span class="badge badge-green" id="infoOnTime">07:45</span></div>
+            <div class="info-row"><span class="label-r">Batas SOP (belum fatal)</span><span class="badge badge-amber" id="infoSopLimit">s.d. 08:00</span></div>
+            <div class="info-row"><span class="label-r">Sudah Absen Masuk</span><span class="badge badge-green" id="infoMasuk">0 staff</span></div>
+            <div class="info-row"><span class="label-r">Sudah Absen Keluar</span><span class="badge badge-blue" id="infoKeluar">0 staff</span></div>
+            <div class="info-row"><span class="label-r">Belum Absen</span><span class="badge badge-red" id="infoBelum">0 staff</span></div>
+            <button class="btn-manual" id="btnToggleManual"><i class="ti ti-plus"></i>&nbsp;Absensi Manual ↗</button>
+            <button class="btn-manual" style="margin-top:8px;background:var(--blue-dim);border-color:rgba(79,163,255,.25);color:var(--blue);" onclick="openShiftSettings()"><i class="ti ti-settings"></i>&nbsp;Atur Jam Shift ↗</button>
+          </div>
+        </div>
+        <div class="manual-panel" id="manualPanel" style="display:none;">
+          <div class="card-title"><i class="ti ti-fingerprint"></i>Absensi via HP (GPS)</div>
+          <div class="active-staff-row">
+            <div class="staff-avatar" id="avatarCircle">--</div>
+            <div><div style="font-weight:500;color:var(--text-1);font-size:13px;" id="activeStaffName">-</div><div style="font-size:10px;color:var(--text-3);" id="activeStaffStatus">Belum absen</div></div>
+          </div>
+          <div class="form-row">
+            <select id="shiftSelect" style="flex:1;"></select>
+          </div>
+          <div id="activeStaffBox">
+            <div class="gps-box" id="gpsBox"><i class="ti ti-map-pin"></i> Lokasi GPS akan diambil saat absen ditekan</div>
+            <div class="absen-action-row">
+              <button class="btn-dark btn-in" id="btnCheckIn" style="flex:1;"><i class="ti ti-login-2"></i>&nbsp;Check in</button>
+              <button class="btn-dark btn-out" id="btnCheckOut" style="flex:1;" disabled><i class="ti ti-door-exit"></i>&nbsp;Check out</button>
+            </div>
+            <div class="absen-msg" id="absenMsg"></div>
+          </div>
+        </div>
+        <div class="card table-card">
+          <div class="table-header">
+            <div class="card-title" style="margin:0;"><i class="ti ti-list-details"></i><span id="tableTitle">Daftar Kehadiran</span></div>
+            <div class="filter-group">
+              <button class="filter-btn active" data-f="semua">Semua</button>
+              <button class="filter-btn" data-f="hadir">Hadir</button>
+              <button class="filter-btn" data-f="alpha">Alpha</button>
+            </div>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>Staff</th><th>Divisi</th><th>Shift</th><th>Masuk</th><th>Keluar</th><th>Durasi</th><th>Status</th></tr></thead><tbody id="tbody"></tbody></table></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW BANK -->
+    <div id="view-bank" class="view">
+      <div class="topbar">
+        <div><div class="topbar-title">Serah Terima Pengecekan Bank</div><div class="topbar-sub">Checklist pengecekan & serah terima harian</div></div>
+        <div class="date-chip" id="dateBadgeBank"></div>
+      </div>
+      <div class="content">
+        <div class="stats-grid">
+          <div class="stat-card c-blue"><div class="stat-label"><i class="ti ti-building-bank"></i>Total Bank</div><div class="stat-value c-blue" id="bTotal">0</div><div class="stat-sub">Terdaftar</div></div>
+          <div class="stat-card c-green"><div class="stat-label"><i class="ti ti-eye-check"></i>Sudah Dicek</div><div class="stat-value c-green" id="bChecked">0</div><div class="stat-sub">Dari total bank</div></div>
+          <div class="stat-card c-green"><div class="stat-label"><i class="ti ti-check"></i>Saldo Klop</div><div class="stat-value c-green" id="bKlop">0</div><div class="stat-sub">Tidak ada selisih</div></div>
+          <div class="stat-card c-red"><div class="stat-label"><i class="ti ti-alert-circle"></i>Ada Selisih</div><div class="stat-value c-red" id="bSelisih">0</div><div class="stat-sub">Perlu tindak lanjut</div></div>
+        </div>
+        <div class="card" style="margin-bottom:14px;">
+          <div class="card-title"><i class="ti ti-checklist"></i>Checklist Pengecekan & Serah Terima Bank</div>
+          <div id="bankList" style="display:flex;flex-direction:column;gap:10px;"></div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
+            <div class="modal-section-label" style="margin-bottom:8px;"><i class="ti ti-plus"></i>TAMBAH BANK BARU</div>
+            <div class="form-row" style="margin-bottom:8px;">
+              <input id="newBankName" type="text" placeholder="Nama bank, mis. Bank BCA" style="flex:1;min-width:120px;"/>
+              <input id="newBankRek" type="text" placeholder="No. rekening" style="flex:1;min-width:110px;"/>
+            </div>
+            <div class="form-row">
+              <input id="newBankSaldo" type="number" placeholder="Saldo sistem (Rp)" style="flex:1;"/>
+              <button class="btn-dark" id="btnAddBank"><i class="ti ti-plus"></i> Tambah</button>
+            </div>
+          </div>
+        </div>
+        <div class="card"><div class="card-title"><i class="ti ti-history"></i>Log Serah Terima</div><div id="bankLogList" style="display:flex;flex-direction:column;gap:8px;"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL SHIFT ══ -->
+<div class="modal-overlay" id="shiftModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title"><i class="ti ti-clock-hour-4"></i>Atur Jam Shift Kerja</div>
+      <button class="modal-close" onclick="closeShiftSettings()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="modal-section-label"><i class="ti ti-info-circle"></i>ATURAN TOLERANSI</div>
+        <p style="font-size:11px;color:var(--text-2);line-height:1.7;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 12px;">
+          <span class="window-ontime">● Jam shift</span> = <b>On time</b> &nbsp;·&nbsp;
+          <span class="window-sop">● +1 menit s.d. menit :00 jam berikutnya</span> = <b>Telat SOP</b> &nbsp;·&nbsp;
+          <span class="window-fatal">● menit :01 berikutnya dst</span> = <b>Telat Fatal</b>
+        </p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-label"><i class="ti ti-sun"></i>JAM MULAI & DURASI PER SHIFT</div>
+        <div class="shift-config-grid" id="shiftConfigGrid"></div>
+      </div>
+      <button class="btn-save-settings" onclick="saveShiftSettings()"><i class="ti ti-device-floppy"></i>&nbsp;Simpan & Sinkron ke Server</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL TEMA ══ -->
+<div class="modal-overlay" id="themeModal">
+  <div class="modal-box" style="max-width:420px;">
+    <div class="modal-header">
+      <div class="modal-title"><i class="ti ti-palette"></i>Ganti Tema Tampilan</div>
+      <button class="modal-close" onclick="document.getElementById('themeModal').classList.remove('open')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="theme-grid" id="themeGrid"></div>
+      <button class="btn-save-settings" style="margin-top:16px;" onclick="saveTheme()"><i class="ti ti-check"></i>&nbsp;Terapkan Tema</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL API CONFIG ══ -->
+<div class="modal-overlay" id="apiModal">
+  <div class="modal-box" style="max-width:460px;">
+    <div class="modal-header">
+      <div class="modal-title"><i class="ti ti-api"></i>⚠️ Setup Belum Selesai (Khusus Admin)</div>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12px;color:var(--text-2);line-height:1.7;margin-bottom:14px;">
+        Halaman ini ditujukan untuk staff, tapi <b>URL backend (Google Apps Script) belum ditanam</b> di dalam kode. Staff tidak akan bisa login atau absen sebelum ini diperbaiki.
+      </p>
+      <p style="font-size:12px;color:var(--text-2);line-height:1.7;margin-bottom:14px;">
+        <b>Cara perbaiki (sekali saja, oleh admin):</b><br>
+        1. Buka file <code style="color:var(--accent);">index.html</code> di editor teks.<br>
+        2. Cari baris: <span style="font-family:var(--mono);font-size:10.5px;color:var(--amber);">const API_URL = "https://script.google.com/macros/s/AKfycby-E0VdSvLyBGFQKlNqm-i9B2iXblGU5Xy4cqvPiUiGFNLzLKuCNLgiFz2HlcXTa-8neQ/exec...";</span><br>
+        3. Ganti dengan URL Web App dari Apps Script Anda.<br>
+        4. Simpan file, lalu re-upload / re-deploy ke Vercel.
+      </p>
+      <button class="btn-save-settings" onclick="testApiConnection()"><i class="ti ti-refresh"></i>&nbsp;Test Koneksi Sekarang</button>
+      <p id="apiTestResult" style="font-size:11px;margin-top:10px;min-height:16px;"></p>
+    </div>
+  </div>
+</div>
+
+<div class="toast-saved" id="toastEl"><i class="ti ti-circle-check"></i><span id="toastText">Tersimpan</span></div>
+
+<script>
+// ══════════════════════════════════════════════
+//  CONFIG & STATE
+// ══════════════════════════════════════════════
+const STAFF_MASTER = [
+  {name:"Andi Pratama",div:"Operasional"},{name:"Budi Santoso",div:"Keuangan"},
+  {name:"Citra Lestari",div:"Marketing"},{name:"Dewi Anggraini",div:"HRD"},
+  {name:"Eko Wijaya",div:"IT"},{name:"Fitri Rahmawati",div:"Customer Service"},
+  {name:"Gunawan Saputra",div:"Gudang"},{name:"Hesti Maharani",div:"Admin"}
+];
+
+// ══════════════════════════════════════════════
+//  ⚙️ KONFIGURASI ADMIN — ISI SEKALI SEBELUM DEPLOY
+// ══════════════════════════════════════════════
+// Tempel URL Web App dari Google Apps Script Anda di sini.
+// Setelah diisi, staff TIDAK PERLU memasukkan URL apa pun.
+// Format: https://script.google.com/macros/s/AKfycb.../exec
+const API_URL = "GANTI_DENGAN_URL_APPS_SCRIPT_ANDA";
+
+let currentSession = null;
+try{ currentSession = JSON.parse(localStorage.getItem('ruangwd_session') || 'null'); }catch(e){}
+
+let SHIFTS = {
+  pagi: {id:'pagi',label:'Pagi',icon:'ti-sunrise',startHour:7,startMin:45,durasiJam:10},
+  siang:{id:'siang',label:'Siang',icon:'ti-sun',startHour:11,startMin:45,durasiJam:10},
+  sore: {id:'sore',label:'Sore',icon:'ti-sunset',startHour:15,startMin:45,durasiJam:10},
+  malam:{id:'malam',label:'Malam',icon:'ti-moon-stars',startHour:19,startMin:45,durasiJam:10},
+};
+let absenLogs = [];
+let bankItems = [];
+let bankLogs  = [];
+let currentFilter = 'semua';
+let activeShift = null;
+let pendingTheme = 'default';
+let pendingShifts = null;
+
+// ── HELPERS ─────────────────────────────────────
+const ini = n => n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+const fmtT = d => d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+const fmtD = d => d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});
+const fmtFull = d => d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+const todayKey = () => fmtD(new Date());
+const fmtRupiah = n => n==null||isNaN(n)?'-':'Rp '+Number(n).toLocaleString('id-ID');
+
+function shiftStartLabel(sh){ return String(sh.startHour).padStart(2,'0')+':'+String(sh.startMin).padStart(2,'0'); }
+function shiftSopLimitLabel(sh){ return String((sh.startHour+1)%24).padStart(2,'0')+':00'; }
+function shiftEndLabel(sh){
+  const total=(sh.startHour*60+sh.startMin+sh.durasiJam*60)%(24*60);
+  return String(Math.floor(total/60)).padStart(2,'0')+':'+String(total%60).padStart(2,'0');
+}
+function calcLateStatus(ts, sh){
+  const h=ts.getHours(),m=ts.getMinutes();
+  const cin=h*60+m, start=sh.startHour*60+sh.startMin, sopEnd=((sh.startHour+1)%24)*60;
+  if(cin<=start) return {status:'ontime',lateMinutes:0};
+  if(cin<=sopEnd) return {status:'sop',lateMinutes:cin-start};
+  return {status:'fatal',lateMinutes:cin-start};
+}
+function lateStatusBadge(lateStatus,lateMinutes){
+  if(!lateStatus||lateStatus==='ontime') return '';
+  if(lateStatus==='sop') return `<span class="badge-late-detail badge-late-sop"><i class="ti ti-clock-exclamation"></i>+${lateMinutes}m SOP</span>`;
+  return `<span class="badge-late-detail badge-late-fatal"><i class="ti ti-alert-triangle"></i>+${lateMinutes}m FATAL</span>`;
+}
+function statusBadge(s){
+  if(s==='Hadir') return '<span class="badge badge-green">Hadir</span>';
+  if(s==='Telat SOP') return '<span class="badge badge-amber">Telat (SOP)</span>';
+  if(s==='Telat Fatal') return '<span class="badge badge-red">Telat Fatal</span>';
+  return '<span class="badge badge-red">Alpha</span>';
+}
+
+// ── API CALL ─────────────────────────────────────
+async function api(action, data={}) {
+  if(!API_URL) {
+    showToast('URL API belum diisi. Klik "Atur URL API" di sidebar.', true);
+    throw new Error('API URL not set');
+  }
+  showSpinner('Memproses...');
+  try {
+    const resp = await fetch(API_URL, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({action, data})
+    });
+    const json = await resp.json();
+    return json;
+  } finally {
+    hideSpinner();
+  }
+}
+
+// ── SPINNER / TOAST ────────────────────────────────
+function showSpinner(txt='Memuat...'){
+  document.getElementById('spinnerText').textContent=txt;
+  document.getElementById('spinnerOverlay').classList.add('show');
+}
+function hideSpinner(){ document.getElementById('spinnerOverlay').classList.remove('show'); }
+function showToast(msg='Tersimpan', isError=false){
+  const el=document.getElementById('toastEl');
+  el.querySelector('#toastText').textContent=msg;
+  el.className='toast-saved'+(isError?' toast-error':'');
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2600);
+}
+
+// ── CLOCK & DATE ───────────────────────────────────
+function tick(){
+  const now=new Date();
+  document.getElementById('bigClock').textContent=fmtT(now);
+  const fd=fmtFull(now);
+  document.getElementById('dateBadge').textContent=fd;
+  document.getElementById('dateBadgeBank').textContent=fd;
+}
+tick(); setInterval(tick,1000);
+setInterval(()=>{ if(absenLogs.length) renderTable(); }, 30000);
+
+// ── VIEW SWITCH ─────────────────────────────────────
+function switchView(v){
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+  document.getElementById('nav-'+v)?.classList.add('active');
+  if(v==='bank') loadBanks();
+}
+
+document.getElementById('btnToggleManual').addEventListener('click',()=>{
+  const p=document.getElementById('manualPanel');
+  p.style.display=p.style.display==='none'?'block':'none';
+});
+
+// ── SHIFT SELECT ─────────────────────────────────────
+const shiftSelect=document.getElementById('shiftSelect');
+function populateShiftSelect(){
+  shiftSelect.innerHTML=Object.values(SHIFTS).map(sh=>`<option value="${sh.id}">${sh.label} (${shiftStartLabel(sh)})</option>`).join('');
+}
+function updateShiftInfoCard(){
+  const sh=SHIFTS[shiftSelect.value]||SHIFTS.pagi;
+  document.getElementById('infoShiftActive').textContent=sh.label;
+  document.getElementById('infoJamKerja').textContent=shiftStartLabel(sh)+' – '+shiftEndLabel(sh)+' WIB';
+  document.getElementById('infoOnTime').textContent=shiftStartLabel(sh);
+  document.getElementById('infoSopLimit').textContent='s.d. '+shiftSopLimitLabel(sh);
+}
+shiftSelect.addEventListener('change',()=>{ activeShift=SHIFTS[shiftSelect.value]; updateShiftInfoCard(); });
+populateShiftSelect(); updateShiftInfoCard();
+
+// ── LOGIN / REGISTER / LOGOUT ─────────────────────────
+function switchLoginTab(tab){
+  document.getElementById('tabLogin').classList.toggle('active',tab==='login');
+  document.getElementById('tabRegister').classList.toggle('active',tab==='register');
+  document.getElementById('loginFormBox').style.display=tab==='login'?'block':'none';
+  document.getElementById('registerFormBox').style.display=tab==='register'?'block':'none';
+  ['loginError','registerError'].forEach(id=>document.getElementById(id).classList.remove('show'));
+  if(tab==='register') populateRegisterSelect();
+}
+
+async function populateRegisterSelect(){
+  const sel=document.getElementById('registerStaffSelect');
+  sel.innerHTML='<option value="">Memuat...</option>';
+  try {
+    const res=await api('getStaffList');
+    if(res.ok){
+      const avail=res.staff.filter(s=>!s.hasAccount);
+      sel.innerHTML=avail.length
+        ? '<option value="">— Pilih nama Anda —</option>'+avail.map(s=>`<option value="${s.name}">${s.name} (${s.div})</option>`).join('')
+        : '<option value="">Semua nama sudah terdaftar</option>';
+    }
+  } catch(e){ sel.innerHTML='<option value="">Gagal memuat. Cek URL API.</option>'; }
+}
+
+function showLoginErr(msg){ document.getElementById('loginErrorText').textContent=msg; document.getElementById('loginError').classList.add('show'); }
+function showRegErr(msg){ document.getElementById('registerErrorText').textContent=msg; document.getElementById('registerError').classList.add('show'); }
+
+async function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+  const password=document.getElementById('loginPassword').value;
+  document.getElementById('loginError').classList.remove('show');
+  if(!email||!password){ showLoginErr('Email dan password wajib diisi.'); return; }
+  document.getElementById('btnLogin').disabled=true;
+  try {
+    const res=await api('login',{email,password});
+    if(res.ok){ enterDashboard(res.session); }
+    else { showLoginErr(res.msg); }
+  } catch(e){ showLoginErr('Gagal terhubung ke server. Cek URL API.'); }
+  finally { document.getElementById('btnLogin').disabled=false; }
+}
+
+async function doRegister(){
+  const staffName=document.getElementById('registerStaffSelect').value;
+  const email=document.getElementById('registerEmail').value.trim().toLowerCase();
+  const pw1=document.getElementById('registerPassword').value;
+  const pw2=document.getElementById('registerPassword2').value;
+  document.getElementById('registerError').classList.remove('show');
+
+  if(!staffName){ showRegErr('Pilih nama Anda.'); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ showRegErr('Format email tidak valid.'); return; }
+  if(pw1.length<6){ showRegErr('Password minimal 6 karakter.'); return; }
+  if(pw1!==pw2){ showRegErr('Konfirmasi password tidak cocok.'); return; }
+
+  document.getElementById('btnRegister').disabled=true;
+  try {
+    const res=await api('register',{staffName,email,password:pw1});
+    if(res.ok){ enterDashboard(res.session); }
+    else { showRegErr(res.msg); }
+  } catch(e){ showRegErr('Gagal terhubung ke server. Cek URL API.'); }
+  finally { document.getElementById('btnRegister').disabled=false; }
+}
+
+function enterDashboard(session){
+  currentSession=session;
+  localStorage.setItem('ruangwd_session',JSON.stringify(session));
+  document.getElementById('loginOverlay').style.display='none';
+  document.getElementById('sbUserName').textContent=session.name;
+  document.getElementById('sbUserRole').textContent=session.email;
+  document.getElementById('sbAvatar').textContent=ini(session.name);
+  document.getElementById('avatarCircle').textContent=ini(session.name);
+  document.getElementById('activeStaffName').textContent=session.name;
+  activeShift=SHIFTS[shiftSelect.value]||SHIFTS.pagi;
+  loadAbsenToday();
+  loadShifts();
+}
+
+function doLogout(){
+  if(!confirm('Keluar dari akun ini?')) return;
+  currentSession=null;
+  localStorage.removeItem('ruangwd_session');
+  document.getElementById('loginEmail').value='';
+  document.getElementById('loginPassword').value='';
+  document.getElementById('loginOverlay').style.display='flex';
+  absenLogs=[];
+  bankItems=[];
+  renderTable();
+}
+
+// ── ABSEN: LOAD TODAY ─────────────────────────────────
+async function loadAbsenToday(){
+  try {
+    const res=await api('getAbsenToday');
+    if(res.ok){ absenLogs=res.logs; renderDashboard(); }
+  } catch(e){}
+}
+
+function renderDashboard(){
+  renderStats();
+  renderTable();
+  renderDonut();
+}
+
+function renderStats(){
+  const today=absenLogs.filter(l=>l.date===todayKey());
+  const staffIn=new Set(), staffOut=new Set(), late=new Set();
+  today.forEach(l=>{
+    if(l.type==='in'){
+      if(!staffIn.has(l.staffName)&&l.lateStatus&&l.lateStatus!=='ontime') late.add(l.staffName);
+      staffIn.add(l.staffName);
+    }
+    if(l.type==='out') staffOut.add(l.staffName);
+  });
+  const total=STAFF_MASTER.length, hadir=staffIn.size;
+  document.getElementById('statTotal').textContent=total;
+  document.getElementById('statHadir').textContent=hadir;
+  document.getElementById('statPct').textContent=Math.round(hadir/total*100)+'% kehadiran';
+  document.getElementById('statLate').textContent=late.size;
+  document.getElementById('statAbsent').textContent=total-hadir;
+  document.getElementById('infoMasuk').textContent=hadir+' staff';
+  document.getElementById('infoKeluar').textContent=staffOut.size+' staff';
+  document.getElementById('infoBelum').textContent=(total-hadir)+' staff';
+
+  // Update check-in/out state for current user
+  if(currentSession){
+    const mine=today.filter(l=>l.staffName===currentSession.name);
+    const inC=mine.filter(l=>l.type==='in').length;
+    const outC=mine.filter(l=>l.type==='out').length;
+    const isIn=inC>outC;
+    document.getElementById('btnCheckIn').disabled=isIn;
+    document.getElementById('btnCheckOut').disabled=!isIn;
+    document.getElementById('activeStaffStatus').textContent=isIn?'Sedang bertugas':'Belum absen hari ini';
+  }
+}
+
+function renderTable(){
+  const today=absenLogs.filter(l=>l.date===todayKey());
+  const now=new Date();
+  const rows=STAFF_MASTER.map(s=>{
+    const mine=today.filter(l=>l.staffName===s.name);
+    const ins=mine.filter(l=>l.type==='in');
+    const outs=mine.filter(l=>l.type==='out');
+    const firstIn=ins.length?ins[ins.length-1]:null;
+    const lastOut=outs.length?outs[0]:null;
+    let status='Alpha', lateStatus=null, lateMins=0, shiftLabel='-';
+    if(firstIn){
+      lateStatus=firstIn.lateStatus||'ontime';
+      lateMins=Number(firstIn.lateMinutes)||0;
+      status=lateStatus==='ontime'?'Hadir':lateStatus==='sop'?'Telat SOP':'Telat Fatal';
+      const sh=firstIn.shiftId?SHIFTS[firstIn.shiftId]:null;
+      shiftLabel=sh?sh.label:firstIn.shiftId||'-';
+    }
+    const inTs=firstIn?new Date(firstIn.timestamp):null;
+    const outTs=lastOut?new Date(lastOut.timestamp):null;
+    const endRef=outTs?outTs:(inTs?now:null);
+    const hours=inTs&&endRef?(endRef-inTs)/3600000:0;
+    return {s,firstIn,lastOut,status,lateStatus,lateMins,shiftLabel,hours};
+  });
+  const filtered=rows.filter(r=>{
+    if(currentFilter==='hadir') return r.status!=='Alpha';
+    if(currentFilter==='alpha') return r.status==='Alpha';
+    return true;
+  });
+  let durPillHtml=h=>{
+    if(h>=12) return `<br><span class="duration-pill warn12"><i class="ti ti-alert-octagon"></i>${h.toFixed(1)}j lewat 12 jam</span>`;
+    if(h>=10) return `<br><span class="duration-pill warn10"><i class="ti ti-clock-exclamation"></i>${h.toFixed(1)}j lewat 10 jam</span>`;
+    return '';
+  };
+  let dur=(a,b)=>{
+    if(!a) return '-';
+    if(!b) return '<span style="color:var(--accent)">Berjalan</span>';
+    const ms=b-a,h=Math.floor(ms/3600000),m=Math.round((ms%3600000)/60000);
+    return h+'j '+m+'m';
+  };
+  document.getElementById('tbody').innerHTML=filtered.map(r=>{
+    const inTs=r.firstIn?new Date(r.firstIn.timestamp):null;
+    const outTs=r.lastOut?new Date(r.lastOut.timestamp):null;
+    return `<tr>
+      <td class="td-staff">${r.s.name}</td>
+      <td class="td-divisi">${r.s.div}</td>
+      <td class="td-divisi">${r.shiftLabel}</td>
+      <td>${r.firstIn?r.firstIn.time:'-'}</td>
+      <td>${r.lastOut?r.lastOut.time:'-'}</td>
+      <td>${dur(inTs,outTs)}${durPillHtml(r.hours)}</td>
+      <td>${statusBadge(r.status)}${lateStatusBadge(r.lateStatus,r.lateMins)}</td>
+    </tr>`;
+  }).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:20px;">Belum ada data absen hari ini</td></tr>`;
+  document.getElementById('tableTitle').textContent='Daftar Kehadiran — '+fmtFull(new Date());
+}
+
+function renderDonut(){
+  const total=STAFF_MASTER.length;
+  const today=absenLogs.filter(l=>l.date===todayKey());
+  const hadir=new Set(today.filter(l=>l.type==='in').map(l=>l.staffName)).size;
+  const pct=total>0?Math.round(hadir/total*100):0;
+  const circumference=2*Math.PI*30;
+  const dash=pct/100*circumference;
+  document.getElementById('donutHadir').setAttribute('stroke-dasharray',`${dash} ${circumference}`);
+  document.getElementById('donutPct').textContent=pct+'%';
+  document.getElementById('donutLegend').innerHTML=`
+    <div class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>Hadir ${pct}%</div>
+    <div class="legend-item"><span class="legend-dot" style="background:var(--text-3)"></span>Alpha ${100-pct}%</div>`;
+  // Weekly bars (illustrative, same distribution as hadir today)
+  const DAYS=[{d:'Sen',v:hadir||0},{d:'Sel',v:Math.max(hadir-1,0)},{d:'Rab',v:Math.max(hadir-1,0)},{d:'Kam',v:Math.max(hadir-2,0)},{d:'Jum',v:Math.max(hadir-1,0)}];
+  document.getElementById('weeklyBars').innerHTML=DAYS.map(w=>
+    `<div class="bar-row"><span class="bar-day">${w.d}</span><div class="bar-track"><div class="bar-fill" style="width:${total?w.v/total*100:0}%;background:var(--accent);"></div></div><span class="bar-val">${w.v}</span></div>`
+  ).join('');
+}
+
+// ── CHECK IN / OUT ─────────────────────────────────────
+function doAbsen(type){
+  if(!currentSession){ showToast('Login terlebih dahulu.',true); return; }
+  const gpsBox=document.getElementById('gpsBox');
+  const msg=document.getElementById('absenMsg');
+  document.getElementById('btnCheckIn').disabled=true;
+  document.getElementById('btnCheckOut').disabled=true;
+  gpsBox.innerHTML='<i class="ti ti-loader-2"></i> Mengambil lokasi GPS…';
+
+  async function finish(lat,lng,acc,note){
+    try {
+      const now=new Date();
+      activeShift=SHIFTS[shiftSelect.value]||SHIFTS.pagi;
+      let lateStatus='ontime', lateMinutes=0;
+      if(type==='in'){
+        const li=calcLateStatus(now,activeShift);
+        lateStatus=li.status; lateMinutes=li.lateMinutes;
+      }
+      const action=type==='in'?'checkIn':'checkOut';
+      const res=await api(action,{
+        staffName:currentSession.name, shiftId:activeShift.id,
+        lat,lng,accuracy:acc,gpsNote:note||'',lateStatus,lateMinutes
+      });
+      if(!res.ok){ showToast(res.msg,true); return; }
+
+      gpsBox.innerHTML='<i class="ti ti-map-pin"></i> '+(lat!=null?`Lat ${lat.toFixed(5)}, Lng ${lng.toFixed(5)} · akurasi ~${Math.round(acc||0)}m`:note);
+
+      if(type==='in'){
+        if(lateStatus==='ontime'){ msg.style.color='var(--accent)'; msg.innerHTML=`<i class="ti ti-circle-check"></i> Check in ${res.time} — On time`; }
+        else if(lateStatus==='sop'){ msg.style.color='var(--amber)'; msg.innerHTML=`<i class="ti ti-clock-exclamation"></i> Check in ${res.time} — Telat ${lateMinutes} menit (SOP)`; }
+        else { msg.style.color='var(--red)'; msg.innerHTML=`<i class="ti ti-alert-triangle"></i> Check in ${res.time} — Telat ${lateMinutes} menit (FATAL)`; }
+      } else {
+        msg.style.color='var(--blue)'; msg.innerHTML=`<i class="ti ti-circle-check"></i> Check out tercatat ${res.time}`;
+      }
+      await loadAbsenToday();
+    } catch(e){ showToast('Gagal simpan absen. Cek koneksi.',true); }
+  }
+
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(
+      p=>finish(p.coords.latitude,p.coords.longitude,p.coords.accuracy,null),
+      e=>finish(null,null,null,'GPS tidak tersedia ('+e.message+')'),
+      {enableHighAccuracy:true,timeout:8000}
+    );
+  } else { finish(null,null,null,'GPS tidak didukung'); }
+}
+document.getElementById('btnCheckIn').addEventListener('click',()=>doAbsen('in'));
+document.getElementById('btnCheckOut').addEventListener('click',()=>doAbsen('out'));
+
+// ── FILTER BUTTONS ─────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); currentFilter=b.dataset.f; renderTable();
+  });
+});
+
+// ── BANK ─────────────────────────────────────
+async function loadBanks(){
+  try {
+    const res=await api('getBanks');
+    if(res.ok){ bankItems=res.banks; bankLogs=res.bankLogs||[]; renderBank(); }
+  } catch(e){}
+}
+
+function renderBank(){
+  document.getElementById('bankList').innerHTML=bankItems.map(item=>{
+    const status=item.handover?'Sudah serah terima':(item.checked?'Sudah dicek':'Belum dicek');
+    const statusCls=item.handover?'badge-green':(item.checked?'badge-amber':'badge-gray');
+    let matchHtml='';
+    if(item.saldoAktual!=null&&item.selisih!=null){
+      if(item.selisih===0){
+        matchHtml=`<div class="match-result klop"><i class="ti ti-circle-check"></i><div><b>KLOP</b> — saldo sesuai sistem<span class="detail">Sistem ${fmtRupiah(item.saldoSistem)} = Aktual ${fmtRupiah(item.saldoAktual)}</span></div></div>`;
+      } else {
+        const arah=item.selisih>0?'lebih':'kurang';
+        matchHtml=`<div class="match-result selisih"><i class="ti ti-alert-triangle"></i><div><b>SELISIH ${fmtRupiah(Math.abs(item.selisih))}</b> (${arah})<span class="detail">Sistem ${fmtRupiah(item.saldoSistem)} vs Aktual ${fmtRupiah(item.saldoAktual)}</span></div></div>`;
+      }
+    }
+    return `<div class="bank-row-v2">
+      <div class="bank-row-v2-top">
+        <div class="bank-icon"><i class="ti ti-building-bank"></i></div>
+        <div class="bank-row-v2-info">
+          <div class="bank-row-v2-name">${item.name}</div>
+          <div class="bank-row-v2-rek">No. Rek: ${item.rek||'-'}</div>
+        </div>
+        <span class="badge ${statusCls}">${status}</span>
+      </div>
+      <div class="bank-saldo-grid">
+        <div class="bank-saldo-box"><div class="bank-saldo-label">Saldo Sistem</div><div class="bank-saldo-value" style="color:var(--blue)">${fmtRupiah(item.saldoSistem)}</div></div>
+        <div class="bank-saldo-box"><div class="bank-saldo-label">Saldo Aktual</div><div class="bank-saldo-value" style="color:${item.saldoAktual!=null?'var(--text-1)':'var(--text-3)'}">${item.saldoAktual!=null?fmtRupiah(item.saldoAktual):'Belum dicek'}</div></div>
+      </div>
+      ${matchHtml}
+      <div class="bank-saldo-input-row">
+        <input type="number" class="bank-saldo-input" id="saldoInput-${item.id}" placeholder="Input saldo aktual (Rp)" value="${item.saldoAktual!=null?item.saldoAktual:''}"/>
+        <button class="btn-dark" onclick="checkSaldo('${item.id}')"><i class="ti ti-calculator"></i> Cocokkan</button>
+      </div>
+      <div class="bank-row-v2-actions">
+        <button class="btn-dark" style="flex:1;${item.handover?'opacity:.4;':''}" ${item.handover||!item.checked?'disabled':''} onclick="handoverBank('${item.id}')">
+          ${item.handover?'<i class="ti ti-check"></i> Sudah Diserahkan':'<i class="ti ti-arrow-right-circle"></i> Serah Terima'}
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+
+  const total=bankItems.length,checked=bankItems.filter(i=>i.checked).length;
+  const klop=bankItems.filter(i=>i.checked&&i.selisih===0).length;
+  const selisih=bankItems.filter(i=>i.checked&&i.selisih!=null&&i.selisih!==0).length;
+  document.getElementById('bTotal').textContent=total;
+  document.getElementById('bChecked').textContent=checked;
+  document.getElementById('bKlop').textContent=klop;
+  document.getElementById('bSelisih').textContent=selisih;
+
+  document.getElementById('bankLogList').innerHTML=bankLogs.length
+    ? bankLogs.slice(0,10).map(l=>`<div class="log-item"><div><span class="log-bank">${l.bank}</span><span class="badge ${l.badgeClass||'badge-gray'}" style="margin-left:8px;">${l.action}</span></div><div class="log-meta">${l.staff} · ${l.date} ${l.time}</div></div>`).join('')
+    : '<p style="color:var(--text-3);font-size:11px;">Belum ada aktivitas.</p>';
+}
+
+async function checkSaldo(bankId){
+  const input=document.getElementById('saldoInput-'+bankId);
+  const val=parseFloat(input.value);
+  if(isNaN(val)){ showToast('Masukkan saldo aktual yang valid.',true); return; }
+  try {
+    const res=await api('checkSaldo',{bankId,saldoAktual:val,staffName:currentSession?.name||'Admin'});
+    if(res.ok){ await loadBanks(); showToast(res.selisih===0?'Saldo KLOP!':'Selisih ditemukan.',res.selisih!==0); }
+    else { showToast(res.msg,true); }
+  } catch(e){}
+}
+
+async function handoverBank(bankId){
+  try {
+    const res=await api('handoverBank',{bankId,staffName:currentSession?.name||'Admin'});
+    if(res.ok){ await loadBanks(); showToast('Serah terima tercatat.'); }
+    else { showToast(res.msg,true); }
+  } catch(e){}
+}
+
+document.getElementById('btnAddBank').addEventListener('click',async()=>{
+  const name=document.getElementById('newBankName').value.trim();
+  const rek=document.getElementById('newBankRek').value.trim();
+  const saldo=parseFloat(document.getElementById('newBankSaldo').value);
+  if(!name){ showToast('Nama bank wajib diisi.',true); return; }
+  if(isNaN(saldo)){ showToast('Saldo sistem harus diisi dengan angka.',true); return; }
+  try {
+    const res=await api('addBank',{name,rek:rek||'-',saldoSistem:saldo});
+    if(res.ok){ ['newBankName','newBankRek','newBankSaldo'].forEach(id=>document.getElementById(id).value=''); await loadBanks(); showToast('Bank ditambahkan.'); }
+    else { showToast(res.msg,true); }
+  } catch(e){}
+});
+
+// ── SHIFT SETTINGS ─────────────────────────────────────
+async function loadShifts(){
+  try {
+    const res=await api('getShifts');
+    if(res.ok&&Object.keys(res.shifts).length>0){ SHIFTS=res.shifts; populateShiftSelect(); updateShiftInfoCard(); }
+  } catch(e){}
+}
+
+function openShiftSettings(){
+  pendingShifts=JSON.parse(JSON.stringify(SHIFTS));
+  buildShiftConfigGrid();
+  document.getElementById('shiftModal').classList.add('open');
+}
+function closeShiftSettings(){ document.getElementById('shiftModal').classList.remove('open'); }
+
+function buildShiftConfigGrid(){
+  document.getElementById('shiftConfigGrid').innerHTML=Object.values(pendingShifts).map(sh=>`
+    <div class="shift-config-card" id="sc-${sh.id}">
+      <div class="shift-config-name"><i class="ti ${sh.icon}"></i>${sh.label}</div>
+      <div class="shift-mini-row"><span class="shift-mini-label">Jam masuk (on time)</span>
+        <input type="time" class="shift-time-input" id="st-${sh.id}" value="${String(sh.startHour).padStart(2,'0')}:${String(sh.startMin).padStart(2,'0')}" onchange="onShiftTimeChange('${sh.id}')"/>
+      </div>
+      <div class="shift-mini-row"><span class="shift-mini-label">Durasi kerja</span>
+        <div class="shift-duration-toggle">
+          <button type="button" class="dur-btn ${sh.durasiJam===10?'active':''}" onclick="setShiftDur('${sh.id}',10,this)">10 jam</button>
+          <button type="button" class="dur-btn ${sh.durasiJam===12?'active':''}" onclick="setShiftDur('${sh.id}',12,this)">12 jam</button>
+        </div>
+      </div>
+      <div class="shift-window-preview" id="sp-${sh.id}"></div>
+    </div>`).join('');
+  Object.values(pendingShifts).forEach(sh=>updateShiftPreview(sh.id));
+}
+function updateShiftPreview(id){
+  const sh=pendingShifts[id];
+  document.getElementById('sp-'+id).innerHTML=
+    `<span class="window-ontime"><b>${shiftStartLabel(sh)}</b> on time</span> · <span class="window-sop">SOP s.d. <b>${shiftSopLimitLabel(sh)}</b></span> · <span class="window-fatal">fatal sesudahnya</span><br>Jam kerja: <b>${shiftStartLabel(sh)} – ${shiftEndLabel(sh)} WIB</b>`;
+}
+function onShiftTimeChange(id){
+  const[h,m]=document.getElementById('st-'+id).value.split(':').map(Number);
+  pendingShifts[id].startHour=h; pendingShifts[id].startMin=m; updateShiftPreview(id);
+}
+function setShiftDur(id,jam,btn){
+  pendingShifts[id].durasiJam=jam;
+  document.querySelectorAll(`#sc-${id} .dur-btn`).forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); updateShiftPreview(id);
+}
+async function saveShiftSettings(){
+  SHIFTS=pendingShifts;
+  try {
+    const res=await api('saveShifts',{shifts:SHIFTS});
+    populateShiftSelect(); updateShiftInfoCard(); closeShiftSettings();
+    showToast(res.ok?'Shift disimpan ke server.':'Shift disimpan lokal saja (cek API).',!res.ok);
+  } catch(e){ populateShiftSelect(); updateShiftInfoCard(); closeShiftSettings(); showToast('Disimpan lokal. Cek koneksi server.',true); }
+}
+document.getElementById('shiftModal').addEventListener('click',e=>{ if(e.target.id==='shiftModal') closeShiftSettings(); });
+
+// ── TEMA ─────────────────────────────────────
+const THEMES=[
+  {id:'default',label:'Default',icon:'ti-device-desktop',colors:['#060d1a','#00e5b4','#4fa3ff']},
+  {id:'ocean',label:'Ocean',icon:'ti-droplet',colors:['#031b2e','#22d3ee','#38bdf8']},
+  {id:'galaxy',label:'Galaxy',icon:'ti-sparkles',colors:['#0a0517','#c084fc','#818cf8']},
+  {id:'space',label:'Space',icon:'ti-rocket',colors:['#000','#60a5fa','#c4b5fd']},
+  {id:'fantasy',label:'Fantasy',icon:'ti-wand',colors:['#160d1f','#f0abfc','#7dd3fc']},
+  {id:'forest',label:'Forest',icon:'ti-trees',colors:['#081410','#4ade80','#38bdf8']},
+  {id:'sunset',label:'Sunset',icon:'ti-sunset-2',colors:['#1a0e0a','#fb923c','#f472b6']},
+];
+let activeTheme=localStorage.getItem('ruangwd_theme')||'default';
+document.body.setAttribute('data-theme',activeTheme);
+
+function openThemeModal(){
+  pendingTheme=activeTheme;
+  document.getElementById('themeGrid').innerHTML=THEMES.map(t=>`
+    <div class="theme-swatch ${t.id===pendingTheme?'active':''}" onclick="pickTheme('${t.id}',this)">
+      <div class="theme-preview-strip">${t.colors.map(c=>`<span style="background:${c}"></span>`).join('')}</div>
+      <div class="theme-swatch-label">${t.label}</div>
+      <div class="theme-swatch-icon"><i class="ti ${t.icon}"></i></div>
+    </div>`).join('');
+  document.getElementById('themeModal').classList.add('open');
+}
+function pickTheme(id,el){
+  pendingTheme=id;
+  document.querySelectorAll('.theme-swatch').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  document.body.setAttribute('data-theme',id);
+}
+function saveTheme(){
+  activeTheme=pendingTheme;
+  localStorage.setItem('ruangwd_theme',activeTheme);
+  document.getElementById('themeModal').classList.remove('open');
+  showToast('Tema diterapkan.');
+}
+document.getElementById('themeModal').addEventListener('click',e=>{ if(e.target.id==='themeModal') document.getElementById('themeModal').classList.remove('open'); });
+
+// ── CEK KONFIGURASI API (KHUSUS ADMIN, SAAT SETUP) ─────────────
+async function testApiConnection(){
+  document.getElementById('apiTestResult').textContent='Mengetes koneksi...';
+  document.getElementById('apiTestResult').style.color='var(--text-2)';
+  try {
+    const res=await fetch(API_URL);
+    const json=await res.json();
+    document.getElementById('apiTestResult').style.color='var(--accent)';
+    document.getElementById('apiTestResult').textContent='✓ Koneksi berhasil: '+json.msg;
+  } catch(e){
+    document.getElementById('apiTestResult').style.color='var(--red)';
+    document.getElementById('apiTestResult').textContent='✗ Gagal terhubung. Pastikan URL benar dan Apps Script sudah di-deploy sebagai Web App dengan akses "Anyone".';
+  }
+}
+
+// ── INIT ─────────────────────────────────────
+function init(){
+  const isUnconfigured = !API_URL || API_URL === "GANTI_DENGAN_URL_APPS_SCRIPT_ANDA";
+  if(isUnconfigured){
+    document.getElementById('apiWarning').classList.add('show');
+    document.getElementById('loginOverlay').style.display='none';
+    document.getElementById('apiModal').classList.add('open');
+    document.getElementById('apiTestResult').textContent='';
+    return;
+  }
+  if(currentSession){
+    enterDashboard(currentSession);
+  } else {
+    document.getElementById('loginOverlay').style.display='flex';
+  }
+}
+init();
+</script>
+</body>
+</html>
