@@ -562,7 +562,8 @@ async function api(action, data={}) {
   showSpinner('Memproses...');
   try {
     const resp = await fetch(API_URL, {
-      method:'POST', headers:{'Content-Type':'application/json'},
+      method:'POST',
+      // Tanpa Content-Type agar tidak trigger CORS preflight di Google Apps Script
       body: JSON.stringify({action, data})
     });
     const json = await resp.json();
