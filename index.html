@@ -281,7 +281,7 @@ tr:hover td{background:var(--bg-hover)}
     <!-- REGISTER FORM -->
     <div id="registerFormBox" style="display:none;">
       <div class="login-error" id="registerError"><i class="ti ti-alert-triangle"></i><span id="registerErrorText"></span></div>
-      <div class="login-field"><label>Pilih nama Anda</label><select class="login-input" id="registerStaffSelect"></select></div>
+      <div class="login-field"><label>Nama Lengkap</label><input type="text" class="login-input" id="registerStaffSelect" placeholder="Ketik nama lengkap Anda"/></div>
       <div class="login-field"><label>Email (Gmail)</label><input type="email" class="login-input" id="registerEmail" placeholder="nama@gmail.com"/></div>
       <div class="login-field"><label>Buat Password</label><input type="password" class="login-input" id="registerPassword" placeholder="Minimal 6 karakter"/></div>
       <div class="login-field"><label>Ulangi Password</label><input type="password" class="login-input" id="registerPassword2" placeholder="Ketik ulang password"/></div>
@@ -634,7 +634,7 @@ function switchLoginTab(tab){
   document.getElementById('loginFormBox').style.display=tab==='login'?'block':'none';
   document.getElementById('registerFormBox').style.display=tab==='register'?'block':'none';
   ['loginError','registerError'].forEach(id=>document.getElementById(id).classList.remove('show'));
-  if(tab==='register') populateRegisterSelect();
+  if(tab==='register') document.getElementById('registerStaffSelect').value='';
 }
 
 async function populateRegisterSelect(){
@@ -675,7 +675,7 @@ async function doRegister(){
   const pw2=document.getElementById('registerPassword2').value;
   document.getElementById('registerError').classList.remove('show');
 
-  if(!staffName){ showRegErr('Pilih nama Anda.'); return; }
+  if(!staffName){ showRegErr('Nama lengkap wajib diisi.'); return; }
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ showRegErr('Format email tidak valid.'); return; }
   if(pw1.length<6){ showRegErr('Password minimal 6 karakter.'); return; }
   if(pw1!==pw2){ showRegErr('Konfirmasi password tidak cocok.'); return; }
@@ -1094,7 +1094,7 @@ async function testApiConnection(){
 
 // ── INIT ─────────────────────────────────────
 function init(){
-  const isUnconfigured = !API_URL;
+  const isUnconfigured = !API_URL || API_URL === "GANTI_DENGAN...";
   if(isUnconfigured){
     document.getElementById('apiWarning').classList.add('show');
     document.getElementById('loginOverlay').style.display='none';
