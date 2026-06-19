@@ -273,7 +273,7 @@ tr:hover td{background:var(--bg-hover)}
     <!-- LOGIN FORM -->
     <div id="loginFormBox">
       <div class="login-error" id="loginError"><i class="ti ti-alert-triangle"></i><span id="loginErrorText"></span></div>
-      <div class="login-field"><label>Email</label><input type="email" class="login-input" id="loginEmail" placeholder="nama@gmail.com"/></div>
+      <div class="login-field"><label>Nama Lengkap</label><input type="text" class="login-input" id="loginName" placeholder="Ketik nama lengkap Anda"/></div>
       <div class="login-field"><label>Password</label><input type="password" class="login-input" id="loginPassword" placeholder="Password akun staff"/></div>
       <button class="login-submit" id="btnLogin" onclick="doLogin()"><i class="ti ti-login-2"></i>&nbsp;Masuk</button>
       <p class="login-switch-hint">Belum punya akun? <a onclick="switchLoginTab('register')">Daftar di sini</a></p>
@@ -282,7 +282,6 @@ tr:hover td{background:var(--bg-hover)}
     <div id="registerFormBox" style="display:none;">
       <div class="login-error" id="registerError"><i class="ti ti-alert-triangle"></i><span id="registerErrorText"></span></div>
       <div class="login-field"><label>Nama Lengkap</label><input type="text" class="login-input" id="registerStaffSelect" placeholder="Ketik nama lengkap Anda"/></div>
-      <div class="login-field"><label>Email (Gmail)</label><input type="email" class="login-input" id="registerEmail" placeholder="nama@gmail.com"/></div>
       <div class="login-field"><label>Buat Password</label><input type="password" class="login-input" id="registerPassword" placeholder="Minimal 6 karakter"/></div>
       <div class="login-field"><label>Ulangi Password</label><input type="password" class="login-input" id="registerPassword2" placeholder="Ketik ulang password"/></div>
       <button class="login-submit" id="btnRegister" onclick="doRegister()"><i class="ti ti-user-plus"></i>&nbsp;Daftar & Masuk</button>
@@ -502,7 +501,7 @@ const STAFF_MASTER = [
 // Tempel URL Web App dari Google Apps Script Anda di sini.
 // Setelah diisi, staff TIDAK PERLU memasukkan URL apa pun.
 // Format: https://script.google.com/macros/s/AKfycb.../exec
-const API_URL = "https://script.google.com/macros/s/AKfycby-E0VdSvLyBGFQKlNqm-i9B2iXblGU5Xy4cqvPiUiGFNLzLKuCNLgiFz2HlcXTa-8neQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycby-E0VdSvLyBGFQKlNqm-i9B2iXblGU5Xy4cqvPiUiGFNLzLKuCNLgiFz2HlcXTa-8neQ/exec"; // URL sudah benar
 
 let currentSession = null;
 try{ currentSession = JSON.parse(localStorage.getItem('ruangwd_session') || 'null'); }catch(e){}
@@ -655,13 +654,13 @@ function showLoginErr(msg){ document.getElementById('loginErrorText').textConten
 function showRegErr(msg){ document.getElementById('registerErrorText').textContent=msg; document.getElementById('registerError').classList.add('show'); }
 
 async function doLogin(){
-  const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+  const staffName=document.getElementById('loginName').value.trim();
   const password=document.getElementById('loginPassword').value;
   document.getElementById('loginError').classList.remove('show');
-  if(!email||!password){ showLoginErr('Email dan password wajib diisi.'); return; }
+  if(!staffName||!password){ showLoginErr('Nama dan password wajib diisi.'); return; }
   document.getElementById('btnLogin').disabled=true;
   try {
-    const res=await api('login',{email,password});
+    const res=await api('login',{staffName,password});
     if(res.ok){ enterDashboard(res.session); }
     else { showLoginErr(res.msg); }
   } catch(e){ showLoginErr('Gagal terhubung ke server. Cek URL API.'); }
@@ -669,20 +668,18 @@ async function doLogin(){
 }
 
 async function doRegister(){
-  const staffName=document.getElementById('registerStaffSelect').value;
-  const email=document.getElementById('registerEmail').value.trim().toLowerCase();
+  const staffName=document.getElementById('registerStaffSelect').value.trim();
   const pw1=document.getElementById('registerPassword').value;
   const pw2=document.getElementById('registerPassword2').value;
   document.getElementById('registerError').classList.remove('show');
 
   if(!staffName){ showRegErr('Nama lengkap wajib diisi.'); return; }
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ showRegErr('Format email tidak valid.'); return; }
   if(pw1.length<6){ showRegErr('Password minimal 6 karakter.'); return; }
   if(pw1!==pw2){ showRegErr('Konfirmasi password tidak cocok.'); return; }
 
   document.getElementById('btnRegister').disabled=true;
   try {
-    const res=await api('register',{staffName,email,password:pw1});
+    const res=await api('register',{staffName,password:pw1});
     if(res.ok){ enterDashboard(res.session); }
     else { showRegErr(res.msg); }
   } catch(e){ showRegErr('Gagal terhubung ke server. Cek URL API.'); }
@@ -694,7 +691,7 @@ function enterDashboard(session){
   localStorage.setItem('ruangwd_session',JSON.stringify(session));
   document.getElementById('loginOverlay').style.display='none';
   document.getElementById('sbUserName').textContent=session.name;
-  document.getElementById('sbUserRole').textContent=session.email;
+  document.getElementById('sbUserRole').textContent=session.div||'Staff';
   document.getElementById('sbAvatar').textContent=ini(session.name);
   document.getElementById('avatarCircle').textContent=ini(session.name);
   document.getElementById('activeStaffName').textContent=session.name;
@@ -707,7 +704,7 @@ function doLogout(){
   if(!confirm('Keluar dari akun ini?')) return;
   currentSession=null;
   localStorage.removeItem('ruangwd_session');
-  document.getElementById('loginEmail').value='';
+  document.getElementById('loginName').value='';
   document.getElementById('loginPassword').value='';
   document.getElementById('loginOverlay').style.display='flex';
   absenLogs=[];
