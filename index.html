@@ -502,7 +502,7 @@ const STAFF_MASTER = [
 // Tempel URL Web App dari Google Apps Script Anda di sini.
 // Setelah diisi, staff TIDAK PERLU memasukkan URL apa pun.
 // Format: https://script.google.com/macros/s/AKfycb.../exec
-const API_URL = "GANTI_DENGAN_URL_APPS_SCRIPT_ANDA";
+const API_URL = "https://script.google.com/macros/s/AKfycby-E0VdSvLyBGFQKlNqm-i9B2iXblGU5Xy4cqvPiUiGFNLzLKuCNLgiFz2HlcXTa-8neQ/exec";
 
 let currentSession = null;
 try{ currentSession = JSON.parse(localStorage.getItem('ruangwd_session') || 'null'); }catch(e){}
@@ -1094,7 +1094,7 @@ async function testApiConnection(){
 
 // ── INIT ─────────────────────────────────────
 function init(){
-  const isUnconfigured = !API_URL || API_URL === "GANTI_DENGAN_URL_APPS_SCRIPT_ANDA";
+  const isUnconfigured = !API_URL || API_URL === "https://script.google.com/macros/s/AKfycby-E0VdSvLyBGFQKlNqm-i9B2iXblGU5Xy4cqvPiUiGFNLzLKuCNLgiFz2HlcXTa-8neQ/exec";
   if(isUnconfigured){
     document.getElementById('apiWarning').classList.add('show');
     document.getElementById('loginOverlay').style.display='none';
