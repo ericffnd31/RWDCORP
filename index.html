@@ -488,12 +488,8 @@ tr:hover td{background:var(--bg-hover)}
 // ══════════════════════════════════════════════
 //  CONFIG & STATE
 // ══════════════════════════════════════════════
-const STAFF_MASTER = [
-  {name:"Andi Pratama",div:"Operasional"},{name:"Budi Santoso",div:"Keuangan"},
-  {name:"Citra Lestari",div:"Marketing"},{name:"Dewi Anggraini",div:"HRD"},
-  {name:"Eko Wijaya",div:"IT"},{name:"Fitri Rahmawati",div:"Customer Service"},
-  {name:"Gunawan Saputra",div:"Gudang"},{name:"Hesti Maharani",div:"Admin"}
-];
+// STAFF_MASTER diisi dinamis dari server setelah login
+let STAFF_MASTER = [];
 
 // ══════════════════════════════════════════════
 //  ⚙️ KONFIGURASI ADMIN — ISI SEKALI SEBELUM DEPLOY
@@ -537,6 +533,7 @@ function shiftEndLabel(sh){
 function calcLateStatus(ts, sh){
   const h=ts.getHours(),m=ts.getMinutes();
   const cin=h*60+m, start=sh.startHour*60+sh.startMin, sopEnd=((sh.startHour+1)%24)*60;
+  // On-time: kapan saja sebelum atau tepat waktu shift (termasuk check-in lebih awal)
   if(cin<=start) return {status:'ontime',lateMinutes:0};
   if(cin<=sopEnd) return {status:'sop',lateMinutes:cin-start};
   return {status:'fatal',lateMinutes:cin-start};
@@ -697,8 +694,29 @@ function enterDashboard(session){
   document.getElementById('avatarCircle').textContent=ini(session.name);
   document.getElementById('activeStaffName').textContent=session.name;
   activeShift=SHIFTS[shiftSelect.value]||SHIFTS.pagi;
+  loadStaffMaster();
   loadAbsenToday();
   loadShifts();
+}
+
+async function loadStaffMaster(){
+  try {
+    const res=await api('getStaffList');
+    if(res.ok && res.staff && res.staff.length>0){
+      STAFF_MASTER=res.staff.map(s=>({name:s.name,div:s.div||'Staff'}));
+      // Pastikan user yang login selalu ada di list
+      if(currentSession && !STAFF_MASTER.find(s=>s.name===currentSession.name)){
+        STAFF_MASTER.push({name:currentSession.name,div:currentSession.div||'Staff'});
+      }
+    } else if(currentSession){
+      // Fallback: minimal tampilkan user yang login
+      STAFF_MASTER=[{name:currentSession.name,div:currentSession.div||'Staff'}];
+    }
+    renderDashboard();
+  } catch(e){
+    if(currentSession) STAFF_MASTER=[{name:currentSession.name,div:currentSession.div||'Staff'}];
+    renderDashboard();
+  }
 }
 
 function doLogout(){
@@ -737,7 +755,8 @@ function renderStats(){
     }
     if(l.type==='out') staffOut.add(l.staffName);
   });
-  const total=STAFF_MASTER.length, hadir=staffIn.size;
+  const extraStaffCount=[...staffIn].filter(n=>!STAFF_MASTER.find(s=>s.name===n)).length;
+  const total=Math.max(STAFF_MASTER.length, STAFF_MASTER.length+extraStaffCount), hadir=staffIn.size;
   document.getElementById('statTotal').textContent=total;
   document.getElementById('statHadir').textContent=hadir;
   document.getElementById('statPct').textContent=Math.round(hadir/total*100)+'% kehadiran';
@@ -762,7 +781,11 @@ function renderStats(){
 function renderTable(){
   const today=absenLogs.filter(l=>l.date===todayKey());
   const now=new Date();
-  const rows=STAFF_MASTER.map(s=>{
+  // Gabungkan STAFF_MASTER dengan staff yang ada di log tapi belum di master
+  const logStaff=absenLogs.filter(l=>l.date===todayKey()).map(l=>l.staffName);
+  const extraStaff=[...new Set(logStaff)].filter(n=>!STAFF_MASTER.find(s=>s.name===n)).map(n=>({name:n,div:'Staff'}));
+  const allStaff=[...STAFF_MASTER,...extraStaff];
+  const rows=allStaff.map(s=>{
     const mine=today.filter(l=>l.staffName===s.name);
     const ins=mine.filter(l=>l.type==='in');
     const outs=mine.filter(l=>l.type==='out');
@@ -815,9 +838,11 @@ function renderTable(){
 }
 
 function renderDonut(){
-  const total=STAFF_MASTER.length;
   const today=absenLogs.filter(l=>l.date===todayKey());
-  const hadir=new Set(today.filter(l=>l.type==='in').map(l=>l.staffName)).size;
+  const hadirSet=new Set(today.filter(l=>l.type==='in').map(l=>l.staffName));
+  const extraDonut=[...hadirSet].filter(n=>!STAFF_MASTER.find(s=>s.name===n)).length;
+  const total=STAFF_MASTER.length+extraDonut;
+  const hadir=hadirSet.size;
   const pct=total>0?Math.round(hadir/total*100):0;
   const circumference=2*Math.PI*30;
   const dash=pct/100*circumference;
