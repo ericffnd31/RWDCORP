@@ -249,6 +249,81 @@ tr:hover td{background:var(--bg-hover)}
 .api-config-banner.show{display:flex}
 /* ── VIEW ── */
 .view{display:none}.view.active{display:block}
+
+/* ══ MOBILE RESPONSIVE ══════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Sidebar jadi bottom nav di mobile */
+  .app { flex-direction: column; }
+  .sidebar {
+    width: 100%; height: auto; flex-shrink: 0;
+    border-right: none; border-bottom: 1px solid var(--border);
+    flex-direction: row; padding: 0;
+    position: sticky; top: 0; z-index: 20;
+  }
+  .sb-top { display: flex; flex-direction: row; align-items: center; flex: 1; padding: 0 12px; gap: 4px; overflow-x: auto; }
+  .sb-logo { margin-bottom: 0; }
+  .sb-logomark { width: 24px; height: 24px; font-size: 11px; flex-shrink: 0; }
+  .sb-brand { font-size: 12px; white-space: nowrap; }
+  .sb-tagline { display: none; }
+  .sb-section { display: none; }
+  .nav-item {
+    padding: 10px 10px; font-size: 11px; white-space: nowrap;
+    border-left: none; border-bottom: 2px solid transparent;
+    flex-direction: column; gap: 2px; text-align: center; min-width: 60px;
+  }
+  .nav-item i { font-size: 18px; }
+  .nav-item.active { border-left-color: transparent; border-bottom-color: var(--accent); }
+  .sb-bottom {
+    padding: 8px 12px; border-top: none; border-left: 1px solid var(--border);
+    flex-shrink: 0; flex-wrap: nowrap; gap: 6px;
+  }
+  .sb-user-role { display: none; }
+  .sb-user-name { font-size: 11px; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Main content */
+  .main { overflow-y: auto; }
+  .topbar { padding: 10px 14px; }
+  .topbar-title { font-size: 14px; }
+  .date-chip { font-size: 10px; padding: 4px 9px; }
+  .content { padding: 10px 12px 24px; }
+
+  /* Stats grid: 2 kolom di mobile */
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .stat-value { font-size: 22px; }
+
+  /* Mid grid: 1 kolom */
+  .mid-grid { grid-template-columns: 1fr; gap: 8px; margin-bottom: 10px; }
+
+  /* Table: horizontal scroll */
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { min-width: 480px; font-size: 11px; }
+  th, td { padding: 8px 9px; }
+
+  /* Manual panel */
+  .manual-panel { padding: 12px; }
+  .absen-action-row { flex-direction: row; gap: 8px; }
+  .btn-dark { font-size: 11px; padding: 8px 10px; }
+
+  /* Modal */
+  .modal-box { max-width: 100%; margin: 0 8px; }
+  .shift-config-grid { grid-template-columns: 1fr; }
+  .theme-grid { grid-template-columns: repeat(2,1fr); }
+
+  /* Bank */
+  .bank-saldo-grid { grid-template-columns: 1fr; }
+
+  /* Login */
+  .login-box { padding: 20px 16px; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .stat-value { font-size: 20px; }
+  .topbar { flex-direction: column; gap: 6px; align-items: flex-start; }
+  .sb-top { gap: 2px; }
+  .nav-item { min-width: 52px; font-size: 9px; padding: 8px 6px; }
+  .nav-item i { font-size: 16px; }
+}
 </style>
 </head>
 <body data-theme="default">
@@ -746,32 +821,29 @@ function renderDashboard(){
 }
 
 function renderStats(){
-  const today=absenLogs.filter(l=>l.date===todayKey());
+  // absenLogs sudah difilter hari ini dari server (getAbsenToday), pakai langsung
+  const logs=absenLogs;
   const staffIn=new Set(), staffOut=new Set(), late=new Set();
-  today.forEach(l=>{
+  logs.forEach(l=>{
     if(l.type==='in'){
       if(!staffIn.has(l.staffName)&&l.lateStatus&&l.lateStatus!=='ontime') late.add(l.staffName);
       staffIn.add(l.staffName);
     }
     if(l.type==='out') staffOut.add(l.staffName);
   });
-  const extraStaffCount=[...staffIn].filter(n=>!STAFF_MASTER.find(s=>s.name===n)).length;
-  const total=Math.max(STAFF_MASTER.length, STAFF_MASTER.length+extraStaffCount), hadir=staffIn.size;
+  const extraCount=[...staffIn].filter(n=>!STAFF_MASTER.find(s=>s.name===n)).length;
+  const total=STAFF_MASTER.length+extraCount, hadir=staffIn.size;
   document.getElementById('statTotal').textContent=total;
   document.getElementById('statHadir').textContent=hadir;
-  document.getElementById('statPct').textContent=Math.round(hadir/total*100)+'% kehadiran';
+  document.getElementById('statPct').textContent=(total>0?Math.round(hadir/total*100):0)+'% kehadiran';
   document.getElementById('statLate').textContent=late.size;
-  document.getElementById('statAbsent').textContent=total-hadir;
+  document.getElementById('statAbsent').textContent=Math.max(0,total-hadir);
   document.getElementById('infoMasuk').textContent=hadir+' staff';
   document.getElementById('infoKeluar').textContent=staffOut.size+' staff';
-  document.getElementById('infoBelum').textContent=(total-hadir)+' staff';
-
-  // Update check-in/out state for current user
+  document.getElementById('infoBelum').textContent=Math.max(0,total-hadir)+' staff';
   if(currentSession){
-    const mine=today.filter(l=>l.staffName===currentSession.name);
-    const inC=mine.filter(l=>l.type==='in').length;
-    const outC=mine.filter(l=>l.type==='out').length;
-    const isIn=inC>outC;
+    const mine=logs.filter(l=>l.staffName===currentSession.name);
+    const isIn=mine.filter(l=>l.type==='in').length > mine.filter(l=>l.type==='out').length;
     document.getElementById('btnCheckIn').disabled=isIn;
     document.getElementById('btnCheckOut').disabled=!isIn;
     document.getElementById('activeStaffStatus').textContent=isIn?'Sedang bertugas':'Belum absen hari ini';
@@ -779,14 +851,14 @@ function renderStats(){
 }
 
 function renderTable(){
-  const today=absenLogs.filter(l=>l.date===todayKey());
+  // absenLogs sudah filtered hari ini dari server
+  const logs=absenLogs;
   const now=new Date();
-  // Gabungkan STAFF_MASTER dengan staff yang ada di log tapi belum di master
-  const logStaff=absenLogs.filter(l=>l.date===todayKey()).map(l=>l.staffName);
+  const logStaff=logs.map(l=>l.staffName);
   const extraStaff=[...new Set(logStaff)].filter(n=>!STAFF_MASTER.find(s=>s.name===n)).map(n=>({name:n,div:'Staff'}));
   const allStaff=[...STAFF_MASTER,...extraStaff];
   const rows=allStaff.map(s=>{
-    const mine=today.filter(l=>l.staffName===s.name);
+    const mine=logs.filter(l=>l.staffName===s.name);
     const ins=mine.filter(l=>l.type==='in');
     const outs=mine.filter(l=>l.type==='out');
     const firstIn=ins.length?ins[ins.length-1]:null;
@@ -838,8 +910,7 @@ function renderTable(){
 }
 
 function renderDonut(){
-  const today=absenLogs.filter(l=>l.date===todayKey());
-  const hadirSet=new Set(today.filter(l=>l.type==='in').map(l=>l.staffName));
+  const hadirSet=new Set(absenLogs.filter(l=>l.type==='in').map(l=>l.staffName));
   const extraDonut=[...hadirSet].filter(n=>!STAFF_MASTER.find(s=>s.name===n)).length;
   const total=STAFF_MASTER.length+extraDonut;
   const hadir=hadirSet.size;
