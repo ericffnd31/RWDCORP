@@ -930,50 +930,65 @@ function renderDonut(){
 }
 
 // ── CHECK IN / OUT ─────────────────────────────────────
-function doAbsen(type){
+// Absensi TIDAK bergantung pada GPS. GPS diambil sebagai info tambahan saja.
+// Check-in/out langsung diproses, lalu GPS dicoba di background.
+async function doAbsen(type){
   if(!currentSession){ showToast('Login terlebih dahulu.',true); return; }
   const gpsBox=document.getElementById('gpsBox');
   const msg=document.getElementById('absenMsg');
   document.getElementById('btnCheckIn').disabled=true;
   document.getElementById('btnCheckOut').disabled=true;
-  gpsBox.innerHTML='<i class="ti ti-loader-2"></i> Mengambil lokasi GPS…';
 
-  async function finish(lat,lng,acc,note){
-    try {
-      const now=new Date();
-      activeShift=SHIFTS[shiftSelect.value]||SHIFTS.pagi;
-      let lateStatus='ontime', lateMinutes=0;
-      if(type==='in'){
-        const li=calcLateStatus(now,activeShift);
-        lateStatus=li.status; lateMinutes=li.lateMinutes;
-      }
-      const action=type==='in'?'checkIn':'checkOut';
-      const res=await api(action,{
-        staffName:currentSession.name, shiftId:activeShift.id,
-        lat,lng,accuracy:acc,gpsNote:note||'',lateStatus,lateMinutes
-      });
-      if(!res.ok){ showToast(res.msg,true); return; }
-
-      gpsBox.innerHTML='<i class="ti ti-map-pin"></i> '+(lat!=null?`Lat ${lat.toFixed(5)}, Lng ${lng.toFixed(5)} · akurasi ~${Math.round(acc||0)}m`:note);
-
-      if(type==='in'){
-        if(lateStatus==='ontime'){ msg.style.color='var(--accent)'; msg.innerHTML=`<i class="ti ti-circle-check"></i> Check in ${res.time} — On time`; }
-        else if(lateStatus==='sop'){ msg.style.color='var(--amber)'; msg.innerHTML=`<i class="ti ti-clock-exclamation"></i> Check in ${res.time} — Telat ${lateMinutes} menit (SOP)`; }
-        else { msg.style.color='var(--red)'; msg.innerHTML=`<i class="ti ti-alert-triangle"></i> Check in ${res.time} — Telat ${lateMinutes} menit (FATAL)`; }
-      } else {
-        msg.style.color='var(--blue)'; msg.innerHTML=`<i class="ti ti-circle-check"></i> Check out tercatat ${res.time}`;
-      }
-      await loadAbsenToday();
-    } catch(e){ showToast('Gagal simpan absen. Cek koneksi.',true); }
+  const now=new Date();
+  activeShift=SHIFTS[shiftSelect.value]||SHIFTS.pagi;
+  let lateStatus='ontime', lateMinutes=0;
+  if(type==='in'){
+    const li=calcLateStatus(now,activeShift);
+    lateStatus=li.status; lateMinutes=li.lateMinutes;
   }
 
-  if(navigator.geolocation){
-    navigator.geolocation.getCurrentPosition(
-      p=>finish(p.coords.latitude,p.coords.longitude,p.coords.accuracy,null),
-      e=>finish(null,null,null,'GPS tidak tersedia ('+e.message+')'),
-      {enableHighAccuracy:true,timeout:8000}
-    );
-  } else { finish(null,null,null,'GPS tidak didukung'); }
+  // Coba ambil GPS dengan timeout pendek (3 detik), tidak wajib
+  let lat=null,lng=null,acc=null,gpsNote='GPS tidak tersedia';
+  try {
+    const pos = await new Promise((resolve,reject)=>{
+      if(!navigator.geolocation){ reject(new Error('tidak didukung')); return; }
+      const t=setTimeout(()=>reject(new Error('timeout')),3000);
+      navigator.geolocation.getCurrentPosition(
+        p=>{ clearTimeout(t); resolve(p); },
+        e=>{ clearTimeout(t); reject(e); },
+        {enableHighAccuracy:false,timeout:3000,maximumAge:30000}
+      );
+    });
+    lat=pos.coords.latitude; lng=pos.coords.longitude; acc=pos.coords.accuracy;
+    gpsNote=`Lat ${lat.toFixed(5)}, Lng ${lng.toFixed(5)} ~${Math.round(acc||0)}m`;
+  } catch(err){
+    gpsNote='GPS tidak tersedia — absen tetap tercatat';
+  }
+
+  gpsBox.innerHTML=`<i class="ti ti-map-pin"></i> ${gpsNote}`;
+
+  try {
+    const action=type==='in'?'checkIn':'checkOut';
+    const res=await api(action,{
+      staffName:currentSession.name, shiftId:activeShift.id,
+      lat,lng,accuracy:acc,gpsNote,lateStatus,lateMinutes
+    });
+    if(!res.ok){ showToast(res.msg,true); renderStats(); return; }
+
+    if(type==='in'){
+      if(lateStatus==='ontime'){ msg.style.color='var(--accent)'; msg.innerHTML=`<i class="ti ti-circle-check"></i> Check in ${res.time} — On time`; }
+      else if(lateStatus==='sop'){ msg.style.color='var(--amber)'; msg.innerHTML=`<i class="ti ti-clock-exclamation"></i> Check in ${res.time} — Telat ${lateMinutes} menit (SOP)`; }
+      else { msg.style.color='var(--red)'; msg.innerHTML=`<i class="ti ti-alert-triangle"></i> Check in ${res.time} — Telat ${lateMinutes} menit (FATAL)`; }
+    } else {
+      msg.style.color='var(--blue)'; msg.innerHTML=`<i class="ti ti-circle-check"></i> Check out tercatat ${res.time}`;
+    }
+    await loadAbsenToday();
+  } catch(e){
+    showToast('Gagal simpan absen. Cek koneksi server.',true);
+    // Re-enable buttons kalau error
+    document.getElementById('btnCheckIn').disabled=false;
+    document.getElementById('btnCheckOut').disabled=false;
+  }
 }
 document.getElementById('btnCheckIn').addEventListener('click',()=>doAbsen('in'));
 document.getElementById('btnCheckOut').addEventListener('click',()=>doAbsen('out'));
