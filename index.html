@@ -770,7 +770,7 @@ function enterDashboard(session){
   document.getElementById('activeStaffName').textContent=session.name;
   activeShift=SHIFTS[shiftSelect.value]||SHIFTS.pagi;
   loadStaffMaster();
-  loadAbsenToday();
+  loadAbsenToday(true); // force=true: load awal selalu replace
   loadShifts();
 }
 
@@ -807,10 +807,21 @@ function doLogout(){
 }
 
 // ── ABSEN: LOAD TODAY ─────────────────────────────────
-async function loadAbsenToday(){
+async function loadAbsenToday(force=false){
   try {
     const res=await api('getAbsenToday');
-    if(res.ok){ absenLogs=res.logs; renderDashboard(); }
+    if(res.ok){
+      if(res.logs && res.logs.length > 0){
+        // Server punya data — pakai sepenuhnya
+        absenLogs=res.logs;
+        renderDashboard();
+      } else if(force || absenLogs.length===0){
+        // Server kosong DAN tidak ada data lokal (atau force refresh) — timpa
+        absenLogs=[];
+        renderDashboard();
+      }
+      // Jika server kosong tapi kita punya data lokal — JANGAN timpa
+    }
   } catch(e){}
 }
 
@@ -1001,8 +1012,8 @@ async function doAbsen(type){
       msg.style.color='var(--blue)'; msg.innerHTML=`<i class="ti ti-circle-check"></i> Check out tercatat ${nowStr}`;
     }
 
-    // Sync dari server di background (tidak block UI)
-    loadAbsenToday().catch(()=>{});
+    // Sync dari server di background setelah delay (beri waktu server flush data)
+    setTimeout(()=>loadAbsenToday().catch(()=>{}), 2000);
   } catch(e){
     showToast('Gagal terhubung ke server. Cek koneksi.',true);
     document.getElementById('btnCheckIn').disabled=false;
