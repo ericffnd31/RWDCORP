@@ -975,17 +975,36 @@ async function doAbsen(type){
     });
     if(!res.ok){ showToast(res.msg,true); renderStats(); return; }
 
+    // ── OPTIMISTIC UPDATE: langsung tambah ke absenLogs tanpa tunggu server ──
+    const nowStr=res.time||(new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'}));
+    const fakeLog={
+      id: type==='in'?'CI-local':'CO-local',
+      staffName: currentSession.name,
+      type: type,
+      shiftId: activeShift.id,
+      time: nowStr,
+      date: res.date||'',
+      timestamp: new Date().toISOString(),
+      lat, lng, accuracy: acc, gpsNote,
+      lateStatus, lateMinutes
+    };
+    // Hapus log lama dengan id local untuk hindari duplikat
+    absenLogs=absenLogs.filter(l=>l.id!=='CI-local'&&l.id!=='CO-local');
+    absenLogs.push(fakeLog);
+    renderDashboard(); // Langsung tampil di tabel
+
     if(type==='in'){
-      if(lateStatus==='ontime'){ msg.style.color='var(--accent)'; msg.innerHTML=`<i class="ti ti-circle-check"></i> Check in ${res.time} — On time`; }
-      else if(lateStatus==='sop'){ msg.style.color='var(--amber)'; msg.innerHTML=`<i class="ti ti-clock-exclamation"></i> Check in ${res.time} — Telat ${lateMinutes} menit (SOP)`; }
-      else { msg.style.color='var(--red)'; msg.innerHTML=`<i class="ti ti-alert-triangle"></i> Check in ${res.time} — Telat ${lateMinutes} menit (FATAL)`; }
+      if(lateStatus==='ontime'){ msg.style.color='var(--accent)'; msg.innerHTML=`<i class="ti ti-circle-check"></i> Check in ${nowStr} — On time`; }
+      else if(lateStatus==='sop'){ msg.style.color='var(--amber)'; msg.innerHTML=`<i class="ti ti-clock-exclamation"></i> Check in ${nowStr} — Telat ${lateMinutes} menit (SOP)`; }
+      else { msg.style.color='var(--red)'; msg.innerHTML=`<i class="ti ti-alert-triangle"></i> Check in ${nowStr} — Telat ${lateMinutes} menit (FATAL)`; }
     } else {
-      msg.style.color='var(--blue)'; msg.innerHTML=`<i class="ti ti-circle-check"></i> Check out tercatat ${res.time}`;
+      msg.style.color='var(--blue)'; msg.innerHTML=`<i class="ti ti-circle-check"></i> Check out tercatat ${nowStr}`;
     }
-    await loadAbsenToday();
+
+    // Sync dari server di background (tidak block UI)
+    loadAbsenToday().catch(()=>{});
   } catch(e){
-    showToast('Gagal simpan absen. Cek koneksi server.',true);
-    // Re-enable buttons kalau error
+    showToast('Gagal terhubung ke server. Cek koneksi.',true);
     document.getElementById('btnCheckIn').disabled=false;
     document.getElementById('btnCheckOut').disabled=false;
   }
