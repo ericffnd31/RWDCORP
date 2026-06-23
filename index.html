@@ -813,18 +813,33 @@ function doLogout(){
 async function loadAbsenToday(force=false){
   try {
     const res=await api('getAbsenToday');
-    if(res.ok){
-      if(res.logs && res.logs.length > 0){
-        // Server punya data — pakai sepenuhnya
-        absenLogs=res.logs;
-        renderDashboard();
-      } else if(force || absenLogs.length===0){
-        // Server kosong DAN tidak ada data lokal (atau force refresh) — timpa
-        absenLogs=[];
-        renderDashboard();
-      }
-      // Jika server kosong tapi kita punya data lokal — JANGAN timpa
+    if(!res.ok) return;
+
+    if(res.logs && res.logs.length > 0){
+      // Merge: ambil semua log server (id real), pertahankan local log yang belum ada di server
+      const serverIds=new Set(res.logs.map(l=>l.id));
+      const localOnly=absenLogs.filter(l=>
+        (l.id==='CI-local'||l.id==='CO-local') && !serverIds.has(l.staffName+'_'+l.type)
+      );
+      // Cek apakah server sudah punya log untuk user ini
+      const myServerLogs=res.logs.filter(l=>l.staffName===currentSession?.name);
+      const myLocalLogs=absenLogs.filter(l=>(l.id==='CI-local'||l.id==='CO-local')&&l.staffName===currentSession?.name);
+
+      // Gabungkan: server logs + local logs yang belum tercatat di server
+      const merged=[...res.logs];
+      myLocalLogs.forEach(local=>{
+        const alreadyInServer=myServerLogs.some(s=>s.type===local.type);
+        if(!alreadyInServer) merged.push(local);
+      });
+
+      absenLogs=merged;
+      renderDashboard();
+    } else if(force){
+      // Force refresh dan server kosong — reset
+      absenLogs=[];
+      renderDashboard();
     }
+    // Server kosong + tidak force = pertahankan data lokal
   } catch(e){}
 }
 
@@ -1039,8 +1054,9 @@ async function doAbsen(type){
       lat, lng, accuracy: acc, gpsNote,
       lateStatus, lateMinutes
     };
-    // Hapus log lama dengan id local untuk hindari duplikat
-    absenLogs=absenLogs.filter(l=>l.id!=='CI-local'&&l.id!=='CO-local');
+    // Hapus HANYA local log dengan tipe yang sama (jangan hapus CI-local saat checkout)
+    const localId = type==='in'?'CI-local':'CO-local';
+    absenLogs = absenLogs.filter(l=>l.id!==localId);
     absenLogs.push(fakeLog);
     renderDashboard(); // Langsung tampil di tabel
 
@@ -1053,7 +1069,7 @@ async function doAbsen(type){
     }
 
     // Sync dari server di background setelah delay (beri waktu server flush data)
-    setTimeout(()=>loadAbsenToday().catch(()=>{}), 3500);
+    setTimeout(()=>loadAbsenToday().catch(()=>{}), 5000);
   } catch(e){
     showToast('Gagal terhubung ke server. Cek koneksi.',true);
     document.getElementById('btnCheckIn').disabled=false;
