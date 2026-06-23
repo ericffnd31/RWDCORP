@@ -593,11 +593,15 @@ let pendingShifts = null;
 
 // ── HELPERS ─────────────────────────────────────
 const ini = n => n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-const fmtT = d => d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-const fmtD = d => d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});
-const fmtFull = d => d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+// Semua waktu/tanggal SELALU dalam WIB (Asia/Jakarta = UTC+7)
+const WIB = {timeZone:'Asia/Jakarta'};
+const fmtT = d => d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit',...WIB});
+const fmtD = d => d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric',...WIB});
+const fmtFull = d => d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric',...WIB});
 const todayKey = () => fmtD(new Date());
 const fmtRupiah = n => n==null||isNaN(n)?'-':'Rp '+Number(n).toLocaleString('id-ID');
+// Ambil jam & menit dalam WIB dari objek Date
+function getWIBHourMin(d){ const s=d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',...WIB}); const p=s.split('.').map(Number); return {h:p[0]||0,m:p[1]||0}; }
 
 function shiftStartLabel(sh){ return String(sh.startHour).padStart(2,'0')+':'+String(sh.startMin).padStart(2,'0'); }
 function shiftSopLimitLabel(sh){ return String((sh.startHour+1)%24).padStart(2,'0')+':00'; }
@@ -606,9 +610,8 @@ function shiftEndLabel(sh){
   return String(Math.floor(total/60)).padStart(2,'0')+':'+String(total%60).padStart(2,'0');
 }
 function calcLateStatus(ts, sh){
-  const h=ts.getHours(),m=ts.getMinutes();
+  const {h,m}=getWIBHourMin(ts); // selalu pakai WIB
   const cin=h*60+m, start=sh.startHour*60+sh.startMin, sopEnd=((sh.startHour+1)%24)*60;
-  // On-time: kapan saja sebelum atau tepat waktu shift (termasuk check-in lebih awal)
   if(cin<=start) return {status:'ontime',lateMinutes:0};
   if(cin<=sopEnd) return {status:'sop',lateMinutes:cin-start};
   return {status:'fatal',lateMinutes:cin-start};
@@ -861,62 +864,98 @@ function renderStats(){
   }
 }
 
+// Konversi string waktu "HH:mm:ss" jadi menit sejak tengah malam (untuk hitung durasi)
+function timeStrToMinutes(t){
+  if(!t||typeof t!=='string') return null;
+  const p=t.split(':').map(Number);
+  if(p.length<2||isNaN(p[0])||isNaN(p[1])) return null;
+  return p[0]*60+(p[1]||0);
+}
+
 function renderTable(){
-  // absenLogs sudah filtered hari ini dari server
   const logs=absenLogs;
   const now=new Date();
   const logStaff=logs.map(l=>l.staffName);
   const extraStaff=[...new Set(logStaff)].filter(n=>!STAFF_MASTER.find(s=>s.name===n)).map(n=>({name:n,div:'Staff'}));
   const allStaff=[...STAFF_MASTER,...extraStaff];
+
   const rows=allStaff.map(s=>{
     const mine=logs.filter(l=>l.staffName===s.name);
+    // ins[0] = check-in PERTAMA, outs[last] = check-out TERAKHIR
     const ins=mine.filter(l=>l.type==='in');
     const outs=mine.filter(l=>l.type==='out');
-    const firstIn=ins.length?ins[ins.length-1]:null;
-    const lastOut=outs.length?outs[0]:null;
-    let status='Alpha', lateStatus=null, lateMins=0, shiftLabel='-';
+    const firstIn=ins.length?ins[0]:null;
+    const lastOut=outs.length?outs[outs.length-1]:null;
+
+    let status='Alpha', lateStatus=null, lateMins=0, shiftLabel='-', shiftRange='-';
     if(firstIn){
       lateStatus=firstIn.lateStatus||'ontime';
       lateMins=Number(firstIn.lateMinutes)||0;
       status=lateStatus==='ontime'?'Hadir':lateStatus==='sop'?'Telat SOP':'Telat Fatal';
       const sh=firstIn.shiftId?SHIFTS[firstIn.shiftId]:null;
-      shiftLabel=sh?sh.label:firstIn.shiftId||'-';
+      if(sh){
+        shiftLabel=sh.label;
+        const endH=(sh.startHour+sh.durasiJam)%24;
+        shiftRange=`${String(sh.startHour).padStart(2,'0')}:${String(sh.startMin).padStart(2,'0')} – ${String(endH).padStart(2,'0')}:${String(sh.startMin).padStart(2,'0')}`;
+      } else {
+        shiftLabel=firstIn.shiftId||'-';
+      }
     }
-    const inTs=firstIn?new Date(firstIn.timestamp):null;
-    const outTs=lastOut?new Date(lastOut.timestamp):null;
-    const endRef=outTs?outTs:(inTs?now:null);
-    const hours=inTs&&endRef?(endRef-inTs)/3600000:0;
-    return {s,firstIn,lastOut,status,lateStatus,lateMins,shiftLabel,hours};
+
+    // Hitung durasi dari string waktu WIB (hindari masalah timezone UTC)
+    const inMins=firstIn?timeStrToMinutes(firstIn.time):null;
+    const outMins=lastOut?timeStrToMinutes(lastOut.time):null;
+    // fallback ke timestamp jika time string tidak valid
+    const inTs=firstIn?(inMins!==null?null:new Date(firstIn.timestamp)):null;
+    const outTs=lastOut?(outMins!==null?null:new Date(lastOut.timestamp)):null;
+
+    let hours=0;
+    if(inMins!==null){
+      const nowMins=now.getHours()*60+now.getMinutes();
+      const endMins=outMins!==null?outMins:nowMins;
+      hours=Math.max(0,(endMins-inMins)/60);
+    } else if(inTs){
+      const endRef=outTs||(lastOut?new Date(lastOut.timestamp):now);
+      hours=Math.max(0,(endRef-inTs)/3600000);
+    }
+
+    return {s,firstIn,lastOut,status,lateStatus,lateMins,shiftLabel,shiftRange,hours};
   });
+
   const filtered=rows.filter(r=>{
     if(currentFilter==='hadir') return r.status!=='Alpha';
     if(currentFilter==='alpha') return r.status==='Alpha';
     return true;
   });
-  let durPillHtml=h=>{
+
+  const durPillHtml=h=>{
     if(h>=12) return `<br><span class="duration-pill warn12"><i class="ti ti-alert-octagon"></i>${h.toFixed(1)}j lewat 12 jam</span>`;
     if(h>=10) return `<br><span class="duration-pill warn10"><i class="ti ti-clock-exclamation"></i>${h.toFixed(1)}j lewat 10 jam</span>`;
     return '';
   };
-  let dur=(a,b)=>{
-    if(!a) return '-';
-    if(!b) return '<span style="color:var(--accent)">Berjalan</span>';
-    const ms=b-a,h=Math.floor(ms/3600000),m=Math.round((ms%3600000)/60000);
-    return h+'j '+m+'m';
+
+  const durStr=(r)=>{
+    if(!r.firstIn) return '-';
+    if(!r.lastOut) return '<span style="color:var(--accent);font-weight:600">Berjalan</span>';
+    const inM=timeStrToMinutes(r.firstIn.time), outM=timeStrToMinutes(r.lastOut.time);
+    if(inM!==null && outM!==null){
+      const diff=Math.max(0,outM-inM);
+      return Math.floor(diff/60)+'j '+( diff%60)+'m';
+    }
+    const ms=new Date(r.lastOut.timestamp)-new Date(r.firstIn.timestamp);
+    if(isNaN(ms)||ms<0) return '-';
+    return Math.floor(ms/3600000)+'j '+Math.round((ms%3600000)/60000)+'m';
   };
-  document.getElementById('tbody').innerHTML=filtered.map(r=>{
-    const inTs=r.firstIn?new Date(r.firstIn.timestamp):null;
-    const outTs=r.lastOut?new Date(r.lastOut.timestamp):null;
-    return `<tr>
-      <td class="td-staff">${r.s.name}</td>
-      <td class="td-divisi">${r.s.div}</td>
-      <td class="td-divisi">${r.shiftLabel}</td>
-      <td>${r.firstIn?r.firstIn.time:'-'}</td>
-      <td>${r.lastOut?r.lastOut.time:'-'}</td>
-      <td>${dur(inTs,outTs)}${durPillHtml(r.hours)}</td>
-      <td>${statusBadge(r.status)}${lateStatusBadge(r.lateStatus,r.lateMins)}</td>
-    </tr>`;
-  }).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:20px;">Belum ada data absen hari ini</td></tr>`;
+
+  document.getElementById('tbody').innerHTML=filtered.map(r=>`<tr>
+    <td class="td-staff"><strong>${r.s.name}</strong></td>
+    <td class="td-divisi">${r.s.div}</td>
+    <td class="td-divisi">${r.shiftLabel!=='-'?`<span title="${r.shiftRange}">${r.shiftLabel}</span><br><small style="color:var(--text-3);font-size:10px">${r.shiftRange}</small>`:'<span style="color:var(--text-3)">-</span>'}</td>
+    <td style="font-weight:${r.firstIn?'600':'400'};color:${r.firstIn?'var(--text-1)':'var(--text-3)'};">${r.firstIn?r.firstIn.time:'-'}</td>
+    <td style="font-weight:${r.lastOut?'600':'400'};color:${r.lastOut?'var(--blue)':'var(--text-3)'};">${r.lastOut?r.lastOut.time:'-'}</td>
+    <td>${durStr(r)}${durPillHtml(r.hours)}</td>
+    <td>${statusBadge(r.status)}${lateStatusBadge(r.lateStatus,r.lateMins)}</td>
+  </tr>`).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:20px;">Belum ada data absen hari ini</td></tr>`;
   document.getElementById('tableTitle').textContent='Daftar Kehadiran — '+fmtFull(new Date());
 }
 
@@ -987,15 +1026,16 @@ async function doAbsen(type){
     if(!res.ok){ showToast(res.msg,true); renderStats(); return; }
 
     // ── OPTIMISTIC UPDATE: langsung tambah ke absenLogs tanpa tunggu server ──
-    const nowStr=res.time||(new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'}));
+    const nowWIB=new Date();
+    const nowStr=res.time||fmtT(nowWIB); // pakai WIB
     const fakeLog={
       id: type==='in'?'CI-local':'CO-local',
       staffName: currentSession.name,
       type: type,
       shiftId: activeShift.id,
       time: nowStr,
-      date: res.date||'',
-      timestamp: new Date().toISOString(),
+      date: res.date||fmtD(nowWIB),
+      timestamp: nowWIB.toISOString(), // tetap ISO untuk kalkulasi, tapi time sudah WIB
       lat, lng, accuracy: acc, gpsNote,
       lateStatus, lateMinutes
     };
@@ -1013,7 +1053,7 @@ async function doAbsen(type){
     }
 
     // Sync dari server di background setelah delay (beri waktu server flush data)
-    setTimeout(()=>loadAbsenToday().catch(()=>{}), 2000);
+    setTimeout(()=>loadAbsenToday().catch(()=>{}), 3500);
   } catch(e){
     showToast('Gagal terhubung ke server. Cek koneksi.',true);
     document.getElementById('btnCheckIn').disabled=false;
@@ -1036,7 +1076,7 @@ async function loadBanks(){
   try {
     const res=await api('getBanks');
     if(res.ok){ bankItems=res.banks; bankLogs=res.bankLogs||[]; renderBank(); }
-  } catch(e){}
+  } catch(e){ showToast('Gagal memuat data bank. Cek koneksi.',true); }
 }
 
 function renderBank(){
@@ -1099,7 +1139,7 @@ async function checkSaldo(bankId){
     const res=await api('checkSaldo',{bankId,saldoAktual:val,staffName:currentSession?.name||'Admin'});
     if(res.ok){ await loadBanks(); showToast(res.selisih===0?'Saldo KLOP!':'Selisih ditemukan.',res.selisih!==0); }
     else { showToast(res.msg,true); }
-  } catch(e){}
+  } catch(e){ showToast('Gagal cocokkan saldo. Cek koneksi.',true); }
 }
 
 async function handoverBank(bankId){
@@ -1107,7 +1147,7 @@ async function handoverBank(bankId){
     const res=await api('handoverBank',{bankId,staffName:currentSession?.name||'Admin'});
     if(res.ok){ await loadBanks(); showToast('Serah terima tercatat.'); }
     else { showToast(res.msg,true); }
-  } catch(e){}
+  } catch(e){ showToast('Gagal serah terima. Cek koneksi.',true); }
 }
 
 document.getElementById('btnAddBank').addEventListener('click',async()=>{
@@ -1128,7 +1168,7 @@ async function loadShifts(){
   try {
     const res=await api('getShifts');
     if(res.ok&&Object.keys(res.shifts).length>0){ SHIFTS=res.shifts; populateShiftSelect(); updateShiftInfoCard(); }
-  } catch(e){}
+  } catch(e){ console.warn('Gagal load shifts, pakai default.'); }
 }
 
 function openShiftSettings(){
