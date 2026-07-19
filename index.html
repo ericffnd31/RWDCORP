@@ -30,9 +30,7 @@ body[data-theme="fantasy"]{--bg-base:#160d1f;--bg-surface:#231331;--bg-card:#321
 body[data-theme="forest"]{--bg-base:#081410;--bg-surface:#0e1f18;--bg-card:#142b21;--bg-hover:#1b382b;--border:#234a38;--border-hi:#2b5a44;--accent:#4ade80;--accent-dim:rgba(74,222,128,0.14);--blue:#38bdf8;--blue-dim:rgba(56,189,248,0.14);--amber:#facc15;--amber-dim:rgba(250,204,21,0.14);--red:#f87171;--red-dim:rgba(248,113,113,0.14);--text-1:#ecfdf3;--text-2:#86b89c;--text-3:#4d7a66;--logo-grad:linear-gradient(135deg,#4ade80 0%,#22d3ee 100%);--sidebar-bg-image:radial-gradient(ellipse 70% 50% at 50% -10%,rgba(74,222,128,.14),transparent)}
 body[data-theme="sunset"]{--bg-base:#1a0e0a;--bg-surface:#2a1610;--bg-card:#3a1f16;--bg-hover:#4a2a1e;--border:#5c3322;--border-hi:#703f2a;--accent:#fb923c;--accent-dim:rgba(251,146,60,0.16);--blue:#f472b6;--blue-dim:rgba(244,114,182,0.16);--amber:#fde047;--amber-dim:rgba(253,224,71,0.16);--red:#ef4444;--red-dim:rgba(239,68,68,0.16);--text-1:#fff3ea;--text-2:#d1a085;--text-3:#8a6450;--logo-grad:linear-gradient(135deg,#fb923c 0%,#f472b6 100%);--sidebar-bg-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(251,146,60,.18),transparent)}
 html,body{height:100%;background:var(--bg-base);color:var(--text-1);font-family:var(--font);font-size:13px;line-height:1.5;transition:background .3s,color .3s}
-/* ── LAYOUT ── */
 .app{display:flex;height:100vh;overflow:hidden}
-/* ── SIDEBAR ── */
 .sidebar{width:200px;flex-shrink:0;background:var(--bg-surface);background-image:var(--sidebar-bg-image);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:0;position:relative;transition:background .3s}
 .sb-top{padding:20px 16px 0}
 .sb-logo{display:flex;align-items:center;gap:9px;margin-bottom:4px}
@@ -51,17 +49,14 @@ html,body{height:100%;background:var(--bg-base);color:var(--text-1);font-family:
 .sb-bottom-info{flex:1;min-width:0;cursor:pointer}
 .sb-settings-btn{width:28px;height:28px;border-radius:7px;flex-shrink:0;background:transparent;border:1px solid var(--border);color:var(--text-3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:14px}
 .sb-settings-btn:hover{color:var(--accent);border-color:var(--accent)}
-/* ── MAIN ── */
 .main{flex:1;min-width:0;overflow-y:auto;background:var(--bg-base)}
 .main::-webkit-scrollbar{width:5px}
 .main::-webkit-scrollbar-thumb{background:var(--border-hi);border-radius:4px}
-/* ── TOPBAR ── */
 .topbar{position:sticky;top:0;z-index:10;background:rgba(6,13,26,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .topbar-title{font-size:16px;font-weight:600;color:var(--text-1)}
 .topbar-sub{font-size:11px;color:var(--text-3);margin-top:2px}
 .date-chip{font-size:11px;padding:6px 12px;border-radius:20px;border:1px solid var(--border-hi);color:var(--blue);background:var(--blue-dim);white-space:nowrap;flex-shrink:0}
 .content{padding:16px 20px 32px}
-/* ── STAT CARDS ── */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
 .stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:14px 16px;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;transition:border-color .2s}
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
@@ -69,16 +64,15 @@ html,body{height:100%;background:var(--bg-base);color:var(--text-1);font-family:
 .stat-card.c-green::before{background:var(--accent)}
 .stat-card.c-amber::before{background:var(--amber)}
 .stat-card.c-red::before{background:var(--red)}
+.stat-card.c-purple::before{background:var(--purple)}
 .stat-label{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:5px}
 .stat-value{font-size:26px;font-weight:700;line-height:1;font-family:var(--mono)}
-.stat-value.c-blue{color:var(--blue)}.stat-value.c-green{color:var(--accent)}.stat-value.c-amber{color:var(--amber)}.stat-value.c-red{color:var(--red)}
+.stat-value.c-blue{color:var(--blue)}.stat-value.c-green{color:var(--accent)}.stat-value.c-amber{color:var(--amber)}.stat-value.c-red{color:var(--red)}.stat-value.c-purple{color:var(--purple)}
 .stat-sub{font-size:10px;color:var(--text-3)}
-/* ── GRID & CARDS ── */
 .mid-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:16px}
 .card-title{font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:7px;margin-bottom:14px}
 .card-title i{font-size:14px;color:var(--text-3)}
-/* ── DONUT & BARS ── */
 .donut-row{display:flex;align-items:center;gap:16px;margin-bottom:16px}
 .donut-wrap{position:relative;width:76px;height:76px;flex-shrink:0}
 .donut-svg{width:76px;height:76px;transform:rotate(-90deg)}
@@ -91,18 +85,17 @@ html,body{height:100%;background:var(--bg-base);color:var(--text-1);font-family:
 .bar-track{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
 .bar-fill{height:100%;border-radius:3px;transition:width .5s}
 .bar-val{width:16px;text-align:right;color:var(--text-2);flex-shrink:0}
-/* ── CLOCK ── */
 .big-clock{font-size:30px;font-weight:600;color:var(--blue);font-family:var(--mono);margin:2px 0 14px}
 .info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:11px;color:var(--text-2)}
 .info-row:last-of-type{border-bottom:none}
 .info-row .label-r{color:var(--text-3)}
-/* ── BADGES ── */
 .badge{font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;white-space:nowrap}
 .badge-amber{background:var(--amber-dim);color:var(--amber)}
 .badge-green{background:var(--accent-dim);color:var(--accent)}
 .badge-blue{background:var(--blue-dim);color:var(--blue)}
 .badge-red{background:var(--red-dim);color:var(--red)}
 .badge-gray{background:rgba(255,255,255,.06);color:var(--text-2)}
+.badge-purple{background:var(--purple-dim);color:var(--purple)}
 .badge-late-detail{display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:500;padding:2px 7px;border-radius:20px;margin-left:4px;white-space:nowrap}
 .badge-late-sop{background:var(--amber-dim);color:var(--amber)}
 .badge-late-fatal{background:var(--red-dim);color:var(--red)}
@@ -110,7 +103,6 @@ html,body{height:100%;background:var(--bg-base);color:var(--text-1);font-family:
 .duration-pill.normal{background:rgba(255,255,255,.05);color:var(--text-2)}
 .duration-pill.warn10{background:var(--amber-dim);color:var(--amber)}
 .duration-pill.warn12{background:var(--red-dim);color:var(--red)}
-/* ── BUTTONS ── */
 .btn-manual{width:100%;margin-top:12px;background:var(--accent-dim);border:1px solid rgba(0,229,180,.25);color:var(--accent);padding:10px;border-radius:var(--r-sm);font-size:12px;font-family:var(--font);cursor:pointer;transition:background .15s}
 .btn-manual:hover{background:rgba(0,229,180,.18)}
 .btn-dark{background:var(--bg-surface);border:1px solid var(--border-hi);color:var(--text-1);border-radius:var(--r-sm);padding:8px 14px;font-size:12px;font-family:var(--font);cursor:pointer;transition:border-color .15s,color .15s}
@@ -118,18 +110,16 @@ html,body{height:100%;background:var(--bg-base);color:var(--text-1);font-family:
 .btn-dark:disabled{opacity:.35;cursor:not-allowed}
 .btn-dark.btn-in{border-color:rgba(0,229,180,.3);color:var(--accent)}
 .btn-dark.btn-out{border-color:rgba(79,163,255,.3);color:var(--blue)}
-/* ── FORM ELEMENTS ── */
+.btn-dark.btn-danger{border-color:rgba(240,100,100,.35);color:var(--red)}
 .form-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
 select,input[type="text"],input[type="number"],input[type="time"]{background:var(--bg-surface);border:1px solid var(--border-hi);color:var(--text-1);border-radius:var(--r-sm);padding:8px 10px;font-size:12px;font-family:var(--font);outline:none;transition:border-color .15s}
 select:focus,input:focus{border-color:var(--accent)}
-/* ── MANUAL ABSEN PANEL ── */
 .manual-panel{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:16px;margin-bottom:14px}
 .active-staff-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .staff-avatar{width:36px;height:36px;border-radius:50%;background:var(--blue-dim);border:1px solid var(--border-hi);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--blue);flex-shrink:0}
 .gps-box{font-size:11px;color:var(--text-3);background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;margin-bottom:10px;line-height:1.7}
 .absen-action-row{display:flex;gap:8px}
 .absen-msg{font-size:11px;margin-top:8px;min-height:16px}
-/* ── TABLE ── */
 .table-card{margin-bottom:14px}
 .table-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
 .filter-group{display:flex;gap:4px}
@@ -145,7 +135,7 @@ tr:hover td{background:var(--bg-hover)}
 .td-divisi{color:var(--text-3)}
 .icon-btn{width:26px;height:26px;border-radius:6px;background:transparent;border:1px solid var(--border);color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all .15s}
 .icon-btn:hover{border-color:var(--blue);color:var(--blue)}
-/* ── BANK ── */
+.icon-btn.danger:hover{border-color:var(--red);color:var(--red)}
 .bank-row-v2{border:1px solid var(--border);border-radius:var(--r-md);padding:12px;transition:border-color .15s}
 .bank-row-v2:hover{border-color:var(--border-hi)}
 .bank-row-v2-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -169,7 +159,6 @@ tr:hover td{background:var(--bg-hover)}
 .log-item{border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:11px}
 .log-bank{font-weight:500;color:var(--text-1)}
 .log-meta{color:var(--text-3);font-size:10px;text-align:right}
-/* ── SHIFT SETTINGS ── */
 .shift-config-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .shift-config-card{border:1px solid var(--border);border-radius:var(--r-md);padding:12px;background:var(--bg-card)}
 .shift-config-name{font-size:12px;font-weight:600;color:var(--text-1);display:flex;align-items:center;gap:6px;margin-bottom:9px}
@@ -183,7 +172,6 @@ tr:hover td{background:var(--bg-hover)}
 .shift-window-preview{font-size:9.5px;color:var(--text-3);line-height:1.6;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
 .shift-window-preview b{color:var(--text-2)}
 .window-ontime{color:var(--accent)}.window-sop{color:var(--amber)}.window-fatal{color:var(--red)}
-/* ── MODAL ── */
 .modal-overlay{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:16px}
 .modal-overlay.open{display:flex}
 .modal-box{background:var(--bg-surface);border:1px solid var(--border-hi);border-radius:var(--r-lg);width:100%;max-width:560px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}
@@ -197,7 +185,6 @@ tr:hover td{background:var(--bg-hover)}
 .modal-body{padding:18px}
 .modal-section{margin-bottom:22px}
 .modal-section-label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3);margin-bottom:10px;display:flex;align-items:center;gap:6px}
-/* ── THEME GRID ── */
 .theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .theme-swatch{border:2px solid var(--border);border-radius:var(--r-md);padding:10px 8px 9px;cursor:pointer;text-align:center;transition:all .15s;background:var(--bg-card);position:relative}
 .theme-swatch:hover{border-color:var(--border-hi);transform:translateY(-1px)}
@@ -213,7 +200,6 @@ tr:hover td{background:var(--bg-hover)}
 .field-input:focus{border-color:var(--accent)}
 .btn-save-settings{width:100%;background:var(--accent);color:var(--bg-base);border:none;border-radius:var(--r-sm);padding:11px;font-size:12px;font-weight:600;font-family:var(--font);cursor:pointer;margin-top:4px;transition:opacity .15s}
 .btn-save-settings:hover{opacity:.88}
-/* ── LOGIN SCREEN ── */
 .login-overlay{position:fixed;inset:0;z-index:300;background:var(--bg-base);background-image:var(--sidebar-bg-image);display:flex;align-items:center;justify-content:center;padding:16px}
 .login-box{width:100%;max-width:380px;background:var(--bg-surface);border:1px solid var(--border-hi);border-radius:var(--r-lg);padding:28px 26px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
 .login-logo-row{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:22px}
@@ -234,25 +220,35 @@ tr:hover td{background:var(--bg-hover)}
 .login-submit:disabled{opacity:.6;cursor:not-allowed}
 .login-switch-hint{text-align:center;font-size:11px;color:var(--text-3);margin-top:14px}
 .login-switch-hint a{color:var(--blue);cursor:pointer;text-decoration:underline}
-/* ── LOADING / SPINNER ── */
 .spinner-overlay{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;display:none}
 .spinner-overlay.show{display:flex}
 .spinner-box{background:var(--bg-card);border:1px solid var(--border-hi);border-radius:var(--r-lg);padding:20px 28px;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--text-2)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin-icon{font-size:20px;color:var(--accent);animation:spin 1s linear infinite}
-/* ── TOAST ── */
 .toast-saved{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg-card);border:1px solid var(--accent);color:var(--accent);padding:10px 18px;border-radius:30px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:7px;z-index:200;opacity:0;pointer-events:none;transition:all .25s;box-shadow:0 10px 30px rgba(0,0,0,.4)}
 .toast-saved.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast-error{border-color:var(--red);color:var(--red)}
-/* ── API CONFIG BOX ── */
 .api-config-banner{background:var(--amber-dim);border:1px solid rgba(245,158,11,.3);border-radius:var(--r-sm);padding:10px 12px;font-size:11px;color:var(--amber);margin-bottom:14px;display:none;align-items:center;gap:8px}
 .api-config-banner.show{display:flex}
-/* ── VIEW ── */
 .view{display:none}.view.active{display:block}
+.kas-wallet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.kas-wallet-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:14px 16px;position:relative;overflow:hidden}
+.kas-wallet-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--purple)}
+.kas-wallet-label{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:5px;margin-bottom:6px}
+.kas-wallet-value{font-size:20px;font-weight:700;font-family:var(--mono);color:var(--purple)}
+.kas-form-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:8px;margin-bottom:8px}
+.kas-form-grid input,.kas-form-grid select{width:100%}
+.kas-type-toggle{display:flex;gap:6px;margin-bottom:8px}
+.kas-type-btn{flex:1;font-size:11px;padding:7px;border-radius:6px;border:1px solid var(--border-hi);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font);transition:all .15s}
+.kas-type-btn.active-in{background:var(--accent-dim);border-color:var(--accent);color:var(--accent)}
+.kas-type-btn.active-out{background:var(--red-dim);border-color:var(--red);color:var(--red)}
+.izin-counter-row{display:flex;gap:6px;margin-bottom:10px}
+.izin-dot{flex:1;height:8px;border-radius:4px;background:var(--border)}
+.izin-dot.used{background:var(--amber)}
+.izin-dot.over{background:var(--red)}
+.izin-timer{font-size:24px;font-weight:600;font-family:var(--mono);color:var(--amber);margin:4px 0 10px}
 
-/* ══ MOBILE RESPONSIVE ══════════════════════════════════════ */
 @media (max-width: 768px) {
-  /* Sidebar jadi bottom nav di mobile */
   .app { flex-direction: column; }
   .sidebar {
     width: 100%; height: auto; flex-shrink: 0;
@@ -279,40 +275,26 @@ tr:hover td{background:var(--bg-hover)}
   }
   .sb-user-role { display: none; }
   .sb-user-name { font-size: 11px; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-  /* Main content */
   .main { overflow-y: auto; }
   .topbar { padding: 10px 14px; }
   .topbar-title { font-size: 14px; }
   .date-chip { font-size: 10px; padding: 4px 9px; }
   .content { padding: 10px 12px 24px; }
-
-  /* Stats grid: 2 kolom di mobile */
   .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
   .stat-value { font-size: 22px; }
-
-  /* Mid grid: 1 kolom */
   .mid-grid { grid-template-columns: 1fr; gap: 8px; margin-bottom: 10px; }
-
-  /* Table: horizontal scroll */
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   table { min-width: 480px; font-size: 11px; }
   th, td { padding: 8px 9px; }
-
-  /* Manual panel */
   .manual-panel { padding: 12px; }
   .absen-action-row { flex-direction: row; gap: 8px; }
   .btn-dark { font-size: 11px; padding: 8px 10px; }
-
-  /* Modal */
   .modal-box { max-width: 100%; margin: 0 8px; }
   .shift-config-grid { grid-template-columns: 1fr; }
   .theme-grid { grid-template-columns: repeat(2,1fr); }
-
-  /* Bank */
   .bank-saldo-grid { grid-template-columns: 1fr; }
-
-  /* Login */
+  .kas-wallet-grid { grid-template-columns: 1fr; }
+  .kas-form-grid { grid-template-columns: 1fr 1fr; }
   .login-box { padding: 20px 16px; }
 }
 
@@ -328,12 +310,10 @@ tr:hover td{background:var(--bg-hover)}
 </head>
 <body data-theme="default">
 
-<!-- ══ SPINNER ══ -->
 <div class="spinner-overlay" id="spinnerOverlay">
   <div class="spinner-box"><i class="ti ti-loader-2 spin-icon"></i><span id="spinnerText">Memuat data...</span></div>
 </div>
 
-<!-- ══ LOGIN ══ -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box">
     <div class="login-logo-row">
@@ -345,7 +325,6 @@ tr:hover td{background:var(--bg-hover)}
       <div class="login-tab active" id="tabLogin" onclick="switchLoginTab('login')">Login</div>
       <div class="login-tab" id="tabRegister" onclick="switchLoginTab('register')">Daftar Akun Baru</div>
     </div>
-    <!-- LOGIN FORM -->
     <div id="loginFormBox">
       <div class="login-error" id="loginError"><i class="ti ti-alert-triangle"></i><span id="loginErrorText"></span></div>
       <div class="login-field"><label>Nama Lengkap</label><input type="text" class="login-input" id="loginName" placeholder="Ketik nama lengkap Anda"/></div>
@@ -353,7 +332,6 @@ tr:hover td{background:var(--bg-hover)}
       <button class="login-submit" id="btnLogin" onclick="doLogin()"><i class="ti ti-login-2"></i>&nbsp;Masuk</button>
       <p class="login-switch-hint">Belum punya akun? <a onclick="switchLoginTab('register')">Daftar di sini</a></p>
     </div>
-    <!-- REGISTER FORM -->
     <div id="registerFormBox" style="display:none;">
       <div class="login-error" id="registerError"><i class="ti ti-alert-triangle"></i><span id="registerErrorText"></span></div>
       <div class="login-field"><label>Nama Lengkap</label><input type="text" class="login-input" id="registerStaffSelect" placeholder="Ketik nama lengkap Anda"/></div>
@@ -365,17 +343,19 @@ tr:hover td{background:var(--bg-hover)}
   </div>
 </div>
 
-<!-- ══ APP ══ -->
 <div class="app">
   <aside class="sidebar">
     <div class="sb-top">
       <div class="sb-logo"><div class="sb-logomark">RW</div><span class="sb-brand">Ruangwd Corp</span></div>
-      <div class="sb-tagline">Management System v1.0</div>
+      <div class="sb-tagline">Management System v1.1</div>
       <p class="sb-section">Main</p>
       <div class="nav-item active" id="nav-absensi" onclick="switchView('absensi')"><i class="ti ti-clipboard-check"></i>Absensi Staff</div>
+      <div class="nav-item" id="nav-izin" onclick="switchView('izin')"><i class="ti ti-hourglass-low"></i>Izin Staff</div>
       <div class="nav-item" id="nav-bank" onclick="switchView('bank')"><i class="ti ti-building-bank"></i>Serah Terima Bank</div>
+      <div class="nav-item" id="nav-kas" onclick="switchView('kas')"><i class="ti ti-cash"></i>Iuran Kas</div>
       <p class="sb-section">Pengaturan</p>
       <div class="nav-item" onclick="openShiftSettings()"><i class="ti ti-clock-hour-4"></i>Atur Jam Shift</div>
+      <div class="nav-item" onclick="openIzinSettings()"><i class="ti ti-settings"></i>Atur Durasi Izin</div>
       <div class="nav-item" onclick="openThemeModal()"><i class="ti ti-palette"></i>Ganti Tema</div>
     </div>
     <div class="sb-bottom">
@@ -389,7 +369,6 @@ tr:hover td{background:var(--bg-hover)}
   </aside>
 
   <div class="main">
-    <!-- VIEW ABSENSI -->
     <div id="view-absensi" class="view active">
       <div class="topbar">
         <div><div class="topbar-title">Dashboard Absensi Staff</div><div class="topbar-sub">Pantau kehadiran tim secara real-time</div></div>
@@ -461,7 +440,42 @@ tr:hover td{background:var(--bg-hover)}
       </div>
     </div>
 
-    <!-- VIEW BANK -->
+    <div id="view-izin" class="view">
+      <div class="topbar">
+        <div><div class="topbar-title">Izin Staff</div><div class="topbar-sub">Maksimal 4x izin per staff per hari</div></div>
+        <div class="date-chip" id="dateBadgeIzin"></div>
+      </div>
+      <div class="content">
+        <div class="stats-grid">
+          <div class="stat-card c-amber"><div class="stat-label"><i class="ti ti-hourglass-low"></i>Sedang Izin</div><div class="stat-value c-amber" id="izinSedang">0</div><div class="stat-sub">Staff saat ini</div></div>
+          <div class="stat-card c-blue"><div class="stat-label"><i class="ti ti-list-check"></i>Total Izin Hari Ini</div><div class="stat-value c-blue" id="izinTotal">0</div><div class="stat-sub">Semua staff</div></div>
+          <div class="stat-card c-red"><div class="stat-label"><i class="ti ti-alert-triangle"></i>Lewat Batas</div><div class="stat-value c-red" id="izinLewat">0</div><div class="stat-sub">Melebihi durasi</div></div>
+          <div class="stat-card c-purple"><div class="stat-label"><i class="ti ti-clock-hour-4"></i>Durasi Maks</div><div class="stat-value c-purple" id="izinDurasiMaks">15</div><div class="stat-sub">Menit / izin</div></div>
+        </div>
+        <div class="manual-panel">
+          <div class="card-title"><i class="ti ti-hourglass-low"></i>Izin Staff</div>
+          <div class="form-row">
+            <select id="izinStaffSelect" style="flex:1;"></select>
+          </div>
+          <div class="izin-counter-row" id="izinCounterRow"></div>
+          <div style="font-size:11px;color:var(--text-3);margin-bottom:10px;" id="izinCounterLabel">0 dari 4 izin terpakai</div>
+          <div class="izin-timer" id="izinTimer" style="display:none;">00:00</div>
+          <div class="form-row">
+            <input type="text" id="izinKeterangan" placeholder="Keperluan izin (opsional)" style="flex:1;"/>
+          </div>
+          <div class="absen-action-row">
+            <button class="btn-dark btn-in" id="btnStartIzin" style="flex:1;"><i class="ti ti-player-play"></i>&nbsp;Mulai Izin</button>
+            <button class="btn-dark btn-out" id="btnEndIzin" style="flex:1;" disabled><i class="ti ti-player-stop"></i>&nbsp;Selesai Izin</button>
+          </div>
+          <div class="absen-msg" id="izinMsg"></div>
+        </div>
+        <div class="card table-card">
+          <div class="card-title"><i class="ti ti-list-details"></i>Riwayat Izin Hari Ini</div>
+          <div class="table-wrap"><table><thead><tr><th>Staff</th><th>Mulai</th><th>Selesai</th><th>Durasi</th><th>Keterangan</th><th>Status</th></tr></thead><tbody id="izinTbody"></tbody></table></div>
+        </div>
+      </div>
+    </div>
+
     <div id="view-bank" class="view">
       <div class="topbar">
         <div><div class="topbar-title">Serah Terima Pengecekan Bank</div><div class="topbar-sub">Checklist pengecekan & serah terima harian</div></div>
@@ -470,12 +484,13 @@ tr:hover td{background:var(--bg-hover)}
       <div class="content">
         <div class="stats-grid">
           <div class="stat-card c-blue"><div class="stat-label"><i class="ti ti-building-bank"></i>Total Bank</div><div class="stat-value c-blue" id="bTotal">0</div><div class="stat-sub">Terdaftar</div></div>
-          <div class="stat-card c-green"><div class="stat-label"><i class="ti ti-eye-check"></i>Sudah Dicek</div><div class="stat-value c-green" id="bChecked">0</div><div class="stat-sub">Dari total bank</div></div>
-          <div class="stat-card c-green"><div class="stat-label"><i class="ti ti-check"></i>Saldo Klop</div><div class="stat-value c-green" id="bKlop">0</div><div class="stat-sub">Tidak ada selisih</div></div>
-          <div class="stat-card c-red"><div class="stat-label"><i class="ti ti-alert-circle"></i>Ada Selisih</div><div class="stat-value c-red" id="bSelisih">0</div><div class="stat-sub">Perlu tindak lanjut</div></div>
+          <div class="stat-card c-green"><div class="stat-label"><i class="ti ti-eye-check"></i>Sudah Dicek</div><div class="stat-value c-green" id="bChecked">0</div><div class="stat-sub">Klop, siap serah terima</div></div>
+          <div class="stat-card c-blue"><div class="stat-label"><i class="ti ti-check"></i>Sudah Serah Terima</div><div class="stat-value c-blue" id="bHandover">0</div><div class="stat-sub">Selesai hari ini</div></div>
+          <div class="stat-card c-amber"><div class="stat-label"><i class="ti ti-clock-exclamation"></i>Belum Dicek</div><div class="stat-value c-amber" id="bBelum">0</div><div class="stat-sub">Perlu dicek manual</div></div>
         </div>
         <div class="card" style="margin-bottom:14px;">
           <div class="card-title"><i class="ti ti-checklist"></i>Checklist Pengecekan & Serah Terima Bank</div>
+          <p style="font-size:11px;color:var(--text-2);line-height:1.6;margin:-6px 0 14px;">Isi <b>saldo terakhir pengecekan</b>, lalu centang <b>Sudah Crosscheck</b> setelah dicek manual. Setelah dicentang, pilih nama staff yang meng-approve lalu tekan <b>Serah Terima</b>.</p>
           <div id="bankList" style="display:flex;flex-direction:column;gap:10px;"></div>
           <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
             <div class="modal-section-label" style="margin-bottom:8px;"><i class="ti ti-plus"></i>TAMBAH BANK BARU</div>
@@ -492,10 +507,42 @@ tr:hover td{background:var(--bg-hover)}
         <div class="card"><div class="card-title"><i class="ti ti-history"></i>Log Serah Terima</div><div id="bankLogList" style="display:flex;flex-direction:column;gap:8px;"></div></div>
       </div>
     </div>
+
+    <div id="view-kas" class="view">
+      <div class="topbar">
+        <div><div class="topbar-title">Iuran Kas RUANGWD</div><div class="topbar-sub">Pemasukan, pengeluaran & saldo dompet per mata uang</div></div>
+        <div class="date-chip" id="dateBadgeKas"></div>
+      </div>
+      <div class="content">
+        <div class="kas-wallet-grid" id="kasWalletGrid"></div>
+        <div class="card" style="margin-bottom:14px;">
+          <div class="card-title"><i class="ti ti-plus"></i>Catat Transaksi Kas</div>
+          <div class="kas-type-toggle">
+            <button type="button" class="kas-type-btn active-in" id="kasTypeIn" onclick="setKasType('in')"><i class="ti ti-arrow-down-circle"></i>&nbsp;Pemasukan</button>
+            <button type="button" class="kas-type-btn" id="kasTypeOut" onclick="setKasType('out')"><i class="ti ti-arrow-up-circle"></i>&nbsp;Pengeluaran</button>
+          </div>
+          <div class="kas-form-grid">
+            <input type="text" id="kasNama" placeholder="Nama"/>
+            <input type="number" id="kasNominal" placeholder="Nominal"/>
+            <select id="kasMataUang">
+              <option value="USD">USD</option>
+              <option value="RIEL">RIEL</option>
+              <option value="BAHT">BAHT</option>
+            </select>
+            <input type="text" id="kasKeterangan" placeholder="Keterangan"/>
+          </div>
+          <button class="btn-manual" id="btnAddKas"><i class="ti ti-device-floppy"></i>&nbsp;Simpan Transaksi</button>
+          <div class="absen-msg" id="kasMsg"></div>
+        </div>
+        <div class="card table-card">
+          <div class="card-title"><i class="ti ti-history"></i>Riwayat Transaksi Kas</div>
+          <div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Nama</th><th>Pemasukan</th><th>Pengeluaran</th><th>Mata Uang</th><th>Keterangan</th><th>Saldo Setelah</th><th></th></tr></thead><tbody id="kasTbody"></tbody></table></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- ══ MODAL SHIFT ══ -->
 <div class="modal-overlay" id="shiftModal">
   <div class="modal-box">
     <div class="modal-header">
@@ -520,7 +567,24 @@ tr:hover td{background:var(--bg-hover)}
   </div>
 </div>
 
-<!-- ══ MODAL TEMA ══ -->
+<div class="modal-overlay" id="izinSettingsModal">
+  <div class="modal-box" style="max-width:420px;">
+    <div class="modal-header">
+      <div class="modal-title"><i class="ti ti-settings"></i>Atur Durasi Izin</div>
+      <button class="modal-close" onclick="document.getElementById('izinSettingsModal').classList.remove('open')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:11px;color:var(--text-2);line-height:1.7;margin-bottom:14px;">Setiap staff maksimal <b>4x izin per hari</b>. Durasi maksimal per izin bisa dipilih di bawah ini — izin yang melebihi durasi akan ditandai "lewat batas".</p>
+      <div class="modal-section-label"><i class="ti ti-clock"></i>DURASI MAKSIMAL PER IZIN</div>
+      <div class="kas-type-toggle" style="margin-top:8px;">
+        <button type="button" class="kas-type-btn" id="durBtn15" onclick="pickIzinDurasi(15)">15 menit</button>
+        <button type="button" class="kas-type-btn" id="durBtn20" onclick="pickIzinDurasi(20)">20 menit</button>
+      </div>
+      <button class="btn-save-settings" onclick="saveIzinSettings()"><i class="ti ti-device-floppy"></i>&nbsp;Simpan Pengaturan</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="themeModal">
   <div class="modal-box" style="max-width:420px;">
     <div class="modal-header">
@@ -534,7 +598,6 @@ tr:hover td{background:var(--bg-hover)}
   </div>
 </div>
 
-<!-- ══ MODAL API CONFIG ══ -->
 <div class="modal-overlay" id="apiModal">
   <div class="modal-box" style="max-width:460px;">
     <div class="modal-header">
@@ -560,18 +623,8 @@ tr:hover td{background:var(--bg-hover)}
 <div class="toast-saved" id="toastEl"><i class="ti ti-circle-check"></i><span id="toastText">Tersimpan</span></div>
 
 <script>
-// ══════════════════════════════════════════════
-//  CONFIG & STATE
-// ══════════════════════════════════════════════
-// STAFF_MASTER diisi dinamis dari server setelah login
 let STAFF_MASTER = [];
 
-// ══════════════════════════════════════════════
-//  ⚙️ KONFIGURASI ADMIN — ISI SEKALI SEBELUM DEPLOY
-// ══════════════════════════════════════════════
-// Tempel URL Web App dari Google Apps Script Anda di sini.
-// Setelah diisi, staff TIDAK PERLU memasukkan URL apa pun.
-// Format: https://script.google.com/macros/s/AKfycb.../exec
 const API_URL = "https://script.google.com/macros/s/AKfycby-E0VdSvLyBGFQKlNqm-i9B2iXblGU5Xy4cqvPiUiGFNLzLKuCNLgiFz2HlcXTa-8neQ/exec"; // URL sudah benar
 
 let currentSession = null;
@@ -591,16 +644,21 @@ let activeShift = null;
 let pendingTheme = 'default';
 let pendingShifts = null;
 
-// ── HELPERS ─────────────────────────────────────
+// Deklarasi awal untuk state Izin — HARUS di atas sebelum tick() dipakai,
+// supaya tidak kena "Cannot access before initialization" (temporal dead zone)
+// karena tick() membaca izinRunningSince setiap detik sejak halaman dimuat.
+let izinLogs = [];
+let izinConfig = { durasiMenit: 15, maxPerHari: 4 };
+let izinRunningSince = null;
+let pendingIzinDurasi = 15;
+
 const ini = n => n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-// Semua waktu/tanggal SELALU dalam WIB (Asia/Jakarta = UTC+7)
 const WIB = {timeZone:'Asia/Jakarta'};
 const fmtT = d => d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit',...WIB});
 const fmtD = d => d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric',...WIB});
 const fmtFull = d => d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric',...WIB});
 const todayKey = () => fmtD(new Date());
 const fmtRupiah = n => n==null||isNaN(n)?'-':'Rp '+Number(n).toLocaleString('id-ID');
-// Ambil jam & menit dalam WIB dari objek Date
 function getWIBHourMin(d){ const s=d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',...WIB}); const p=s.split('.').map(Number); return {h:p[0]||0,m:p[1]||0}; }
 
 function shiftStartLabel(sh){ return String(sh.startHour).padStart(2,'0')+':'+String(sh.startMin).padStart(2,'0'); }
@@ -610,7 +668,7 @@ function shiftEndLabel(sh){
   return String(Math.floor(total/60)).padStart(2,'0')+':'+String(total%60).padStart(2,'0');
 }
 function calcLateStatus(ts, sh){
-  const {h,m}=getWIBHourMin(ts); // selalu pakai WIB
+  const {h,m}=getWIBHourMin(ts);
   const cin=h*60+m, start=sh.startHour*60+sh.startMin, sopEnd=((sh.startHour+1)%24)*60;
   if(cin<=start) return {status:'ontime',lateMinutes:0};
   if(cin<=sopEnd) return {status:'sop',lateMinutes:cin-start};
@@ -628,7 +686,6 @@ function statusBadge(s){
   return '<span class="badge badge-red">Alpha</span>';
 }
 
-// ── API CALL ─────────────────────────────────────
 async function api(action, data={}) {
   if(!API_URL) {
     showToast('URL API belum diisi. Klik "Atur URL API" di sidebar.', true);
@@ -638,7 +695,6 @@ async function api(action, data={}) {
   try {
     const resp = await fetch(API_URL, {
       method:'POST',
-      // Tanpa Content-Type agar tidak trigger CORS preflight di Google Apps Script
       body: JSON.stringify({action, data})
     });
     const json = await resp.json();
@@ -648,7 +704,6 @@ async function api(action, data={}) {
   }
 }
 
-// ── SPINNER / TOAST ────────────────────────────────
 function showSpinner(txt='Memuat...'){
   document.getElementById('spinnerText').textContent=txt;
   document.getElementById('spinnerOverlay').classList.add('show');
@@ -662,24 +717,31 @@ function showToast(msg='Tersimpan', isError=false){
   setTimeout(()=>el.classList.remove('show'),2600);
 }
 
-// ── CLOCK & DATE ───────────────────────────────────
 function tick(){
   const now=new Date();
   document.getElementById('bigClock').textContent=fmtT(now);
   const fd=fmtFull(now);
   document.getElementById('dateBadge').textContent=fd;
   document.getElementById('dateBadgeBank').textContent=fd;
+  document.getElementById('dateBadgeKas').textContent=fd;
+  document.getElementById('dateBadgeIzin').textContent=fd;
+  if(izinRunningSince){
+    const secs=Math.floor((Date.now()-izinRunningSince)/1000);
+    const m=String(Math.floor(secs/60)).padStart(2,'0'), s=String(secs%60).padStart(2,'0');
+    document.getElementById('izinTimer').textContent=m+':'+s;
+  }
 }
 tick(); setInterval(tick,1000);
 setInterval(()=>{ if(absenLogs.length) renderTable(); }, 30000);
 
-// ── VIEW SWITCH ─────────────────────────────────────
 function switchView(v){
   document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
   document.getElementById('view-'+v).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
   document.getElementById('nav-'+v)?.classList.add('active');
   if(v==='bank') loadBanks();
+  if(v==='kas') loadKas();
+  if(v==='izin') loadIzin();
 }
 
 document.getElementById('btnToggleManual').addEventListener('click',()=>{
@@ -687,7 +749,6 @@ document.getElementById('btnToggleManual').addEventListener('click',()=>{
   p.style.display=p.style.display==='none'?'block':'none';
 });
 
-// ── SHIFT SELECT ─────────────────────────────────────
 const shiftSelect=document.getElementById('shiftSelect');
 function populateShiftSelect(){
   shiftSelect.innerHTML=Object.values(SHIFTS).map(sh=>`<option value="${sh.id}">${sh.label} (${shiftStartLabel(sh)})</option>`).join('');
@@ -702,7 +763,6 @@ function updateShiftInfoCard(){
 shiftSelect.addEventListener('change',()=>{ activeShift=SHIFTS[shiftSelect.value]; updateShiftInfoCard(); });
 populateShiftSelect(); updateShiftInfoCard();
 
-// ── LOGIN / REGISTER / LOGOUT ─────────────────────────
 function switchLoginTab(tab){
   document.getElementById('tabLogin').classList.toggle('active',tab==='login');
   document.getElementById('tabRegister').classList.toggle('active',tab==='register');
@@ -773,7 +833,7 @@ function enterDashboard(session){
   document.getElementById('activeStaffName').textContent=session.name;
   activeShift=SHIFTS[shiftSelect.value]||SHIFTS.pagi;
   loadStaffMaster();
-  loadAbsenToday(true); // force=true: load awal selalu replace
+  loadAbsenToday(true);
   loadShifts();
 }
 
@@ -782,18 +842,18 @@ async function loadStaffMaster(){
     const res=await api('getStaffList');
     if(res.ok && res.staff && res.staff.length>0){
       STAFF_MASTER=res.staff.map(s=>({name:s.name,div:s.div||'Staff'}));
-      // Pastikan user yang login selalu ada di list
       if(currentSession && !STAFF_MASTER.find(s=>s.name===currentSession.name)){
         STAFF_MASTER.push({name:currentSession.name,div:currentSession.div||'Staff'});
       }
     } else if(currentSession){
-      // Fallback: minimal tampilkan user yang login
       STAFF_MASTER=[{name:currentSession.name,div:currentSession.div||'Staff'}];
     }
     renderDashboard();
+    populateIzinStaffSelect();
   } catch(e){
     if(currentSession) STAFF_MASTER=[{name:currentSession.name,div:currentSession.div||'Staff'}];
     renderDashboard();
+    populateIzinStaffSelect();
   }
 }
 
@@ -809,23 +869,19 @@ function doLogout(){
   renderTable();
 }
 
-// ── ABSEN: LOAD TODAY ─────────────────────────────────
 async function loadAbsenToday(force=false){
   try {
     const res=await api('getAbsenToday');
     if(!res.ok) return;
 
     if(res.logs && res.logs.length > 0){
-      // Merge: ambil semua log server (id real), pertahankan local log yang belum ada di server
       const serverIds=new Set(res.logs.map(l=>l.id));
       const localOnly=absenLogs.filter(l=>
         (l.id==='CI-local'||l.id==='CO-local') && !serverIds.has(l.staffName+'_'+l.type)
       );
-      // Cek apakah server sudah punya log untuk user ini
       const myServerLogs=res.logs.filter(l=>l.staffName===currentSession?.name);
       const myLocalLogs=absenLogs.filter(l=>(l.id==='CI-local'||l.id==='CO-local')&&l.staffName===currentSession?.name);
 
-      // Gabungkan: server logs + local logs yang belum tercatat di server
       const merged=[...res.logs];
       myLocalLogs.forEach(local=>{
         const alreadyInServer=myServerLogs.some(s=>s.type===local.type);
@@ -835,11 +891,9 @@ async function loadAbsenToday(force=false){
       absenLogs=merged;
       renderDashboard();
     } else if(force){
-      // Force refresh dan server kosong — reset
       absenLogs=[];
       renderDashboard();
     }
-    // Server kosong + tidak force = pertahankan data lokal
   } catch(e){}
 }
 
@@ -850,7 +904,6 @@ function renderDashboard(){
 }
 
 function renderStats(){
-  // absenLogs sudah difilter hari ini dari server (getAbsenToday), pakai langsung
   const logs=absenLogs;
   const staffIn=new Set(), staffOut=new Set(), late=new Set();
   logs.forEach(l=>{
@@ -879,7 +932,6 @@ function renderStats(){
   }
 }
 
-// Konversi string waktu "HH:mm:ss" jadi menit sejak tengah malam (untuk hitung durasi)
 function timeStrToMinutes(t){
   if(!t||typeof t!=='string') return null;
   const p=t.split(':').map(Number);
@@ -896,7 +948,6 @@ function renderTable(){
 
   const rows=allStaff.map(s=>{
     const mine=logs.filter(l=>l.staffName===s.name);
-    // ins[0] = check-in PERTAMA, outs[last] = check-out TERAKHIR
     const ins=mine.filter(l=>l.type==='in');
     const outs=mine.filter(l=>l.type==='out');
     const firstIn=ins.length?ins[0]:null;
@@ -917,10 +968,8 @@ function renderTable(){
       }
     }
 
-    // Hitung durasi dari string waktu WIB (hindari masalah timezone UTC)
     const inMins=firstIn?timeStrToMinutes(firstIn.time):null;
     const outMins=lastOut?timeStrToMinutes(lastOut.time):null;
-    // fallback ke timestamp jika time string tidak valid
     const inTs=firstIn?(inMins!==null?null:new Date(firstIn.timestamp)):null;
     const outTs=lastOut?(outMins!==null?null:new Date(lastOut.timestamp)):null;
 
@@ -987,16 +1036,12 @@ function renderDonut(){
   document.getElementById('donutLegend').innerHTML=`
     <div class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>Hadir ${pct}%</div>
     <div class="legend-item"><span class="legend-dot" style="background:var(--text-3)"></span>Alpha ${100-pct}%</div>`;
-  // Weekly bars (illustrative, same distribution as hadir today)
   const DAYS=[{d:'Sen',v:hadir||0},{d:'Sel',v:Math.max(hadir-1,0)},{d:'Rab',v:Math.max(hadir-1,0)},{d:'Kam',v:Math.max(hadir-2,0)},{d:'Jum',v:Math.max(hadir-1,0)}];
   document.getElementById('weeklyBars').innerHTML=DAYS.map(w=>
     `<div class="bar-row"><span class="bar-day">${w.d}</span><div class="bar-track"><div class="bar-fill" style="width:${total?w.v/total*100:0}%;background:var(--accent);"></div></div><span class="bar-val">${w.v}</span></div>`
   ).join('');
 }
 
-// ── CHECK IN / OUT ─────────────────────────────────────
-// Absensi TIDAK bergantung pada GPS. GPS diambil sebagai info tambahan saja.
-// Check-in/out langsung diproses, lalu GPS dicoba di background.
 async function doAbsen(type){
   if(!currentSession){ showToast('Login terlebih dahulu.',true); return; }
   const gpsBox=document.getElementById('gpsBox');
@@ -1012,7 +1057,6 @@ async function doAbsen(type){
     lateStatus=li.status; lateMinutes=li.lateMinutes;
   }
 
-  // Coba ambil GPS dengan timeout pendek (3 detik), tidak wajib
   let lat=null,lng=null,acc=null,gpsNote='GPS tidak tersedia';
   try {
     const pos = await new Promise((resolve,reject)=>{
@@ -1040,9 +1084,8 @@ async function doAbsen(type){
     });
     if(!res.ok){ showToast(res.msg,true); renderStats(); return; }
 
-    // ── OPTIMISTIC UPDATE: langsung tambah ke absenLogs tanpa tunggu server ──
     const nowWIB=new Date();
-    const nowStr=res.time||fmtT(nowWIB); // pakai WIB
+    const nowStr=res.time||fmtT(nowWIB);
     const fakeLog={
       id: type==='in'?'CI-local':'CO-local',
       staffName: currentSession.name,
@@ -1050,15 +1093,14 @@ async function doAbsen(type){
       shiftId: activeShift.id,
       time: nowStr,
       date: res.date||fmtD(nowWIB),
-      timestamp: nowWIB.toISOString(), // tetap ISO untuk kalkulasi, tapi time sudah WIB
+      timestamp: nowWIB.toISOString(),
       lat, lng, accuracy: acc, gpsNote,
       lateStatus, lateMinutes
     };
-    // Hapus HANYA local log dengan tipe yang sama (jangan hapus CI-local saat checkout)
     const localId = type==='in'?'CI-local':'CO-local';
     absenLogs = absenLogs.filter(l=>l.id!==localId);
     absenLogs.push(fakeLog);
-    renderDashboard(); // Langsung tampil di tabel
+    renderDashboard();
 
     if(type==='in'){
       if(lateStatus==='ontime'){ msg.style.color='var(--accent)'; msg.innerHTML=`<i class="ti ti-circle-check"></i> Check in ${nowStr} — On time`; }
@@ -1068,7 +1110,6 @@ async function doAbsen(type){
       msg.style.color='var(--blue)'; msg.innerHTML=`<i class="ti ti-circle-check"></i> Check out tercatat ${nowStr}`;
     }
 
-    // Sync dari server di background setelah delay (beri waktu server flush data)
     setTimeout(()=>loadAbsenToday().catch(()=>{}), 5000);
   } catch(e){
     showToast('Gagal terhubung ke server. Cek koneksi.',true);
@@ -1079,7 +1120,6 @@ async function doAbsen(type){
 document.getElementById('btnCheckIn').addEventListener('click',()=>doAbsen('in'));
 document.getElementById('btnCheckOut').addEventListener('click',()=>doAbsen('out'));
 
-// ── FILTER BUTTONS ─────────────────────────────────────
 document.querySelectorAll('.filter-btn').forEach(b=>{
   b.addEventListener('click',()=>{
     document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
@@ -1087,7 +1127,6 @@ document.querySelectorAll('.filter-btn').forEach(b=>{
   });
 });
 
-// ── BANK ─────────────────────────────────────
 async function loadBanks(){
   try {
     const res=await api('getBanks');
@@ -1096,18 +1135,46 @@ async function loadBanks(){
 }
 
 function renderBank(){
+  const staffOptions = (STAFF_MASTER.length?STAFF_MASTER:(currentSession?[{name:currentSession.name,div:currentSession.div||'Staff'}]:[]));
+
   document.getElementById('bankList').innerHTML=bankItems.map(item=>{
-    const status=item.handover?'Sudah serah terima':(item.checked?'Sudah dicek':'Belum dicek');
+    const status=item.handover?'Sudah serah terima':(item.checked?'Sudah crosscheck':'Belum dicek');
     const statusCls=item.handover?'badge-green':(item.checked?'badge-amber':'badge-gray');
-    let matchHtml='';
-    if(item.saldoAktual!=null&&item.selisih!=null){
-      if(item.selisih===0){
-        matchHtml=`<div class="match-result klop"><i class="ti ti-circle-check"></i><div><b>KLOP</b> — saldo sesuai sistem<span class="detail">Sistem ${fmtRupiah(item.saldoSistem)} = Aktual ${fmtRupiah(item.saldoAktual)}</span></div></div>`;
-      } else {
-        const arah=item.selisih>0?'lebih':'kurang';
-        matchHtml=`<div class="match-result selisih"><i class="ti ti-alert-triangle"></i><div><b>SELISIH ${fmtRupiah(Math.abs(item.selisih))}</b> (${arah})<span class="detail">Sistem ${fmtRupiah(item.saldoSistem)} vs Aktual ${fmtRupiah(item.saldoAktual)}</span></div></div>`;
-      }
+
+    let checkedInfo='';
+    if(item.checked){
+      checkedInfo=`<div class="match-result klop"><i class="ti ti-circle-check"></i><div><b>SUDAH CROSSCHECK</b><span class="detail">Dicek oleh ${item.checkedBy||'-'} · ${item.checkedAt?new Date(item.checkedAt).toLocaleString('id-ID',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):''} · Saldo terakhir: ${item.saldoAktual!=null?fmtRupiah(item.saldoAktual):'-'}</span></div></div>`;
     }
+
+    // Kolom input saldo terakhir pengecekan + checklist crosscheck (dikunci/disabled kalau sudah diserahkan)
+    const lockAfterHandover = item.handover;
+    const crosscheckBlock = `
+      <div class="bank-saldo-input-row" style="align-items:center;">
+        <input type="number" class="bank-saldo-input" id="saldoCekInput-${item.id}"
+          placeholder="Saldo terakhir pengecekan (Rp)"
+          value="${item.saldoAktual!=null?item.saldoAktual:''}"
+          ${item.checked||lockAfterHandover?'disabled':''} />
+        <label style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-2);white-space:nowrap;padding:0 4px;">
+          <input type="checkbox" id="chkCrosscheck-${item.id}" style="width:16px;height:16px;accent-color:var(--accent);"
+            ${item.checked?'checked':''} ${lockAfterHandover?'disabled':''}
+            onchange="toggleBankCrosscheck('${item.id}', this)" />
+          Sudah Crosscheck
+        </label>
+      </div>`;
+
+    let actionsHtml='';
+    if(item.handover){
+      actionsHtml=`<div class="bank-row-v2-actions"><button class="btn-dark" style="flex:1;opacity:.5;" disabled><i class="ti ti-check"></i> Sudah Diserahkan — lihat log di bawah untuk nama approve</button></div>`;
+    } else if(item.checked){
+      const staffSelectHtml = `<select id="approveStaff-${item.id}" style="flex:1;">${staffOptions.map(s=>`<option value="${s.name}">${s.name} (${s.div})</option>`).join('')||'<option value="">Belum ada staff</option>'}</select>`;
+      actionsHtml=`<div class="bank-row-v2-actions">
+        ${staffSelectHtml}
+        <button class="btn-dark btn-in" style="flex:1;" onclick="handoverBank('${item.id}')"><i class="ti ti-arrow-right-circle"></i> Serah Terima</button>
+      </div>`;
+    } else {
+      actionsHtml=`<p style="font-size:10.5px;color:var(--text-3);margin-top:2px;">Isi saldo terakhir pengecekan lalu centang "Sudah Crosscheck" untuk mengaktifkan Serah Terima.</p>`;
+    }
+
     return `<div class="bank-row-v2">
       <div class="bank-row-v2-top">
         <div class="bank-icon"><i class="ti ti-building-bank"></i></div>
@@ -1116,54 +1183,74 @@ function renderBank(){
           <div class="bank-row-v2-rek">No. Rek: ${item.rek||'-'}</div>
         </div>
         <span class="badge ${statusCls}">${status}</span>
+        <button class="icon-btn danger" title="Hapus bank" onclick="deleteBankItem('${item.id}','${item.name.replace(/'/g,"\\'")}')"><i class="ti ti-trash"></i></button>
       </div>
-      <div class="bank-saldo-grid">
-        <div class="bank-saldo-box"><div class="bank-saldo-label">Saldo Sistem</div><div class="bank-saldo-value" style="color:var(--blue)">${fmtRupiah(item.saldoSistem)}</div></div>
-        <div class="bank-saldo-box"><div class="bank-saldo-label">Saldo Aktual</div><div class="bank-saldo-value" style="color:${item.saldoAktual!=null?'var(--text-1)':'var(--text-3)'}">${item.saldoAktual!=null?fmtRupiah(item.saldoAktual):'Belum dicek'}</div></div>
+      <div class="bank-saldo-box" style="margin-bottom:9px;">
+        <div class="bank-saldo-label">Saldo Sistem (referensi)</div>
+        <div class="bank-saldo-value" style="color:var(--blue)">${fmtRupiah(item.saldoSistem)}</div>
       </div>
-      ${matchHtml}
-      <div class="bank-saldo-input-row">
-        <input type="number" class="bank-saldo-input" id="saldoInput-${item.id}" placeholder="Input saldo aktual (Rp)" value="${item.saldoAktual!=null?item.saldoAktual:''}"/>
-        <button class="btn-dark" onclick="checkSaldo('${item.id}')"><i class="ti ti-calculator"></i> Cocokkan</button>
-      </div>
-      <div class="bank-row-v2-actions">
-        <button class="btn-dark" style="flex:1;${item.handover?'opacity:.4;':''}" ${item.handover||!item.checked?'disabled':''} onclick="handoverBank('${item.id}')">
-          ${item.handover?'<i class="ti ti-check"></i> Sudah Diserahkan':'<i class="ti ti-arrow-right-circle"></i> Serah Terima'}
-        </button>
-      </div>
+      ${crosscheckBlock}
+      ${checkedInfo}
+      ${actionsHtml}
     </div>`;
   }).join('');
 
   const total=bankItems.length,checked=bankItems.filter(i=>i.checked).length;
-  const klop=bankItems.filter(i=>i.checked&&i.selisih===0).length;
-  const selisih=bankItems.filter(i=>i.checked&&i.selisih!=null&&i.selisih!==0).length;
+  const handoverCount=bankItems.filter(i=>i.handover).length;
+  const belum=bankItems.filter(i=>!i.checked).length;
   document.getElementById('bTotal').textContent=total;
   document.getElementById('bChecked').textContent=checked;
-  document.getElementById('bKlop').textContent=klop;
-  document.getElementById('bSelisih').textContent=selisih;
+  document.getElementById('bHandover').textContent=handoverCount;
+  document.getElementById('bBelum').textContent=belum;
 
   document.getElementById('bankLogList').innerHTML=bankLogs.length
     ? bankLogs.slice(0,10).map(l=>`<div class="log-item"><div><span class="log-bank">${l.bank}</span><span class="badge ${l.badgeClass||'badge-gray'}" style="margin-left:8px;">${l.action}</span></div><div class="log-meta">${l.staff} · ${l.date} ${l.time}</div></div>`).join('')
     : '<p style="color:var(--text-3);font-size:11px;">Belum ada aktivitas.</p>';
 }
 
-async function checkSaldo(bankId){
-  const input=document.getElementById('saldoInput-'+bankId);
-  const val=parseFloat(input.value);
-  if(isNaN(val)){ showToast('Masukkan saldo aktual yang valid.',true); return; }
-  try {
-    const res=await api('checkSaldo',{bankId,saldoAktual:val,staffName:currentSession?.name||'Admin'});
-    if(res.ok){ await loadBanks(); showToast(res.selisih===0?'Saldo KLOP!':'Selisih ditemukan.',res.selisih!==0); }
-    else { showToast(res.msg,true); }
-  } catch(e){ showToast('Gagal cocokkan saldo. Cek koneksi.',true); }
+// Checklist "Sudah Crosscheck" dicentang/dibatalkan — dipasangkan dengan input saldo terakhir pengecekan
+async function toggleBankCrosscheck(bankId, checkboxEl){
+  if(checkboxEl.checked){
+    const input=document.getElementById('saldoCekInput-'+bankId);
+    const val=parseFloat(input.value);
+    if(isNaN(val)){
+      showToast('Isi saldo terakhir pengecekan terlebih dahulu.',true);
+      checkboxEl.checked=false;
+      return;
+    }
+    try {
+      const res=await api('markBankChecked',{bankId,saldoAktual:val,staffName:currentSession?.name||'Admin'});
+      if(res.ok){ await loadBanks(); showToast('Bank ditandai sudah crosscheck.'); }
+      else { showToast(res.msg,true); checkboxEl.checked=false; }
+    } catch(e){ showToast('Gagal menandai. Cek koneksi.',true); checkboxEl.checked=false; }
+  } else {
+    if(!confirm('Batalkan status "sudah crosscheck" untuk bank ini?')){ checkboxEl.checked=true; return; }
+    try {
+      const res=await api('unmarkBankChecked',{bankId});
+      if(res.ok){ await loadBanks(); showToast('Status crosscheck dibatalkan.'); }
+      else { showToast(res.msg,true); checkboxEl.checked=true; }
+    } catch(e){ showToast('Gagal membatalkan. Cek koneksi.',true); checkboxEl.checked=true; }
+  }
 }
 
 async function handoverBank(bankId){
+  const staffSel=document.getElementById('approveStaff-'+bankId);
+  const approvedBy=staffSel?staffSel.value:(currentSession?.name||'Admin');
+  if(!approvedBy){ showToast('Pilih staff yang meng-approve serah terima.',true); return; }
   try {
-    const res=await api('handoverBank',{bankId,staffName:currentSession?.name||'Admin'});
-    if(res.ok){ await loadBanks(); showToast('Serah terima tercatat.'); }
+    const res=await api('handoverBank',{bankId,staffName:approvedBy});
+    if(res.ok){ await loadBanks(); showToast('Serah terima disetujui oleh '+approvedBy+'.'); }
     else { showToast(res.msg,true); }
   } catch(e){ showToast('Gagal serah terima. Cek koneksi.',true); }
+}
+
+async function deleteBankItem(bankId,bankName){
+  if(!confirm(`Hapus bank "${bankName}" dari daftar? Tindakan ini tidak bisa dibatalkan.`)) return;
+  try {
+    const res=await api('deleteBank',{bankId});
+    if(res.ok){ await loadBanks(); showToast('Bank dihapus dari daftar.'); }
+    else { showToast(res.msg||'Gagal menghapus bank.',true); }
+  } catch(e){ showToast('Gagal menghapus. Cek koneksi.',true); }
 }
 
 document.getElementById('btnAddBank').addEventListener('click',async()=>{
@@ -1179,7 +1266,6 @@ document.getElementById('btnAddBank').addEventListener('click',async()=>{
   } catch(e){}
 });
 
-// ── SHIFT SETTINGS ─────────────────────────────────────
 async function loadShifts(){
   try {
     const res=await api('getShifts');
@@ -1235,7 +1321,6 @@ async function saveShiftSettings(){
 }
 document.getElementById('shiftModal').addEventListener('click',e=>{ if(e.target.id==='shiftModal') closeShiftSettings(); });
 
-// ── TEMA ─────────────────────────────────────
 const THEMES=[
   {id:'default',label:'Default',icon:'ti-device-desktop',colors:['#060d1a','#00e5b4','#4fa3ff']},
   {id:'ocean',label:'Ocean',icon:'ti-droplet',colors:['#031b2e','#22d3ee','#38bdf8']},
@@ -1272,7 +1357,6 @@ function saveTheme(){
 }
 document.getElementById('themeModal').addEventListener('click',e=>{ if(e.target.id==='themeModal') document.getElementById('themeModal').classList.remove('open'); });
 
-// ── CEK KONFIGURASI API (KHUSUS ADMIN, SAAT SETUP) ─────────────
 async function testApiConnection(){
   document.getElementById('apiTestResult').textContent='Mengetes koneksi...';
   document.getElementById('apiTestResult').style.color='var(--text-2)';
@@ -1287,7 +1371,218 @@ async function testApiConnection(){
   }
 }
 
-// ── INIT ─────────────────────────────────────
+// ══════════════════════════════════════════════
+//  IURAN KAS RUANGWD
+// ══════════════════════════════════════════════
+let kasEntries=[];
+let kasDompet={USD:0,RIEL:0,BAHT:0};
+let kasType='in';
+
+function setKasType(t){
+  kasType=t;
+  document.getElementById('kasTypeIn').classList.toggle('active-in',t==='in');
+  document.getElementById('kasTypeOut').classList.toggle('active-out',t==='out');
+}
+
+async function loadKas(){
+  try {
+    const res=await api('getKas');
+    if(res.ok){ kasEntries=res.entries||[]; kasDompet=res.dompet||{USD:0,RIEL:0,BAHT:0}; renderKas(); }
+  } catch(e){ showToast('Gagal memuat data kas. Cek koneksi.',true); }
+}
+
+function renderKas(){
+  document.getElementById('kasWalletGrid').innerHTML=['USD','RIEL','BAHT'].map(cur=>{
+    const saldo=kasDompet[cur]||0;
+    const fmt=cur==='USD'?('$ '+saldo.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}))
+             :cur==='RIEL'?('៛ '+saldo.toLocaleString('id-ID'))
+             :('฿ '+saldo.toLocaleString('id-ID'));
+    return `<div class="kas-wallet-card">
+      <div class="kas-wallet-label"><i class="ti ti-wallet"></i>Dompet ${cur}</div>
+      <div class="kas-wallet-value">${fmt}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('kasTbody').innerHTML=kasEntries.length ? kasEntries.map(e=>`<tr>
+    <td>${e.tanggal}<br><small style="color:var(--text-3);font-size:10px;">${e.time||''}</small></td>
+    <td class="td-staff">${e.nama}</td>
+    <td style="color:var(--accent);font-weight:${e.pemasukan?'600':'400'};">${e.pemasukan?e.pemasukan.toLocaleString('id-ID'):'-'}</td>
+    <td style="color:var(--red);font-weight:${e.pengeluaran?'600':'400'};">${e.pengeluaran?e.pengeluaran.toLocaleString('id-ID'):'-'}</td>
+    <td><span class="badge badge-purple">${e.mataUang}</span></td>
+    <td class="td-divisi">${e.keterangan||'-'}</td>
+    <td style="font-family:var(--mono);">${e.saldoSetelah.toLocaleString('id-ID')}</td>
+    <td><button class="icon-btn" title="Hapus" onclick="deleteKasEntry('${e.id}')"><i class="ti ti-trash"></i></button></td>
+  </tr>`).join('') : `<tr><td colspan="8" style="text-align:center;color:var(--text-3);padding:20px;">Belum ada transaksi kas</td></tr>`;
+}
+
+document.getElementById('btnAddKas').addEventListener('click',async()=>{
+  const nama=document.getElementById('kasNama').value.trim();
+  const nominal=parseFloat(document.getElementById('kasNominal').value);
+  const mataUang=document.getElementById('kasMataUang').value;
+  const keterangan=document.getElementById('kasKeterangan').value.trim();
+  const msg=document.getElementById('kasMsg');
+
+  if(!nama){ showToast('Nama wajib diisi.',true); return; }
+  if(isNaN(nominal)||nominal<=0){ showToast('Nominal harus lebih dari 0.',true); return; }
+
+  const payload={ nama, mataUang, keterangan, createdBy: currentSession?.name||nama };
+  if(kasType==='in') payload.pemasukan=nominal; else payload.pengeluaran=nominal;
+
+  try {
+    const res=await api('addKasEntry',payload);
+    if(res.ok){
+      ['kasNama','kasNominal','kasKeterangan'].forEach(id=>document.getElementById(id).value='');
+      msg.style.color='var(--accent)'; msg.innerHTML=`<i class="ti ti-circle-check"></i> Transaksi dicatat.`;
+      await loadKas();
+      showToast('Transaksi kas tersimpan.');
+    } else { showToast(res.msg,true); }
+  } catch(e){ showToast('Gagal menyimpan transaksi. Cek koneksi.',true); }
+});
+
+async function deleteKasEntry(id){
+  if(!confirm('Hapus transaksi ini? Saldo dompet akan disesuaikan.')) return;
+  try {
+    const res=await api('deleteKasEntry',{id});
+    if(res.ok){ await loadKas(); showToast('Transaksi dihapus.'); }
+    else { showToast(res.msg,true); }
+  } catch(e){ showToast('Gagal menghapus. Cek koneksi.',true); }
+}
+
+// ══════════════════════════════════════════════
+//  IZIN STAFF — pilih staff via dropdown, maksimal 4x/hari, durasi 15/20 menit
+// ══════════════════════════════════════════════
+
+function populateIzinStaffSelect(){
+  const sel=document.getElementById('izinStaffSelect');
+  if(!sel) return;
+  const prev=sel.value;
+  const list=STAFF_MASTER.length?STAFF_MASTER:(currentSession?[{name:currentSession.name,div:currentSession.div||'Staff'}]:[]);
+  sel.innerHTML=list.length
+    ? list.map(s=>`<option value="${s.name}">${s.name} (${s.div})</option>`).join('')
+    : '<option value="">Belum ada staff terdaftar</option>';
+  if(prev && list.find(s=>s.name===prev)) sel.value=prev;
+  else if(currentSession && list.find(s=>s.name===currentSession.name)) sel.value=currentSession.name;
+}
+
+document.getElementById('izinStaffSelect')?.addEventListener('change',()=>{ izinRunningSince=null; renderIzin(); });
+
+function openIzinSettings(){
+  pendingIzinDurasi=izinConfig.durasiMenit;
+  document.getElementById('durBtn15').classList.toggle('active-in',pendingIzinDurasi===15);
+  document.getElementById('durBtn20').classList.toggle('active-in',pendingIzinDurasi===20);
+  document.getElementById('izinSettingsModal').classList.add('open');
+}
+function pickIzinDurasi(v){
+  pendingIzinDurasi=v;
+  document.getElementById('durBtn15').classList.toggle('active-in',v===15);
+  document.getElementById('durBtn20').classList.toggle('active-in',v===20);
+}
+async function saveIzinSettings(){
+  try {
+    const res=await api('saveIzinConfig',{durasiMenit:pendingIzinDurasi});
+    if(res.ok){
+      izinConfig.durasiMenit=pendingIzinDurasi;
+      document.getElementById('izinSettingsModal').classList.remove('open');
+      document.getElementById('izinDurasiMaks').textContent=izinConfig.durasiMenit;
+      showToast('Durasi izin disimpan.');
+    } else { showToast(res.msg,true); }
+  } catch(e){ showToast('Gagal menyimpan. Cek koneksi.',true); }
+}
+document.getElementById('izinSettingsModal').addEventListener('click',e=>{ if(e.target.id==='izinSettingsModal') document.getElementById('izinSettingsModal').classList.remove('open'); });
+
+async function loadIzin(){
+  populateIzinStaffSelect();
+  try {
+    const res=await api('getIzinToday');
+    if(res.ok){
+      izinLogs=res.logs||[];
+      if(res.config){ izinConfig=res.config; }
+      renderIzin();
+    }
+  } catch(e){ showToast('Gagal memuat data izin. Cek koneksi.',true); }
+}
+
+function renderIzin(){
+  document.getElementById('izinDurasiMaks').textContent=izinConfig.durasiMenit;
+
+  const sedang=izinLogs.filter(l=>l.status==='jalan').length;
+  const lewat=izinLogs.filter(l=>l.lewatBatas).length;
+  document.getElementById('izinSedang').textContent=sedang;
+  document.getElementById('izinTotal').textContent=izinLogs.length;
+  document.getElementById('izinLewat').textContent=lewat;
+
+  const selectedStaff=document.getElementById('izinStaffSelect')?.value||currentSession?.name||'';
+  const mine=selectedStaff?izinLogs.filter(l=>l.staffName===selectedStaff):[];
+  const max=izinConfig.maxPerHari||4;
+  document.getElementById('izinCounterRow').innerHTML=Array.from({length:max}).map((_,i)=>{
+    const used=mine[i];
+    const cls=used?(used.lewatBatas?'over':'used'):'';
+    return `<div class="izin-dot ${cls}"></div>`;
+  }).join('');
+  document.getElementById('izinCounterLabel').textContent=`${mine.length} dari ${max} izin terpakai — ${selectedStaff||'(pilih staff)'}`;
+
+  const jalanMine=mine.find(l=>l.status==='jalan');
+  const btnStart=document.getElementById('btnStartIzin'), btnEnd=document.getElementById('btnEndIzin');
+  if(!selectedStaff){
+    btnStart.disabled=true; btnEnd.disabled=true;
+    document.getElementById('izinTimer').style.display='none';
+    izinRunningSince=null;
+  } else if(jalanMine){
+    btnStart.disabled=true; btnEnd.disabled=false;
+    document.getElementById('izinTimer').style.display='block';
+    if(!izinRunningSince){
+      const parts=jalanMine.jamMulai.split(':').map(Number);
+      const d=new Date();
+      d.setHours(parts[0],parts[1],parts[2]||0,0);
+      izinRunningSince=d.getTime();
+    }
+  } else {
+    btnStart.disabled=mine.length>=max;
+    btnEnd.disabled=true;
+    document.getElementById('izinTimer').style.display='none';
+    izinRunningSince=null;
+  }
+
+  document.getElementById('izinTbody').innerHTML=izinLogs.length ? izinLogs.map(l=>`<tr>
+    <td class="td-staff">${l.staffName}</td>
+    <td>${l.jamMulai||'-'}</td>
+    <td>${l.jamSelesai||'-'}</td>
+    <td>${l.durasiMenit!==''&&l.durasiMenit!=null?l.durasiMenit+' menit':'-'}</td>
+    <td class="td-divisi">${l.keterangan||'-'}</td>
+    <td>${l.status==='jalan'?'<span class="badge badge-amber">Sedang Izin</span>':(l.lewatBatas?'<span class="badge badge-red">Lewat Batas</span>':'<span class="badge badge-green">Selesai</span>')}</td>
+  </tr>`).join('') : `<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:20px;">Belum ada izin hari ini</td></tr>`;
+}
+
+document.getElementById('btnStartIzin').addEventListener('click',async()=>{
+  const staffName=document.getElementById('izinStaffSelect')?.value;
+  if(!staffName){ showToast('Pilih staff terlebih dahulu.',true); return; }
+  const keterangan=document.getElementById('izinKeterangan').value.trim();
+  const msg=document.getElementById('izinMsg');
+  try {
+    const res=await api('startIzin',{staffName,keterangan});
+    if(res.ok){
+      msg.style.color='var(--amber)'; msg.innerHTML=`<i class="ti ti-hourglass-low"></i> Izin untuk ${staffName} dimulai pukul ${res.jamMulai}.`;
+      document.getElementById('izinKeterangan').value='';
+      await loadIzin();
+    } else { showToast(res.msg,true); }
+  } catch(e){ showToast('Gagal memulai izin. Cek koneksi.',true); }
+});
+
+document.getElementById('btnEndIzin').addEventListener('click',async()=>{
+  const staffName=document.getElementById('izinStaffSelect')?.value;
+  if(!staffName){ showToast('Pilih staff terlebih dahulu.',true); return; }
+  const msg=document.getElementById('izinMsg');
+  try {
+    const res=await api('endIzin',{staffName});
+    if(res.ok){
+      msg.style.color=res.lewatBatas?'var(--red)':'var(--accent)';
+      msg.innerHTML=`<i class="ti ti-${res.lewatBatas?'alert-triangle':'circle-check'}"></i> ${staffName} — ${res.msg} (durasi ${res.durasiMenit} menit)`;
+      izinRunningSince=null;
+      await loadIzin();
+    } else { showToast(res.msg,true); }
+  } catch(e){ showToast('Gagal menyelesaikan izin. Cek koneksi.',true); }
+});
+
 function init(){
   const isUnconfigured = !API_URL || API_URL === "GANTI_DENGAN...";
   if(isUnconfigured){
