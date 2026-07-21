@@ -646,6 +646,7 @@ let currentFilter = 'semua';
 let activeShift = null;
 let pendingTheme = 'default';
 let pendingShifts = null;
+let izinRunningSince = null;
 
 const ini = n => n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
 const WIB = {timeZone:'Asia/Jakarta'};
@@ -1421,7 +1422,6 @@ async function deleteKasEntry(id){
 // ══════════════════════════════════════════════
 let izinLogs=[];
 let izinConfig={durasiMenit:15,maxPerHari:4};
-let izinRunningSince=null;
 let pendingIzinDurasi=15;
 
 function openIzinSettings(){
