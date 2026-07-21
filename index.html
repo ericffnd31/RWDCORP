@@ -1515,7 +1515,16 @@ document.getElementById('btnStartIzin').addEventListener('click',async()=>{
     if(res.ok){
       msg.style.color='var(--amber)'; msg.innerHTML=`<i class="ti ti-hourglass-low"></i> Izin dimulai pukul ${res.jamMulai}.`;
       document.getElementById('izinKeterangan').value='';
-      await loadIzin();
+
+      // Optimistic update: langsung tampilkan status "jalan" tanpa menunggu server dibaca ulang
+      izinLogs.push({
+        id:'IZ-local', staffName: currentSession.name, tanggal: fmtD(new Date()),
+        jamMulai: res.jamMulai, jamSelesai:'', durasiMenit:'', keterangan,
+        status:'jalan', lewatBatas:false, timestampMulai:new Date().toISOString()
+      });
+      renderIzin();
+
+      setTimeout(()=>loadIzin().catch(()=>{}), 1200);
     } else { showToast(res.msg,true); }
   } catch(e){ showToast('Gagal memulai izin. Cek koneksi.',true); }
 });
@@ -1529,7 +1538,18 @@ document.getElementById('btnEndIzin').addEventListener('click',async()=>{
       msg.style.color=res.lewatBatas?'var(--red)':'var(--accent)';
       msg.innerHTML=`<i class="ti ti-${res.lewatBatas?'alert-triangle':'circle-check'}"></i> ${res.msg} (durasi ${res.durasiMenit} menit)`;
       izinRunningSince=null;
-      await loadIzin();
+
+      // Optimistic update: tandai izin yang sedang jalan sebagai selesai tanpa menunggu server dibaca ulang
+      const jalanIdx=izinLogs.findIndex(l=>l.staffName===currentSession.name && l.status==='jalan');
+      if(jalanIdx>-1){
+        izinLogs[jalanIdx].jamSelesai=res.jamSelesai;
+        izinLogs[jalanIdx].durasiMenit=res.durasiMenit;
+        izinLogs[jalanIdx].status='selesai';
+        izinLogs[jalanIdx].lewatBatas=res.lewatBatas;
+      }
+      renderIzin();
+
+      setTimeout(()=>loadIzin().catch(()=>{}), 1200);
     } else { showToast(res.msg,true); }
   } catch(e){ showToast('Gagal menyelesaikan izin. Cek koneksi.',true); }
 });
