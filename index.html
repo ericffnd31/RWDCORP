@@ -110,7 +110,6 @@ html,body{height:100%;background:var(--bg-base);color:var(--text-1);font-family:
 .btn-dark:disabled{opacity:.35;cursor:not-allowed}
 .btn-dark.btn-in{border-color:rgba(0,229,180,.3);color:var(--accent)}
 .btn-dark.btn-out{border-color:rgba(79,163,255,.3);color:var(--blue)}
-.btn-dark.btn-danger{border-color:rgba(240,100,100,.35);color:var(--red)}
 .form-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
 select,input[type="text"],input[type="number"],input[type="time"]{background:var(--bg-surface);border:1px solid var(--border-hi);color:var(--text-1);border-radius:var(--r-sm);padding:8px 10px;font-size:12px;font-family:var(--font);outline:none;transition:border-color .15s}
 select:focus,input:focus{border-color:var(--accent)}
@@ -135,7 +134,6 @@ tr:hover td{background:var(--bg-hover)}
 .td-divisi{color:var(--text-3)}
 .icon-btn{width:26px;height:26px;border-radius:6px;background:transparent;border:1px solid var(--border);color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all .15s}
 .icon-btn:hover{border-color:var(--blue);color:var(--blue)}
-.icon-btn.danger:hover{border-color:var(--red);color:var(--red)}
 .bank-row-v2{border:1px solid var(--border);border-radius:var(--r-md);padding:12px;transition:border-color .15s}
 .bank-row-v2:hover{border-color:var(--border-hi)}
 .bank-row-v2-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -247,6 +245,11 @@ tr:hover td{background:var(--bg-hover)}
 .izin-dot.used{background:var(--amber)}
 .izin-dot.over{background:var(--red)}
 .izin-timer{font-size:24px;font-weight:600;font-family:var(--mono);color:var(--amber);margin:4px 0 10px}
+.izin-timer-card{text-align:center;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r-md);padding:18px 12px;margin-bottom:12px}
+.izin-timer-label{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.izin-timer-big{font-size:52px;font-weight:700;font-family:var(--mono);color:var(--amber);letter-spacing:1px;line-height:1}
+.izin-timer-big.over{color:var(--red)}
+.izin-timer-sub{font-size:10.5px;color:var(--text-3);margin-top:6px}
 
 @media (max-width: 768px) {
   .app { flex-direction: column; }
@@ -453,13 +456,14 @@ tr:hover td{background:var(--bg-hover)}
           <div class="stat-card c-purple"><div class="stat-label"><i class="ti ti-clock-hour-4"></i>Durasi Maks</div><div class="stat-value c-purple" id="izinDurasiMaks">15</div><div class="stat-sub">Menit / izin</div></div>
         </div>
         <div class="manual-panel">
-          <div class="card-title"><i class="ti ti-hourglass-low"></i>Izin Staff</div>
-          <div class="form-row">
-            <select id="izinStaffSelect" style="flex:1;"></select>
-          </div>
+          <div class="card-title"><i class="ti ti-hourglass-low"></i>Izin Saya Hari Ini</div>
           <div class="izin-counter-row" id="izinCounterRow"></div>
           <div style="font-size:11px;color:var(--text-3);margin-bottom:10px;" id="izinCounterLabel">0 dari 4 izin terpakai</div>
-          <div class="izin-timer" id="izinTimer" style="display:none;">00:00</div>
+          <div class="izin-timer-card" id="izinTimerCard" style="display:none;">
+            <div class="izin-timer-label" id="izinTimerLabel">Sisa Waktu Izin</div>
+            <div class="izin-timer-big" id="izinTimer">00:00</div>
+            <div class="izin-timer-sub" id="izinTimerSub">Durasi izin: 15 menit</div>
+          </div>
           <div class="form-row">
             <input type="text" id="izinKeterangan" placeholder="Keperluan izin (opsional)" style="flex:1;"/>
           </div>
@@ -484,13 +488,12 @@ tr:hover td{background:var(--bg-hover)}
       <div class="content">
         <div class="stats-grid">
           <div class="stat-card c-blue"><div class="stat-label"><i class="ti ti-building-bank"></i>Total Bank</div><div class="stat-value c-blue" id="bTotal">0</div><div class="stat-sub">Terdaftar</div></div>
-          <div class="stat-card c-green"><div class="stat-label"><i class="ti ti-eye-check"></i>Sudah Dicek</div><div class="stat-value c-green" id="bChecked">0</div><div class="stat-sub">Klop, siap serah terima</div></div>
-          <div class="stat-card c-blue"><div class="stat-label"><i class="ti ti-check"></i>Sudah Serah Terima</div><div class="stat-value c-blue" id="bHandover">0</div><div class="stat-sub">Selesai hari ini</div></div>
-          <div class="stat-card c-amber"><div class="stat-label"><i class="ti ti-clock-exclamation"></i>Belum Dicek</div><div class="stat-value c-amber" id="bBelum">0</div><div class="stat-sub">Perlu dicek manual</div></div>
+          <div class="stat-card c-green"><div class="stat-label"><i class="ti ti-eye-check"></i>Sudah Dicek</div><div class="stat-value c-green" id="bChecked">0</div><div class="stat-sub">Dari total bank</div></div>
+          <div class="stat-card c-green"><div class="stat-label"><i class="ti ti-check"></i>Saldo Klop</div><div class="stat-value c-green" id="bKlop">0</div><div class="stat-sub">Tidak ada selisih</div></div>
+          <div class="stat-card c-red"><div class="stat-label"><i class="ti ti-alert-circle"></i>Ada Selisih</div><div class="stat-value c-red" id="bSelisih">0</div><div class="stat-sub">Perlu tindak lanjut</div></div>
         </div>
         <div class="card" style="margin-bottom:14px;">
           <div class="card-title"><i class="ti ti-checklist"></i>Checklist Pengecekan & Serah Terima Bank</div>
-          <p style="font-size:11px;color:var(--text-2);line-height:1.6;margin:-6px 0 14px;">Isi <b>saldo terakhir pengecekan</b>, lalu centang <b>Sudah Crosscheck</b> setelah dicek manual. Setelah dicentang, pilih nama staff yang meng-approve lalu tekan <b>Serah Terima</b>.</p>
           <div id="bankList" style="display:flex;flex-direction:column;gap:10px;"></div>
           <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
             <div class="modal-section-label" style="margin-bottom:8px;"><i class="ti ti-plus"></i>TAMBAH BANK BARU</div>
@@ -522,7 +525,7 @@ tr:hover td{background:var(--bg-hover)}
             <button type="button" class="kas-type-btn" id="kasTypeOut" onclick="setKasType('out')"><i class="ti ti-arrow-up-circle"></i>&nbsp;Pengeluaran</button>
           </div>
           <div class="kas-form-grid">
-            <input type="text" id="kasNama" placeholder="Nama"/>
+            <select id="kasNama"><option value="">— Pilih nama staff —</option></select>
             <input type="number" id="kasNominal" placeholder="Nominal"/>
             <select id="kasMataUang">
               <option value="USD">USD</option>
@@ -644,14 +647,6 @@ let activeShift = null;
 let pendingTheme = 'default';
 let pendingShifts = null;
 
-// Deklarasi awal untuk state Izin — HARUS di atas sebelum tick() dipakai,
-// supaya tidak kena "Cannot access before initialization" (temporal dead zone)
-// karena tick() membaca izinRunningSince setiap detik sejak halaman dimuat.
-let izinLogs = [];
-let izinConfig = { durasiMenit: 15, maxPerHari: 4 };
-let izinRunningSince = null;
-let pendingIzinDurasi = 15;
-
 const ini = n => n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
 const WIB = {timeZone:'Asia/Jakarta'};
 const fmtT = d => d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit',...WIB});
@@ -726,9 +721,23 @@ function tick(){
   document.getElementById('dateBadgeKas').textContent=fd;
   document.getElementById('dateBadgeIzin').textContent=fd;
   if(izinRunningSince){
-    const secs=Math.floor((Date.now()-izinRunningSince)/1000);
-    const m=String(Math.floor(secs/60)).padStart(2,'0'), s=String(secs%60).padStart(2,'0');
-    document.getElementById('izinTimer').textContent=m+':'+s;
+    const elapsedSecs=Math.floor((Date.now()-izinRunningSince)/1000);
+    const totalSecs=(izinConfig.durasiMenit||15)*60;
+    const remaining=totalSecs-elapsedSecs;
+    const timerEl=document.getElementById('izinTimer');
+    const labelEl=document.getElementById('izinTimerLabel');
+    if(remaining>=0){
+      const m=String(Math.floor(remaining/60)).padStart(2,'0'), s=String(remaining%60).padStart(2,'0');
+      timerEl.textContent=m+':'+s;
+      timerEl.classList.remove('over');
+      labelEl.textContent='Sisa Waktu Izin';
+    } else {
+      const over=Math.abs(remaining);
+      const m=String(Math.floor(over/60)).padStart(2,'0'), s=String(over%60).padStart(2,'0');
+      timerEl.textContent='+'+m+':'+s;
+      timerEl.classList.add('over');
+      labelEl.textContent='Lewat Batas Durasi Izin';
+    }
   }
 }
 tick(); setInterval(tick,1000);
@@ -849,11 +858,9 @@ async function loadStaffMaster(){
       STAFF_MASTER=[{name:currentSession.name,div:currentSession.div||'Staff'}];
     }
     renderDashboard();
-    populateIzinStaffSelect();
   } catch(e){
     if(currentSession) STAFF_MASTER=[{name:currentSession.name,div:currentSession.div||'Staff'}];
     renderDashboard();
-    populateIzinStaffSelect();
   }
 }
 
@@ -1135,46 +1142,18 @@ async function loadBanks(){
 }
 
 function renderBank(){
-  const staffOptions = (STAFF_MASTER.length?STAFF_MASTER:(currentSession?[{name:currentSession.name,div:currentSession.div||'Staff'}]:[]));
-
   document.getElementById('bankList').innerHTML=bankItems.map(item=>{
-    const status=item.handover?'Sudah serah terima':(item.checked?'Sudah crosscheck':'Belum dicek');
+    const status=item.handover?'Sudah serah terima':(item.checked?'Sudah dicek':'Belum dicek');
     const statusCls=item.handover?'badge-green':(item.checked?'badge-amber':'badge-gray');
-
-    let checkedInfo='';
-    if(item.checked){
-      checkedInfo=`<div class="match-result klop"><i class="ti ti-circle-check"></i><div><b>SUDAH CROSSCHECK</b><span class="detail">Dicek oleh ${item.checkedBy||'-'} · ${item.checkedAt?new Date(item.checkedAt).toLocaleString('id-ID',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):''} · Saldo terakhir: ${item.saldoAktual!=null?fmtRupiah(item.saldoAktual):'-'}</span></div></div>`;
+    let matchHtml='';
+    if(item.saldoAktual!=null&&item.selisih!=null){
+      if(item.selisih===0){
+        matchHtml=`<div class="match-result klop"><i class="ti ti-circle-check"></i><div><b>KLOP</b> — saldo sesuai sistem<span class="detail">Sistem ${fmtRupiah(item.saldoSistem)} = Aktual ${fmtRupiah(item.saldoAktual)}</span></div></div>`;
+      } else {
+        const arah=item.selisih>0?'lebih':'kurang';
+        matchHtml=`<div class="match-result selisih"><i class="ti ti-alert-triangle"></i><div><b>SELISIH ${fmtRupiah(Math.abs(item.selisih))}</b> (${arah})<span class="detail">Sistem ${fmtRupiah(item.saldoSistem)} vs Aktual ${fmtRupiah(item.saldoAktual)}</span></div></div>`;
+      }
     }
-
-    // Kolom input saldo terakhir pengecekan + checklist crosscheck (dikunci/disabled kalau sudah diserahkan)
-    const lockAfterHandover = item.handover;
-    const crosscheckBlock = `
-      <div class="bank-saldo-input-row" style="align-items:center;">
-        <input type="number" class="bank-saldo-input" id="saldoCekInput-${item.id}"
-          placeholder="Saldo terakhir pengecekan (Rp)"
-          value="${item.saldoAktual!=null?item.saldoAktual:''}"
-          ${item.checked||lockAfterHandover?'disabled':''} />
-        <label style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-2);white-space:nowrap;padding:0 4px;">
-          <input type="checkbox" id="chkCrosscheck-${item.id}" style="width:16px;height:16px;accent-color:var(--accent);"
-            ${item.checked?'checked':''} ${lockAfterHandover?'disabled':''}
-            onchange="toggleBankCrosscheck('${item.id}', this)" />
-          Sudah Crosscheck
-        </label>
-      </div>`;
-
-    let actionsHtml='';
-    if(item.handover){
-      actionsHtml=`<div class="bank-row-v2-actions"><button class="btn-dark" style="flex:1;opacity:.5;" disabled><i class="ti ti-check"></i> Sudah Diserahkan — lihat log di bawah untuk nama approve</button></div>`;
-    } else if(item.checked){
-      const staffSelectHtml = `<select id="approveStaff-${item.id}" style="flex:1;">${staffOptions.map(s=>`<option value="${s.name}">${s.name} (${s.div})</option>`).join('')||'<option value="">Belum ada staff</option>'}</select>`;
-      actionsHtml=`<div class="bank-row-v2-actions">
-        ${staffSelectHtml}
-        <button class="btn-dark btn-in" style="flex:1;" onclick="handoverBank('${item.id}')"><i class="ti ti-arrow-right-circle"></i> Serah Terima</button>
-      </div>`;
-    } else {
-      actionsHtml=`<p style="font-size:10.5px;color:var(--text-3);margin-top:2px;">Isi saldo terakhir pengecekan lalu centang "Sudah Crosscheck" untuk mengaktifkan Serah Terima.</p>`;
-    }
-
     return `<div class="bank-row-v2">
       <div class="bank-row-v2-top">
         <div class="bank-icon"><i class="ti ti-building-bank"></i></div>
@@ -1183,74 +1162,54 @@ function renderBank(){
           <div class="bank-row-v2-rek">No. Rek: ${item.rek||'-'}</div>
         </div>
         <span class="badge ${statusCls}">${status}</span>
-        <button class="icon-btn danger" title="Hapus bank" onclick="deleteBankItem('${item.id}','${item.name.replace(/'/g,"\\'")}')"><i class="ti ti-trash"></i></button>
       </div>
-      <div class="bank-saldo-box" style="margin-bottom:9px;">
-        <div class="bank-saldo-label">Saldo Sistem (referensi)</div>
-        <div class="bank-saldo-value" style="color:var(--blue)">${fmtRupiah(item.saldoSistem)}</div>
+      <div class="bank-saldo-grid">
+        <div class="bank-saldo-box"><div class="bank-saldo-label">Saldo Sistem</div><div class="bank-saldo-value" style="color:var(--blue)">${fmtRupiah(item.saldoSistem)}</div></div>
+        <div class="bank-saldo-box"><div class="bank-saldo-label">Saldo Aktual</div><div class="bank-saldo-value" style="color:${item.saldoAktual!=null?'var(--text-1)':'var(--text-3)'}">${item.saldoAktual!=null?fmtRupiah(item.saldoAktual):'Belum dicek'}</div></div>
       </div>
-      ${crosscheckBlock}
-      ${checkedInfo}
-      ${actionsHtml}
+      ${matchHtml}
+      <div class="bank-saldo-input-row">
+        <input type="number" class="bank-saldo-input" id="saldoInput-${item.id}" placeholder="Input saldo aktual (Rp)" value="${item.saldoAktual!=null?item.saldoAktual:''}"/>
+        <button class="btn-dark" onclick="checkSaldo('${item.id}')"><i class="ti ti-calculator"></i> Cocokkan</button>
+      </div>
+      <div class="bank-row-v2-actions">
+        <button class="btn-dark" style="flex:1;${item.handover?'opacity:.4;':''}" ${item.handover||!item.checked?'disabled':''} onclick="handoverBank('${item.id}')">
+          ${item.handover?'<i class="ti ti-check"></i> Sudah Diserahkan':'<i class="ti ti-arrow-right-circle"></i> Serah Terima'}
+        </button>
+      </div>
     </div>`;
   }).join('');
 
   const total=bankItems.length,checked=bankItems.filter(i=>i.checked).length;
-  const handoverCount=bankItems.filter(i=>i.handover).length;
-  const belum=bankItems.filter(i=>!i.checked).length;
+  const klop=bankItems.filter(i=>i.checked&&i.selisih===0).length;
+  const selisih=bankItems.filter(i=>i.checked&&i.selisih!=null&&i.selisih!==0).length;
   document.getElementById('bTotal').textContent=total;
   document.getElementById('bChecked').textContent=checked;
-  document.getElementById('bHandover').textContent=handoverCount;
-  document.getElementById('bBelum').textContent=belum;
+  document.getElementById('bKlop').textContent=klop;
+  document.getElementById('bSelisih').textContent=selisih;
 
   document.getElementById('bankLogList').innerHTML=bankLogs.length
     ? bankLogs.slice(0,10).map(l=>`<div class="log-item"><div><span class="log-bank">${l.bank}</span><span class="badge ${l.badgeClass||'badge-gray'}" style="margin-left:8px;">${l.action}</span></div><div class="log-meta">${l.staff} · ${l.date} ${l.time}</div></div>`).join('')
     : '<p style="color:var(--text-3);font-size:11px;">Belum ada aktivitas.</p>';
 }
 
-// Checklist "Sudah Crosscheck" dicentang/dibatalkan — dipasangkan dengan input saldo terakhir pengecekan
-async function toggleBankCrosscheck(bankId, checkboxEl){
-  if(checkboxEl.checked){
-    const input=document.getElementById('saldoCekInput-'+bankId);
-    const val=parseFloat(input.value);
-    if(isNaN(val)){
-      showToast('Isi saldo terakhir pengecekan terlebih dahulu.',true);
-      checkboxEl.checked=false;
-      return;
-    }
-    try {
-      const res=await api('markBankChecked',{bankId,saldoAktual:val,staffName:currentSession?.name||'Admin'});
-      if(res.ok){ await loadBanks(); showToast('Bank ditandai sudah crosscheck.'); }
-      else { showToast(res.msg,true); checkboxEl.checked=false; }
-    } catch(e){ showToast('Gagal menandai. Cek koneksi.',true); checkboxEl.checked=false; }
-  } else {
-    if(!confirm('Batalkan status "sudah crosscheck" untuk bank ini?')){ checkboxEl.checked=true; return; }
-    try {
-      const res=await api('unmarkBankChecked',{bankId});
-      if(res.ok){ await loadBanks(); showToast('Status crosscheck dibatalkan.'); }
-      else { showToast(res.msg,true); checkboxEl.checked=true; }
-    } catch(e){ showToast('Gagal membatalkan. Cek koneksi.',true); checkboxEl.checked=true; }
-  }
+async function checkSaldo(bankId){
+  const input=document.getElementById('saldoInput-'+bankId);
+  const val=parseFloat(input.value);
+  if(isNaN(val)){ showToast('Masukkan saldo aktual yang valid.',true); return; }
+  try {
+    const res=await api('checkSaldo',{bankId,saldoAktual:val,staffName:currentSession?.name||'Admin'});
+    if(res.ok){ await loadBanks(); showToast(res.selisih===0?'Saldo KLOP!':'Selisih ditemukan.',res.selisih!==0); }
+    else { showToast(res.msg,true); }
+  } catch(e){ showToast('Gagal cocokkan saldo. Cek koneksi.',true); }
 }
 
 async function handoverBank(bankId){
-  const staffSel=document.getElementById('approveStaff-'+bankId);
-  const approvedBy=staffSel?staffSel.value:(currentSession?.name||'Admin');
-  if(!approvedBy){ showToast('Pilih staff yang meng-approve serah terima.',true); return; }
   try {
-    const res=await api('handoverBank',{bankId,staffName:approvedBy});
-    if(res.ok){ await loadBanks(); showToast('Serah terima disetujui oleh '+approvedBy+'.'); }
+    const res=await api('handoverBank',{bankId,staffName:currentSession?.name||'Admin'});
+    if(res.ok){ await loadBanks(); showToast('Serah terima tercatat.'); }
     else { showToast(res.msg,true); }
   } catch(e){ showToast('Gagal serah terima. Cek koneksi.',true); }
-}
-
-async function deleteBankItem(bankId,bankName){
-  if(!confirm(`Hapus bank "${bankName}" dari daftar? Tindakan ini tidak bisa dibatalkan.`)) return;
-  try {
-    const res=await api('deleteBank',{bankId});
-    if(res.ok){ await loadBanks(); showToast('Bank dihapus dari daftar.'); }
-    else { showToast(res.msg||'Gagal menghapus bank.',true); }
-  } catch(e){ showToast('Gagal menghapus. Cek koneksi.',true); }
 }
 
 document.getElementById('btnAddBank').addEventListener('click',async()=>{
@@ -1384,7 +1343,16 @@ function setKasType(t){
   document.getElementById('kasTypeOut').classList.toggle('active-out',t==='out');
 }
 
+function populateKasNamaSelect(){
+  const sel=document.getElementById('kasNama');
+  const current=sel.value;
+  sel.innerHTML='<option value="">— Pilih nama staff —</option>'+STAFF_MASTER.map(s=>`<option value="${s.name}">${s.name} (${s.div})</option>`).join('');
+  if(current && STAFF_MASTER.find(s=>s.name===current)) sel.value=current;
+  else if(currentSession && STAFF_MASTER.find(s=>s.name===currentSession.name)) sel.value=currentSession.name;
+}
+
 async function loadKas(){
+  populateKasNamaSelect();
   try {
     const res=await api('getKas');
     if(res.ok){ kasEntries=res.entries||[]; kasDompet=res.dompet||{USD:0,RIEL:0,BAHT:0}; renderKas(); }
@@ -1449,22 +1417,12 @@ async function deleteKasEntry(id){
 }
 
 // ══════════════════════════════════════════════
-//  IZIN STAFF — pilih staff via dropdown, maksimal 4x/hari, durasi 15/20 menit
+//  IZIN STAFF — maksimal 4x/hari, durasi 15/20 menit
 // ══════════════════════════════════════════════
-
-function populateIzinStaffSelect(){
-  const sel=document.getElementById('izinStaffSelect');
-  if(!sel) return;
-  const prev=sel.value;
-  const list=STAFF_MASTER.length?STAFF_MASTER:(currentSession?[{name:currentSession.name,div:currentSession.div||'Staff'}]:[]);
-  sel.innerHTML=list.length
-    ? list.map(s=>`<option value="${s.name}">${s.name} (${s.div})</option>`).join('')
-    : '<option value="">Belum ada staff terdaftar</option>';
-  if(prev && list.find(s=>s.name===prev)) sel.value=prev;
-  else if(currentSession && list.find(s=>s.name===currentSession.name)) sel.value=currentSession.name;
-}
-
-document.getElementById('izinStaffSelect')?.addEventListener('change',()=>{ izinRunningSince=null; renderIzin(); });
+let izinLogs=[];
+let izinConfig={durasiMenit:15,maxPerHari:4};
+let izinRunningSince=null;
+let pendingIzinDurasi=15;
 
 function openIzinSettings(){
   pendingIzinDurasi=izinConfig.durasiMenit;
@@ -1491,7 +1449,6 @@ async function saveIzinSettings(){
 document.getElementById('izinSettingsModal').addEventListener('click',e=>{ if(e.target.id==='izinSettingsModal') document.getElementById('izinSettingsModal').classList.remove('open'); });
 
 async function loadIzin(){
-  populateIzinStaffSelect();
   try {
     const res=await api('getIzinToday');
     if(res.ok){
@@ -1511,25 +1468,21 @@ function renderIzin(){
   document.getElementById('izinTotal').textContent=izinLogs.length;
   document.getElementById('izinLewat').textContent=lewat;
 
-  const selectedStaff=document.getElementById('izinStaffSelect')?.value||currentSession?.name||'';
-  const mine=selectedStaff?izinLogs.filter(l=>l.staffName===selectedStaff):[];
+  const mine=currentSession?izinLogs.filter(l=>l.staffName===currentSession.name):[];
   const max=izinConfig.maxPerHari||4;
   document.getElementById('izinCounterRow').innerHTML=Array.from({length:max}).map((_,i)=>{
     const used=mine[i];
     const cls=used?(used.lewatBatas?'over':'used'):'';
     return `<div class="izin-dot ${cls}"></div>`;
   }).join('');
-  document.getElementById('izinCounterLabel').textContent=`${mine.length} dari ${max} izin terpakai — ${selectedStaff||'(pilih staff)'}`;
+  document.getElementById('izinCounterLabel').textContent=`${mine.length} dari ${max} izin terpakai`;
 
   const jalanMine=mine.find(l=>l.status==='jalan');
   const btnStart=document.getElementById('btnStartIzin'), btnEnd=document.getElementById('btnEndIzin');
-  if(!selectedStaff){
-    btnStart.disabled=true; btnEnd.disabled=true;
-    document.getElementById('izinTimer').style.display='none';
-    izinRunningSince=null;
-  } else if(jalanMine){
+  if(jalanMine){
     btnStart.disabled=true; btnEnd.disabled=false;
-    document.getElementById('izinTimer').style.display='block';
+    document.getElementById('izinTimerCard').style.display='block';
+    document.getElementById('izinTimerSub').textContent='Durasi izin: '+(izinConfig.durasiMenit||15)+' menit — mulai '+jalanMine.jamMulai+' WIB';
     if(!izinRunningSince){
       const parts=jalanMine.jamMulai.split(':').map(Number);
       const d=new Date();
@@ -1539,7 +1492,7 @@ function renderIzin(){
   } else {
     btnStart.disabled=mine.length>=max;
     btnEnd.disabled=true;
-    document.getElementById('izinTimer').style.display='none';
+    document.getElementById('izinTimerCard').style.display='none';
     izinRunningSince=null;
   }
 
@@ -1554,14 +1507,13 @@ function renderIzin(){
 }
 
 document.getElementById('btnStartIzin').addEventListener('click',async()=>{
-  const staffName=document.getElementById('izinStaffSelect')?.value;
-  if(!staffName){ showToast('Pilih staff terlebih dahulu.',true); return; }
+  if(!currentSession){ showToast('Login terlebih dahulu.',true); return; }
   const keterangan=document.getElementById('izinKeterangan').value.trim();
   const msg=document.getElementById('izinMsg');
   try {
-    const res=await api('startIzin',{staffName,keterangan});
+    const res=await api('startIzin',{staffName:currentSession.name,keterangan});
     if(res.ok){
-      msg.style.color='var(--amber)'; msg.innerHTML=`<i class="ti ti-hourglass-low"></i> Izin untuk ${staffName} dimulai pukul ${res.jamMulai}.`;
+      msg.style.color='var(--amber)'; msg.innerHTML=`<i class="ti ti-hourglass-low"></i> Izin dimulai pukul ${res.jamMulai}.`;
       document.getElementById('izinKeterangan').value='';
       await loadIzin();
     } else { showToast(res.msg,true); }
@@ -1569,14 +1521,13 @@ document.getElementById('btnStartIzin').addEventListener('click',async()=>{
 });
 
 document.getElementById('btnEndIzin').addEventListener('click',async()=>{
-  const staffName=document.getElementById('izinStaffSelect')?.value;
-  if(!staffName){ showToast('Pilih staff terlebih dahulu.',true); return; }
+  if(!currentSession){ showToast('Login terlebih dahulu.',true); return; }
   const msg=document.getElementById('izinMsg');
   try {
-    const res=await api('endIzin',{staffName});
+    const res=await api('endIzin',{staffName:currentSession.name});
     if(res.ok){
       msg.style.color=res.lewatBatas?'var(--red)':'var(--accent)';
-      msg.innerHTML=`<i class="ti ti-${res.lewatBatas?'alert-triangle':'circle-check'}"></i> ${staffName} — ${res.msg} (durasi ${res.durasiMenit} menit)`;
+      msg.innerHTML=`<i class="ti ti-${res.lewatBatas?'alert-triangle':'circle-check'}"></i> ${res.msg} (durasi ${res.durasiMenit} menit)`;
       izinRunningSince=null;
       await loadIzin();
     } else { showToast(res.msg,true); }
